@@ -1,20 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import WelcomeScreen from './welcomeScreens/WelcomeScreen';
+import Signup from './welcomeScreens/signup'
+import Wallets from './welcomeScreens/wallets'
+import Details from './welcomeScreens/FinancialDetails'
 
 export default function App() {
+  const Stack = createStackNavigator()
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name='Welcome' component={WelcomeScreen} options={{
+          headerShown:false,
+        }}/>
+        <Stack.Screen name='Sign up' component={Signup} options={{
+          headerStyle:{
+            backgroundColor:"#fff5e0",
+            elevation:0,
+          }
+        }}/>
+        <Stack.Screen name='Wallets' component={Wallets} options={{
+          headerStyle:{
+            backgroundColor:"#fff5e0",
+            elevation:0,
+          }
+        }}/>
+        <Stack.Screen name='Details' component={Details} options={{
+          headerStyle:{
+            backgroundColor:"#fff5e0",
+            elevation:0,
+          }
+        }}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

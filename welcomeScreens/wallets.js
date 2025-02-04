@@ -37,8 +37,8 @@ export default function WelcomeScreen({ navigation }) {
       // this changes the value of the "selected" property of each array item
       //if selected was true it turns false and if selected was false it turns true.
       setWallets((w) =>
-        w.map((wlt, index) =>
-          index === targetId ? { ...wlt, selected: !wallet.selected } : wlt
+        w.map((wlt) =>
+          wlt.id === wallet.id ? { ...wlt, selected: !wlt.selected } : wlt
         )
       );
     }
@@ -50,7 +50,7 @@ export default function WelcomeScreen({ navigation }) {
   }, [wallets]);
 
   const goToDetails = () => {
-    if (selectedWallets) {
+    if (selectedWallets.length > 0) {
       navigation.navigate("Details", {
         wallets: selectedWallets,
       });
@@ -74,14 +74,14 @@ export default function WelcomeScreen({ navigation }) {
     */
     const others = wallets[wallets.length - 1];
     const newId = wallets.length + 1;
-    wallets.pop();
     const newWallet = {
       id: newId,
       wName: newWalletName,
       themeColor: "green",
       selected: false,
     };
-    setWallets((w) => [...w, newWallet, others]);
+    const updatedWallets = [...wallets.slice(0,-1),newWallet,others]
+    setWallets(updatedWallets);
   };
   const hideFunction = () => {
     setModalVisible(false);
@@ -90,7 +90,7 @@ export default function WelcomeScreen({ navigation }) {
     <View style={styles.main}>
       <View style={styles.container}>
         <Text style={styles.insturctionText}>
-          Tap on the money wallets you wish to keep track of....
+          Tap on the money wallets you want to keep track of....
         </Text>
         <NewBank
           add={addCustomWallet}
@@ -125,8 +125,8 @@ export default function WelcomeScreen({ navigation }) {
             ItemSeparatorComponent={<View style={{ height: 20 }} />}
           />
         </View>
-        <Button title="Next" onPress={() => goToDetails()} />
-        <Pressable>
+        {/* <Button title="Next" onPress={() => goToDetails()} /> */}
+        <Pressable onPress={goToDetails} style={styles.button}>
           <Text>Next</Text>
         </Pressable>
       </View>
@@ -140,7 +140,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    // ,
     alignItems: "center",
     flex: 1,
   },
@@ -151,7 +150,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 15,
     borderColor: "blue",
-    // borderWidth:3,
   },
   walletText: {
     textAlign: "left",
@@ -170,4 +168,14 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     height: 450,
   },
+  button:{
+    backgroundColor: "#ee9e8e",
+    borderRadius: 15,
+    marginTop: 20,
+    width: 120,
+    height: 48,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 4,
+  }
 });

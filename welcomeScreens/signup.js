@@ -26,7 +26,7 @@ export default function WelcomeScreen({ navigation }) {
     <View style={styles.main}>
         <View style={styles.container}>
           <View>
-            <Text>Name</Text>
+            <Text style={{fontSize:24,}}>Name</Text>
             <TextInput
               value={userName}
               onChangeText={setUserName}
@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "#fff",
     width: 200,
+    height:40,
     borderRadius: 20,
     borderWidth: 0.4,
     paddingHorizontal: 10,

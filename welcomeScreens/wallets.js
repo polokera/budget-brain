@@ -77,7 +77,8 @@ export default function WelcomeScreen({ navigation }) {
     const newWallet = {
       id: newId,
       wName: newWalletName,
-      themeColor: "green",
+      //function from chatgpt that generates a random color
+      themeColor: `#${Math.floor(Math.random()*16777215).toString(16).padStart(6,'0')}`,
       selected: false,
     };
     const updatedWallets = [...wallets.slice(0,-1),newWallet,others]

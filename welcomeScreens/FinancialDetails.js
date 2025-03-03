@@ -1,16 +1,22 @@
-import {View,StyleSheet,Text,StatusBar,Button, Pressable,FlatList, TextInput} from 'react-native'
-import { use, useState } from 'react';
+import {View,StyleSheet,Text,StatusBar, Pressable,FlatList, TextInput} from 'react-native'
+import { useEffect, useState } from 'react';
 export default function WelcomeScreen({navigation,route}){
     const {wallets} = route.params;
-    const modifiedWallets = wallets.map((wallet)=>{
+    const [modifiedWallets,setModifiedWallets] = useState(wallets.map((wallet)=>{
         return {...wallet,initialAmount:0}
-    })
+    }));
+    const [selectedId,setSelectedId] = useState("")
     const [amount,setAmount] = useState(0)
-    const setInitialAmount =(wallet)=>{
-        const newWallets = [...wallets].map((wlt)=>
-            wlt.id === wallet.id ? {...wallet,initialAmount:0} : wallet
-        )
+    
+    const onFocus =(id)=>{
+        setAmount(0)
+        setSelectedId(id)
     }
+    useEffect(()=>{
+        setModifiedWallets(prevWallets=>[...prevWallets].map((wallet)=>{
+         return wallet.id == selectedId ? {...wallet,initialAmount:amount} : wallet 
+        }))
+       },[amount])   
     return(
         <View style={styles.main}>
             <View style={styles.container}>
@@ -20,16 +26,26 @@ export default function WelcomeScreen({navigation,route}){
                     renderItem={({item})=>{
                         return(
                             <View key={item.id} style={styles.wallet}>
-                                <Text>{item.wName}</Text>
+                                <Text style={styles.walletName}>{item.wName}:</Text>
                                 <TextInput 
+                                defaultValue='0'
                                 keyboardType='number-pad'
                                 style={styles.input}
-                                value={amount} 
-                                onChangeText={()=>setInitialAmount(item)}/>
+                                onFocus={()=>onFocus(item.id)}
+                                onChangeText={setAmount}/>
                             </View>
                         )
                     }}
                     />
+                    <Pressable
+                    style={styles.button}
+                    onPress={()=>console.log(modifiedWallets)}>
+                        <Text>Submit</Text>
+                    </Pressable>
+                    {/* <Button
+                    title='Nyumba yapamchenga'
+                    onPress={}
+                    /> */}
                 </View>
             </View>
         </View>
@@ -54,17 +70,33 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         height: 450,
         width:300,
+        alignItems:"center",
     },
     wallet:{
         flexDirection:"row",
+        marginVertical:8,
     },
     input:{
         borderWidth:1,
-        width:100,
+        width:120,
         height:28,
         borderRadius:12,
         padding:0,
         paddingHorizontal:6,
+    },
+    walletName:{
+        width:100,
+        marginRight:20,
+    },
+    button:{
+        backgroundColor: "#ee9e8e",
+        borderRadius: 15,
+        marginTop: 20,
+        width: 120,
+        height: 48,
+        justifyContent: "center",
+        alignItems: "center",
+        elevation: 4,
     }
 
 })

@@ -9,8 +9,10 @@ export default function WelcomeScreen({navigation,route}){
     const [amount,setAmount] = useState(0)
     
     const onFocus =(id)=>{
-        setAmount(0)
         setSelectedId(id)
+    }
+    const onValueChange = (value)=>{
+        setAmount(value)
     }
     useEffect(()=>{
         setModifiedWallets(prevWallets=>[...prevWallets].map((wallet)=>{
@@ -32,7 +34,7 @@ export default function WelcomeScreen({navigation,route}){
                                 keyboardType='number-pad'
                                 style={styles.input}
                                 onFocus={()=>onFocus(item.id)}
-                                onChangeText={setAmount}/>
+                                onChangeText={(text)=>onValueChange(text)}/>
                             </View>
                         )
                     }}
@@ -42,10 +44,6 @@ export default function WelcomeScreen({navigation,route}){
                     onPress={()=>console.log(modifiedWallets)}>
                         <Text>Submit</Text>
                     </Pressable>
-                    {/* <Button
-                    title='Nyumba yapamchenga'
-                    onPress={}
-                    /> */}
                 </View>
             </View>
         </View>

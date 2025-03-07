@@ -41,7 +41,7 @@ export default function WelcomeScreen({navigation,route}){
                     />
                     <Pressable
                     style={styles.button}
-                    onPress={()=>console.log(modifiedWallets)}>
+                    onPress={()=>navigation.navigate("WeeklyGoalPage",modifiedWallets)}>
                         <Text>Submit</Text>
                     </Pressable>
                 </View>

@@ -9,12 +9,14 @@ import {
   Keyboard,
 } from "react-native";
 import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function WelcomeScreen({ navigation }) {
   const [userName, setUserName] = useState("");
   const validation = () => {
     const uName = userName.trim();
     if (uName) {
+      storeUserName(uName)
       navigation.navigate("Wallets", {
         name: userName,
       });
@@ -22,6 +24,14 @@ export default function WelcomeScreen({ navigation }) {
       Alert.alert("Invalid Input", "Please enter a name first.");
     }
   };
+  const storeUserName = async (value)=>{
+    try{
+      await AsyncStorage.setItem('userName',value)
+    }
+    catch(e){
+      Alert.alert('Error',"there was an error saving your username")
+    }
+  }
   return (
     <View style={styles.main}>
         <View style={styles.container}>

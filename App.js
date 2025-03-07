@@ -5,6 +5,7 @@ import WelcomeScreen from './welcomeScreens/WelcomeScreen';
 import Signup from './welcomeScreens/signup'
 import Wallets from './welcomeScreens/wallets'
 import Details from './welcomeScreens/FinancialDetails'
+import WeeklyGoalPage from './welcomeScreens/WeeklyGoalPage';
 
 export default function App() {
   const Stack = createStackNavigator()
@@ -32,6 +33,10 @@ export default function App() {
             backgroundColor:"#fff5e0",
             elevation:0,
           }
+        }}/>
+        <Stack.Screen name='WeeklyGoalPage' component={WeeklyGoalPage} options={{
+          headerShown:false,
+          gestureEnabled:false,
         }}/>
       </Stack.Navigator>
     </NavigationContainer>

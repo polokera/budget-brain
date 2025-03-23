@@ -4,7 +4,6 @@ import {
   Text,
   Pressable,
   FlatList,
-  Button,
   Alert,
 } from "react-native";
 import { useState, useEffect } from "react";
@@ -54,7 +53,6 @@ export default function WelcomeScreen({ navigation }) {
       navigation.navigate("Details", {
         wallets: selectedWallets,
       });
-      console.log(selectedWallets);
     } else {
       Alert.alert("Invalid Input", "Please select some wallets first");
     }

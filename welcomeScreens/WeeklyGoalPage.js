@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {Text,View,StyleSheet,Pressable,ActivityIndicator,StatusBar} from 'react-native'
 import { useState,useEffect } from 'react'
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+
 export default function MoneyWallet(){
     const [userName,setUserName] = useState("")
     const [isLoading,setIsLoading] = useState(true)
@@ -29,6 +31,9 @@ export default function MoneyWallet(){
             <View style={styles.container}>
                 <Text style={styles.title}>Welcome, {userName}</Text>
                 <Text style={styles.welcomeText}>Budget brain is going to help you save money by helping you set weekly targets, keep your transactions to see trends in spending etc....</Text>
+                <Pressable style={styles.nextButton}>
+                 <MaterialIcons name="navigate-next" size={44} color="black" />
+                </Pressable>
             </View>
         </View>
     )
@@ -54,5 +59,8 @@ const styles = StyleSheet.create({
         width:"80%",
         fontSize:24,
         fontWeight:"ultralight",
+    },
+    nextButton:{
+        alignSelf:"flex-end",
     }
 })

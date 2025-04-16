@@ -9,12 +9,27 @@ export default function WelcomeScreen({navigation,route}){
     const [amount,setAmount] = useState(0)
     
     const onFocus =(id)=>{
+        //when a user presses on a textbox we get the id of the corresponding 
+        //bank wallet
+        //this is step 1
         setSelectedId(id)
     }
     const onValueChange = (value)=>{
+        //on each textbox
+        //takes the value of the textbox and puts it in the Amount state variable
+        //this it then used in the next function
+        //this is step 2
         setAmount(value)
     }
     useEffect(()=>{
+        //*ON INITIAL RENDER*
+        //wallets object from previous page come without "initialAmount" property
+        //this adds initialAmount property plus default value of 0
+        //*SUBSEQUENT RENDERS
+        //from the previous step, there is a value in the amount stateful variable
+        //this function changes the initialAmount to the value of the amount state variable
+        // it does IF AN ONLY IF the wallet has the same id as the one we have from step 1.
+        //all others remain untouched.
         setModifiedWallets(prevWallets=>[...prevWallets].map((wallet)=>{
          return wallet.id == selectedId ? {...wallet,initialAmount:amount} : wallet 
         }))

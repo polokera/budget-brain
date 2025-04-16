@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import externalStyles from '../generalComponents'
 
 export default function WelcomeScreen({ navigation }) {
   const [userName, setUserName] = useState("");
@@ -43,8 +44,8 @@ export default function WelcomeScreen({ navigation }) {
               style={styles.input}
             />
           </View>
-          <Pressable onPress={validation} style={styles.button}>
-            <Text style={styles.buttonText}>Next</Text>
+          <Pressable onPress={validation} style={externalStyles.button}>
+            <Text style={externalStyles.buttonText}>Next</Text>
           </Pressable>
         </View>
     </View>
@@ -61,20 +62,6 @@ const styles = StyleSheet.create({
     marginTop: 100,
     alignItems: "center",
     flex: 1,
-  },
-  button: {
-    backgroundColor: "#ee9e8e",
-    borderRadius: 15,
-    marginTop: 220,
-    width: 150,
-    height: 60,
-    justifyContent: "center",
-    alignItems: "center",
-    elevation: 4,
-  },
-  buttonText: {
-    fontSize: 20,
-    verticalAlign: "middle",
   },
   input: {
     backgroundColor: "#fff",

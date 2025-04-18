@@ -1,16 +1,16 @@
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
-export default function OpeningScreen() {
+export default function OpeningScreen({goNext}) {
   return (
     <View style={styles.main}>
       <Text style={styles.welcomeText}>
         Budget brain is going to help you save money by helping you set weekly
         targets, keep your transactions to see trends in spending etc....
       </Text>
-      <View style={{ borderWidth: 1, width: "90%" }}>
-        <Pressable style={styles.nextButton}>
-          <MaterialIcons name="navigate-next" size={44} color="black" />
+      <View style={{ width: "90%",marginTop:100, }}>
+        <Pressable style={styles.nextButton} onPress={goNext}>
+          <MaterialIcons name="navigate-next" size={65} color="black" />
         </Pressable>
       </View>
     </View>
@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
   },
   nextButton: {
     alignSelf: "flex-end",
-    borderWidth: 1,
+    borderBottomWidth:4.1,
+    borderRightWidth:2.05,
   },
   container1: {
     flex: 1,

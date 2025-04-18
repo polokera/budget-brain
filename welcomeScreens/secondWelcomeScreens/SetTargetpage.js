@@ -1,21 +1,33 @@
 import {View,StyleSheet,Text, TextInput, Pressable} from 'react-native'
 import externalStyles from '../../generalComponents'
+import { useState } from 'react'
 export default function SetTargetPage(){
+    const handleChange =(text)=>{
+//this function formats content in the textbox, adds commas using regex.
+        const numeric = text.replace(/[^0-9]/g,'');
+        //removes all non numbers including commas
+        const formatted = numeric.replace(/\B(?=(\d{3})+(?!\d))/g,",")
+        //formats the values at this point there should be no previous commas 
+        //if there are commas it wont work thats why we have to remove commas at first.
+        setValue(formatted);
+    }
+    const [value,setValue] = useState(0)
     return(
         <View style={styles.main}>
             <Text>
                 Let's start by setting a weekly goal.    
                 This is the maximum amount you want to spend per week!
             </Text>
-           <View style={[externalStyles.list,{width:"85%",}]}>
+           <View style={[externalStyles.list,styles.container]}>
                 <View style={styles.row}>
                     <Text style={styles.text}>Weekly Amount(MWK):</Text>
-                    <TextInput style={styles.input} keyboardType='numeric'/>
+                    <TextInput style={styles.input} keyboardType='numeric' value={value} onChangeText={handleChange}/>
                 </View>
+                <Pressable style={[externalStyles.button,styles.button]}>
+                        <Text style={externalStyles.buttonText}>Done</Text>
+                </Pressable>                
            </View>
-           <Pressable style={externalStyles.button}>
-                <Text style={externalStyles.buttonText}>Done</Text>
-           </Pressable>
+
         </View>
     )
 }
@@ -39,5 +51,18 @@ const styles = StyleSheet.create({
     },
     text:{
         verticalAlign:"middle",
+        width:100,
+        textAlign:"center",
+    },
+    button:{
+        width:85,
+        height:40,
+        marginTop:60,
+    },
+    container:{
+        marginTop:50,
+        width:"92%",
+        height:250,
+        alignItems:"center",
     },
 })

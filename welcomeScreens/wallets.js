@@ -54,7 +54,7 @@ export default function WelcomeScreen({ navigation }) {
         wallets: selectedWallets,
       });
     } else {
-      Alert.alert("Invalid Input", "Please select some wallets first");
+      Alert.alert("Invalid Input", "Please select atleast 1 wallet before continuing");
     }
   };
 

@@ -19,7 +19,13 @@ export default function WelcomeScreen({navigation,route}){
         //takes the value of the textbox and puts it in the Amount state variable
         //this it then used in the next function
         //this is step 2
-        setAmount(value)
+        //this function formats content in the textbox, adds commas using regex.
+        const numeric = value.replace(/[^0-9]/g,'');
+        //removes all non numbers including commas
+        const formatted = numeric.replace(/\B(?=(\d{3})+(?!\d))/g,",")
+        //formats the values at this point there should be no previous commas 
+        //if there are commas it wont work thats why we have to remove commas at first.
+        setAmount(formatted)
     }
     useEffect(()=>{
         //*ON INITIAL RENDER*
@@ -46,6 +52,7 @@ export default function WelcomeScreen({navigation,route}){
                                 <Text style={styles.walletName}>{item.wName}:</Text>
                                 <TextInput 
                                 defaultValue='0'
+                                value={amount}
                                 keyboardType='number-pad'
                                 style={styles.input}
                                 onFocus={()=>onFocus(item.id)}

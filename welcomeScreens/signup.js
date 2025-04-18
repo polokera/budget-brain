@@ -44,7 +44,7 @@ export default function WelcomeScreen({ navigation }) {
               style={styles.input}
             />
           </View>
-          <Pressable onPress={validation} style={externalStyles.button}>
+          <Pressable onPress={validation} style={[externalStyles.button,styles.button]}>
             <Text style={externalStyles.buttonText}>Next</Text>
           </Pressable>
         </View>
@@ -75,4 +75,9 @@ const styles = StyleSheet.create({
   form: {
     gap: 10,
   },
+  button:{
+    width: 150,
+    height: 60,
+    marginTop:220,
+  }
 });

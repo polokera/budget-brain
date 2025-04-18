@@ -13,7 +13,7 @@ import SetTargetPage from "./secondWelcomeScreens/SetTargetpage";
 export default function MoneyWallet() {
   const [userName, setUserName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [nextPressed, setNextPressed] = useState(true);
+  const [nextPressed, setNextPressed] = useState(false);
   const showNext = ()=>{
     setNextPressed(true)
   }
@@ -45,7 +45,7 @@ export default function MoneyWallet() {
       <View style={styles.container}>
         <Text style={styles.title}>Welcome, {userName}</Text>
        <View style={{height:600,width:"90%"}}>
-         {nextPressed? <SetTargetPage/> : <OpeningScreen/>}
+         {nextPressed? <SetTargetPage/> : <OpeningScreen goNext={showNext}/>}
        </View>
        
       </View>

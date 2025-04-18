@@ -5,9 +5,6 @@ export default StyleSheet.create({
     button: {
         backgroundColor: "#ee9e8e",
         borderRadius: 15,
-        marginTop: 220,
-        width: 150,
-        height: 60,
         justifyContent: "center",
         alignItems: "center",
         elevation: 4,

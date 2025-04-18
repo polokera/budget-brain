@@ -10,7 +10,8 @@ import { useState, useEffect } from "react";
 import OpeningScreen from "./secondWelcomeScreens/OpeningScreen";
 import SetTargetPage from "./secondWelcomeScreens/SetTargetpage";
 
-export default function MoneyWallet() {
+export default function MoneyWallet({navigation,route}) {
+  const {walletsArray} = route.params
   const [userName, setUserName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [nextPressed, setNextPressed] = useState(false);
@@ -25,6 +26,7 @@ export default function MoneyWallet() {
     } catch (e) {}
   };
   useEffect(() => {
+    // console.log(walletsArray);
     getUserName();
   }, []);
   if (isLoading) {

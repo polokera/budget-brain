@@ -5,16 +5,16 @@ export default function WelcomeScreen({navigation,route}){
     const [modifiedWallets,setModifiedWallets] = useState(wallets.map((wallet)=>{
         return {...wallet,initialAmount:0}
     }));
-    const [selectedId,setSelectedId] = useState("")
-    const [amount,setAmount] = useState(0)
+    // const [selectedId,setSelectedId] = useState("")
+    // const [amount,setAmount] = useState(0)
     
-    const onFocus =(id)=>{
-        //when a user presses on a textbox we get the id of the corresponding 
-        //bank wallet
-        //this is step 1
-        setSelectedId(id)
-    }
-    const onValueChange = (value)=>{
+    // const onFocus =(id)=>{
+    //     //when a user presses on a textbox we get the id of the corresponding 
+    //     //bank wallet
+    //     //this is step 1
+    //     setSelectedId(id)
+    // }
+    const onValueChange = (value,id)=>{
         //on each textbox
         //takes the value of the textbox and puts it in the Amount state variable
         //this it then used in the next function
@@ -25,21 +25,13 @@ export default function WelcomeScreen({navigation,route}){
         const formatted = numeric.replace(/\B(?=(\d{3})+(?!\d))/g,",")
         //formats the values at this point there should be no previous commas 
         //if there are commas it wont work thats why we have to remove commas at first.
-        setAmount(formatted)
-    }
-    useEffect(()=>{
-        //*ON INITIAL RENDER*
-        //wallets object from previous page come without "initialAmount" property
-        //this adds initialAmount property plus default value of 0
-        //*SUBSEQUENT RENDERS
-        //from the previous step, there is a value in the amount stateful variable
-        //this function changes the initialAmount to the value of the amount state variable
-        // it does IF AN ONLY IF the wallet has the same id as the one we have from step 1.
-        //all others remain untouched.
-        setModifiedWallets(prevWallets=>[...prevWallets].map((wallet)=>{
-         return wallet.id == selectedId ? {...wallet,initialAmount:amount} : wallet 
-        }))
-       },[amount])   
+        setModifiedWallets(prevWallets=>
+            prevWallets.map(wallet=>
+                wallet.id === id?{...wallet,initialAmount:formatted} : wallet
+            )
+        )
+       // setAmount(formatted)
+    }  
     return(
         <View style={styles.main}>
             <View style={styles.container}>
@@ -51,19 +43,21 @@ export default function WelcomeScreen({navigation,route}){
                             <View key={item.id} style={styles.wallet}>
                                 <Text style={styles.walletName}>{item.wName}:</Text>
                                 <TextInput 
-                                defaultValue='0'
-                                value={amount}
+                               // defaultValue='0'
+                                value={modifiedWallets.find(w=>w.id === item.id)?.initialAmount.toString()  || ""}
                                 keyboardType='number-pad'
                                 style={styles.input}
-                                onFocus={()=>onFocus(item.id)}
-                                onChangeText={(text)=>onValueChange(text)}/>
+                                //onFocus={()=>onFocus(item.id)}
+                                onChangeText={(text)=>onValueChange(text,item.id)}/>
                             </View>
                         )
                     }}
                     />
                     <Pressable
                     style={styles.button}
-                    onPress={()=>navigation.navigate("WeeklyGoalPage",modifiedWallets)}>
+                    onPress={()=>navigation.navigate("WeeklyGoalPage",{
+                        walletsArray:modifiedWallets,
+                    })}>
                         <Text>Submit</Text>
                     </Pressable>
                 </View>

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import externalStyles from '../generalComponents'
+import externalStyles from '../CustomModules/generalStyles'
 
 export default function WelcomeScreen({ navigation }) {
   const [userName, setUserName] = useState("");

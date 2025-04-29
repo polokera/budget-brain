@@ -26,7 +26,7 @@ export default function MoneyWallet({navigation,route}) {
     } catch (e) {}
   };
   useEffect(() => {
-    // console.log(walletsArray);
+    console.log(walletsArray);
     getUserName();
   }, []);
   if (isLoading) {

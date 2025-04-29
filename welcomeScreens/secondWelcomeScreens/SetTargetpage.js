@@ -1,9 +1,19 @@
 import {View,StyleSheet,Text, TextInput, Pressable} from 'react-native'
-import externalStyles from '../../generalComponents'
+import externalStyles from '../../CustomModules/generalStyles'
 import { useState } from 'react'
-export default function SetTargetPage(){
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as SQLite from 'expo-sqlite'
+export default function SetTargetPage({navigation,route}){
+
+
+    const OpenDb = async()=>{
+        const db = await SQLite.openDatabaseAsync("myDatabse.db");
+        //await db.execAsync(`CREATE TABLE IF NOT EXISTS  `)
+    }
+
+
     const handleChange =(text)=>{
-//this function formats content in the textbox, adds commas using regex.
+    //this function formats content in the textbox, adds commas using regex.
         const numeric = text.replace(/[^0-9]/g,'');
         //removes all non numbers including commas
         const formatted = numeric.replace(/\B(?=(\d{3})+(?!\d))/g,",")
@@ -12,6 +22,14 @@ export default function SetTargetPage(){
         setValue(formatted);
     }
     const [value,setValue] = useState(0)
+    const signUserUp = async ()=>{
+        //this changes the async storage variable "isSignedUp" to true so that the next time the user 
+        //launches the app it doesnt make them sign up all over again.
+        await AsyncStorage.setItem("isSignedUp",true);
+        
+        navigation.navigate("Main Tabs")
+    }
+
     return(
         <View style={styles.main}>
             <Text>

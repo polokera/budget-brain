@@ -110,8 +110,12 @@ export default function WelcomeScreen({ navigation }) {
                     style={[
                       styles.walletContainer,
                       {
-                        backgroundColor: item.themeColor,
+                        borderColor:item.themeColor,
+                        borderBottomWidth:4.3,
+                        borderRightWidth:1.2,
+                        backgroundColor: "#fff",
                         borderWidth: item.selected ? 3 : 0,
+                        elevation:item.selected ? 2 : 0,
                       },
                     ]}
                     key={item.id}
@@ -145,7 +149,7 @@ const styles = StyleSheet.create({
   walletContainer: {
     width: 200,
     height: 40,
-    borderRadius: 25,
+    borderRadius: 8,
     justifyContent: "center",
     paddingHorizontal: 15,
     borderColor: "blue",

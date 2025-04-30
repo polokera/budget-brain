@@ -1,15 +1,12 @@
-import {View,StyleSheet,Text, TextInput, Pressable} from 'react-native'
+import {View,StyleSheet,Text, TextInput, Pressable, Alert} from 'react-native'
 import externalStyles from '../../CustomModules/generalStyles'
 import { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import * as SQLite from 'expo-sqlite'
-export default function SetTargetPage({navigation,route}){
+import openDatabase from '../../CustomModules/DbModule'
 
+export default function SetTargetPage({navigation,route,walletsArray}){
 
-    const OpenDb = async()=>{
-        const db = await SQLite.openDatabaseAsync("myDatabse.db");
-        //await db.execAsync(`CREATE TABLE IF NOT EXISTS  `)
-    }
+    
 
 
     const handleChange =(text)=>{
@@ -19,17 +16,36 @@ export default function SetTargetPage({navigation,route}){
         const formatted = numeric.replace(/\B(?=(\d{3})+(?!\d))/g,",")
         //formats the values at this point there should be no previous commas 
         //if there are commas it wont work thats why we have to remove commas at first.
-        setValue(formatted);
+        setWeeklyTarget(formatted);
     }
-    const [value,setValue] = useState(0)
+    const [weeklyTarget,setWeeklyTarget] = useState(0)
     const signUserUp = async ()=>{
         //this changes the async storage variable "isSignedUp" to true so that the next time the user 
         //launches the app it doesnt make them sign up all over again.
-        await AsyncStorage.setItem("isSignedUp",true);
-        
-        navigation.navigate("Main Tabs")
+        await AsyncStorage.setItem("isSignedUp","true");
+        console.log("user signed up")
+        navigation.navigate("MainTabs")
     }
-
+    const addWalletsToDb = async(wklyTarget)=>{
+        try{
+            const dbx = await openDatabase()
+            await dbx.runAsync(`INSERT INTO wallets(id,wName,initialAmount,themeColor)values(?,?,?,?)`,[walletsArray.id,walletsArray.wName,walletsArray.initialAmount,walletsArray.themeColor])
+            await dbx.runAsync(`INSERT INTO target(target)values(?)`,[wklyTarget])
+            console.log("inserted");
+        }
+        catch(error){
+            console.log(error)
+        }
+    }
+    const clickHandler = async ()=>{
+        if(weeklyTarget){
+            await signUserUp();
+            await addWalletsToDb(weeklyTarget);
+        }
+        else{
+            Alert.alert("Easy kaye","Enter a target before pressing done");
+        }
+    }
     return(
         <View style={styles.main}>
             <Text>
@@ -39,9 +55,11 @@ export default function SetTargetPage({navigation,route}){
            <View style={[externalStyles.list,styles.container]}>
                 <View style={styles.row}>
                     <Text style={styles.text}>Weekly Amount(MWK):</Text>
-                    <TextInput style={styles.input} keyboardType='numeric' value={value} onChangeText={handleChange}/>
+                    <TextInput style={styles.input} keyboardType='numeric' value={weeklyTarget} onChangeText={handleChange}/>
                 </View>
-                <Pressable style={[externalStyles.button,styles.button]}>
+                <Pressable 
+                onPress={clickHandler}
+                style={[externalStyles.button,styles.button]}>
                         <Text style={externalStyles.buttonText}>Done</Text>
                 </Pressable>                
            </View>

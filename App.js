@@ -7,7 +7,6 @@ import Wallets from './welcomeScreens/wallets'
 import Details from './welcomeScreens/FinancialDetails'
 import WeeklyGoalPage from './welcomeScreens/WeeklyGoalPage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MianTbas from './MainScreens/MainTabsTabNavigator'
 import MainTabs from './MainScreens/MainTabsTabNavigator';
 
 export default function App() {
@@ -58,7 +57,7 @@ export default function App() {
           headerShown:false,
           gestureEnabled:false,
         }}/>
-        <Stack.Screen name='Main Tabs' component={MainTabs}/>
+        <Stack.Screen name='MainTabs' component={MainTabs}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -26,7 +26,6 @@ export default function MoneyWallet({navigation,route}) {
     } catch (e) {}
   };
   useEffect(() => {
-    console.log(walletsArray);
     getUserName();
   }, []);
   if (isLoading) {
@@ -47,7 +46,7 @@ export default function MoneyWallet({navigation,route}) {
       <View style={styles.container}>
         <Text style={styles.title}>Welcome, {userName}</Text>
        <View style={{height:600,width:"90%"}}>
-         {nextPressed? <SetTargetPage/> : <OpeningScreen goNext={showNext}/>}
+         {nextPressed? <SetTargetPage walletsArray={walletsArray}/> : <OpeningScreen goNext={showNext}/>}
        </View>
        
       </View>

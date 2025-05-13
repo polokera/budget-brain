@@ -58,7 +58,13 @@ export default function App() {
           headerShown:false,
           gestureEnabled:false,
         }}/>
-        <Stack.Screen name='Main Tabs' component={MainTabs}/>
+        <Stack.Screen name='Main Tabs' component={MainTabs} options={{
+          headerShown:false,
+          headerStyle:{
+            backgroundColor:"#fff5e0",
+            elevation:0,
+          }
+        }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

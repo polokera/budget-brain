@@ -25,8 +25,8 @@ export default function SetTargetPage({showHome,addWalletsToDb}){
         navigation.navigate("Main Tabs")
     }
     const onPress=()=>{
-         signUserUp()
-        addWalletsToDb();
+        signUserUp()
+        addWalletsToDb(value);
         showHome()
     }
     return(

@@ -19,20 +19,23 @@ export default function MoneyWallet({navigation,route}) {
   const showNext = ()=>{
     setNextPressed(true)
   }
-  const addWalletsToDb = async()=>{
-    console.log("in function")
+  const addWalletsToDb = async(weeklyTarget)=>{
     const dbx = await openDatabase();
     try{
         for(const wlt of walletsArray){
+        //inserts wallets from the previous page into the database.
         await dbx.runAsync(`INSERT INTO wallets(id,wName,initialAmount,themeColor)values(?,?,?,?)`,[wlt.id,wlt.wName,wlt.initialAmount,wlt.themeColor])
         }
-        console.log("Inserted");
+        console.log("wallets Inserted");
+        await dbx.runAsync(`INSERT into target(targetId,target)values(?,?)`,[1,weeklyTarget])
+        console.log("target inserted");
     }
     catch(e){
       console.log(e);
     }
   }
   const goToHome=()=>{
+    //go to the home page
     navigation.navigate('Main Tabs')
   }
   const getUserName = async () => {

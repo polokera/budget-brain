@@ -4,6 +4,7 @@ import openDatabase from '../CustomModules/DbModule';
 export default function HomeScreen(){
     //this is where all the main tabs will be
     const [wallets,setWallets] = useState([]);
+    const [target,setTarget] = useState();
     const [isLoading,setIsLoading] = useState(true)
     const getWallets=async()=>{
         const dbx = await openDatabase()
@@ -15,9 +16,18 @@ export default function HomeScreen(){
         const dbx= await openDatabase();
         const result = await dbx.runAsync(`DELETE from wallets`)
         if(result.changes >0){
-            console.log("stuff deleted");
+            console.log("wallets deleted");
         }
-
+        const result2 = await dbx.runAsync(`DELETE from target`)
+        if(result2.changes>0){
+            console.log(`target table deleted`)
+        }
+    }
+    const getTarget=async ()=>{
+        const dbx = await openDatabase();
+        const kaTarget = await dbx.getFirstAsync(`SELECT target from target`);
+        setTarget(kaTarget.target)
+        //console.log(kaTarget.target)
     }
     useEffect(()=>{
         setIsLoading(false)
@@ -27,6 +37,7 @@ export default function HomeScreen(){
             <Text>Still under construction👷🏾</Text>
             <Button title='Press me'onPress={getWallets} />
             <Button title='Delete button'onPress={deleteDB} />
+            <Button title='Get Target button'onPress={getTarget} />
             {isLoading?<Text>Presss button</Text>:
             <FlatList
             data={wallets}
@@ -42,6 +53,7 @@ export default function HomeScreen(){
             }}
             />
             }
+            <Text>{target}</Text>
         </View>
     )
 }

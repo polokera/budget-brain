@@ -2,14 +2,9 @@ import {View,StyleSheet,Text, TextInput, Pressable} from 'react-native'
 import externalStyles from '../../CustomModules/generalStyles'
 import { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import * as SQLite from 'expo-sqlite'
-export default function SetTargetPage({navigation,route}){
 
+export default function SetTargetPage({showHome,addWalletsToDb}){
 
-    const OpenDb = async()=>{
-        const db = await SQLite.openDatabaseAsync("myDatabse.db");
-        //await db.execAsync(`CREATE TABLE IF NOT EXISTS  `)
-    }
 
 
     const handleChange =(text)=>{
@@ -25,11 +20,15 @@ export default function SetTargetPage({navigation,route}){
     const signUserUp = async ()=>{
         //this changes the async storage variable "isSignedUp" to true so that the next time the user 
         //launches the app it doesnt make them sign up all over again.
-        await AsyncStorage.setItem("isSignedUp",true);
+        await AsyncStorage.setItem("isSignedUp","true");
         
         navigation.navigate("Main Tabs")
     }
-
+    const onPress=()=>{
+        signUserUp()
+        addWalletsToDb(value);
+        showHome()
+    }
     return(
         <View style={styles.main}>
             <Text>
@@ -41,7 +40,9 @@ export default function SetTargetPage({navigation,route}){
                     <Text style={styles.text}>Weekly Amount(MWK):</Text>
                     <TextInput style={styles.input} keyboardType='numeric' value={value} onChangeText={handleChange}/>
                 </View>
-                <Pressable style={[externalStyles.button,styles.button]}>
+                <Pressable 
+                onPress={onPress}
+                style={[externalStyles.button,styles.button]}>
                         <Text style={externalStyles.buttonText}>Done</Text>
                 </Pressable>                
            </View>

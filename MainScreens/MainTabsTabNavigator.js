@@ -6,11 +6,14 @@ export default function MainTabs(){
     //this is where all the main tabs will be
     const Tab = createBottomTabNavigator();
     return(
-       <NavigationContainer>
         <Tab.Navigator>
-            <Tab.Screen name="Home" component={HomeScreen}/>
+            <Tab.Screen name="Home" component={HomeScreen} options={{
+                headerStyle:{
+                    backgroundColor:"#fff5e0",
+                    elevation:4,
+                }
+            }}/>
         </Tab.Navigator>
-       </NavigationContainer>
     )
 }
 

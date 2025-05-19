@@ -1,7 +1,12 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet,StatusBar } from "react-native";
 
 
 export default StyleSheet.create({
+    main: {
+      backgroundColor: "#fff5e0",
+      flex: 1,
+      paddingTop: StatusBar.currentHeight,
+    },
     button: {
         backgroundColor: "#ee9e8e",
         borderRadius: 15,

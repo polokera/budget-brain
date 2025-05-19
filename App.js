@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from './welcomeScreens/WelcomeScreen';
@@ -7,13 +7,12 @@ import Wallets from './welcomeScreens/wallets'
 import Details from './welcomeScreens/FinancialDetails'
 import WeeklyGoalPage from './welcomeScreens/WeeklyGoalPage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MianTbas from './MainScreens/MainTabsTabNavigator'
 import MainTabs from './MainScreens/MainTabsTabNavigator';
 
 export default function App() {
   const [isUserSignedUp,setIsUserSignedUp] = useState(false)
   const Stack = createStackNavigator()
-  const isSignedUp = async (value)=>{
+  const isSignedUp = async ()=>{
     try{
       const isSignedUp = await AsyncStorage.getItem('isSignedUp')
       if(isSignedUp == null){
@@ -27,9 +26,12 @@ export default function App() {
       }
     }
     catch(e){
-      
+      console.log(e)
     }
   }
+  useEffect(()=>{
+    //isSignedUp()
+  },[])
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={isUserSignedUp?"Wallets":"Welcome"}>
@@ -58,12 +60,13 @@ export default function App() {
           headerShown:false,
           gestureEnabled:false,
         }}/>
-        <Stack.Screen name='Main Tabs' component={MainTabs} options={{
+        <Stack.Screen name='Main Tabs' component={MainTabs}
+        options={{
           headerShown:false,
           headerStyle:{
             backgroundColor:"#fff5e0",
             elevation:0,
-          }
+          },
         }}/>
       </Stack.Navigator>
     </NavigationContainer>

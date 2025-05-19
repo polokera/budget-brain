@@ -24,7 +24,7 @@ export default function MoneyWallet({navigation,route}) {
     try{
         for(const wlt of walletsArray){
         //inserts wallets from the previous page into the database.
-        await dbx.runAsync(`INSERT INTO wallets(id,wName,initialAmount,themeColor)values(?,?,?,?)`,[wlt.id,wlt.wName,wlt.initialAmount,wlt.themeColor])
+        await dbx.runAsync(`INSERT INTO wallets(walletsId,wName,initialAmount,themeColor)values(?,?,?,?)`,[wlt.id,wlt.wName,wlt.initialAmount,wlt.themeColor])
         }
         console.log("wallets Inserted");
         await dbx.runAsync(`INSERT into target(targetId,target)values(?,?)`,[1,weeklyTarget])

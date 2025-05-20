@@ -21,13 +21,17 @@ export default function SetTargetPage({showHome,addWalletsToDb}){
         //this changes the async storage variable "isSignedUp" to true so that the next time the user 
         //launches the app it doesnt make them sign up all over again.
         await AsyncStorage.setItem("isSignedUp","true");
-        
-        navigation.navigate("Main Tabs")
     }
-    const onPress=()=>{
-        signUserUp()
-        addWalletsToDb(value);
-        showHome()
+    const onPress=async()=>{
+        try
+        {
+            await signUserUp()
+            await addWalletsToDb(value);
+            showHome()
+        }
+        catch(e){
+            console.log(e)
+        }
     }
     return(
         <View style={styles.main}>

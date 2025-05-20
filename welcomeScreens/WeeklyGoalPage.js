@@ -24,10 +24,15 @@ export default function MoneyWallet({navigation,route}) {
     try{
         for(const wlt of walletsArray){
         //inserts wallets from the previous page into the database.
-        await dbx.runAsync(`INSERT INTO wallets(walletsId,wName,initialAmount,themeColor)values(?,?,?,?)`,[wlt.id,wlt.wName,wlt.initialAmount,wlt.themeColor])
+        await dbx.runAsync(`INSERT INTO wallets(walletId,wName,balance,themeColor)values(?,?,?,?)`,[wlt.id,wlt.wName,wlt.initialAmount,wlt.themeColor])
         }
         console.log("wallets Inserted");
         await dbx.runAsync(`INSERT into target(targetId,target)values(?,?)`,[1,weeklyTarget])
+//         await dbx.runAsync(`
+// INSERT INTO transactions ("transId", "walletId", "transTitle", "transDescription", "amount", "transDate", "transTime") VALUES ('101', '1', 'lunch-cloud 9', 'went to buy phwanya there myself', '2500', '2025-05-18
+// ', '2330');
+
+//           `)
         console.log("target inserted");
     }
     catch(e){

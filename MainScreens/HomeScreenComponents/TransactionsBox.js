@@ -5,7 +5,8 @@ import * as Datefns from 'date-fns';
 
 export default function TransactionBox({item}){
    const [dateToShow,setDateToShow] = useState(null);
-   useEffect(()=>{
+   const[timeToShow,setTimeToShow] = useState(null);
+   const fixDates=()=>{
     const cleanDate = Datefns.parse(item.transDate,"yyyy-MM-dd",new Date())
     if(Datefns.isToday(cleanDate)){
         setDateToShow("Aujourd'hui")
@@ -15,9 +16,62 @@ export default function TransactionBox({item}){
         setDateToShow("Hier")
         //change to english
     }
+    else if(Datefns.isThisWeek(cleanDate)){
+        //console.log(Datefns.getDay(cleanDate))
+        switch (Datefns.getDay(cleanDate)) {
+            case 0:
+                setDateToShow("Sunday")
+                break;
+            case 1:
+                setDateToShow("Monday")
+                break;
+            case 2:
+                setDateToShow("Tuesday")
+                break;
+            case 3:
+                setDateToShow("Wednesday")
+                break;
+            case 4:
+                setDateToShow("Thursday")
+                break;
+            case 5:
+                setDateToShow("Friday")
+                break;
+            case 6:
+                setDateToShow("Saturday")
+                break;
+            default:
+                break;
+        }
+    }
     else{
         setDateToShow(Datefns.format(cleanDate,"dd/MM/yy"))
     }
+   }
+
+   const fixTimes=()=>{
+    const cleanTime = Datefns.parse(item.transTime,"HHmm",new Date())
+    const dateToday = Datefns.parse(item.transDate,"yyyy-MM-dd",new Date())
+    if(Datefns.isToday(dateToday)){
+        const timeNow = new Date()
+        if(Datefns.isSameHour(cleanTime,timeNow)){
+            const differenceInMinutes = Datefns.differenceInMinutes(timeNow,cleanTime)
+            setTimeToShow(`${differenceInMinutes} minutes ago`)
+        }
+        else{
+            const differenceInHours = Datefns.differenceInHours(timeNow,cleanTime)
+            const string = differenceInHours>1 ? "hours" : "hour";
+            setTimeToShow(`${differenceInHours} ${string} ago`)
+        }
+    }
+    else{
+        setTimeToShow(Datefns.format(cleanTime,"HH:mm"))
+    }
+   }
+
+   useEffect(()=>{
+    fixDates()
+    fixTimes();
    },[])
     return(
         <View style={styles.transaction}>
@@ -27,7 +81,7 @@ export default function TransactionBox({item}){
            </View>
             <View style={styles.transactionBottom}>
                 <Text style={styles.transactionAmount}>MWK {item.amount}</Text>
-                <Text style={styles.transactionTime}>{item.transTime}</Text>
+                <Text style={styles.transactionTime}>{timeToShow}</Text>
             </View>
         </View>
     )
@@ -54,13 +108,17 @@ const styles=StyleSheet.create({
     },
     transactionAmount:{
         marginHorizontal:5,
-        width:80,
+        width:100,
+        fontSize:14,
+        // borderWidth:1,
     },
     transactionTime:{
         marginHorizontal:5,
-        width:100,
+        width:120,
         textAlign:"right",
         fontStyle:"italic",
+        fontSize:12,
+        //borderWidth:1,
     },
     transDate:{
         textAlign:"right",

@@ -1,12 +1,12 @@
 import { StyleSheet,View,Text } from "react-native"
 import HomeScreenStyles from "./HomeScreenStyles"
 
-export default function CashTotalBox(){
+export default function CashTotalBox({cashTtl}){
     return(
         <View style={[styles.cashTotalBox,HomeScreenStyles.boxes]}>
             <Text style={HomeScreenStyles.boxTitle}>Cash total</Text>
             <View style={styles.amountBox}>
-                 <Text style={styles.amountText}>MWK 1,000,000</Text>
+                 <Text style={styles.amountText}>MWK {cashTtl}</Text>
             </View>
         </View>
     )

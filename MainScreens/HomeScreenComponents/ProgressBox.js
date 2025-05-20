@@ -1,7 +1,7 @@
 import { StyleSheet,View,Text } from "react-native"
 import HomeScreenStyles from "./HomeScreenStyles"
 
-export default function ProgressBox(){
+export default function ProgressBox({goal}){
     return(
         <View>
             <View style={[styles.progressBox,HomeScreenStyles.boxes]}>
@@ -23,7 +23,7 @@ export default function ProgressBox(){
                             <View style={{flexDirection:"column"}}>
                                 {/* right bottom */}
                                 <Text style={{fontSize:12,color:"#190933"}}>Weekly target: </Text>
-                                <Text style={styles.values}>MWK 10,000,000</Text>
+                                <Text style={styles.values}>MWK {goal}</Text>
                             </View>
                         </View>
                     </View>

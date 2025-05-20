@@ -1,0 +1,1 @@
+INSERT into transactions(transId,walletId,transTitle,transDescription,amount,transDate,transTime)VALUES()

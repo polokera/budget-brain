@@ -123,8 +123,8 @@ const styles=StyleSheet.create({
     transDate:{
         textAlign:"right",
         verticalAlign:"middle",
-       //borderWidth:1,
-        width:110,
+        // borderWidth:1,
+        width:100,
         fontStyle:"italic",
         fontSize:11,
         color:"#838282"
@@ -132,5 +132,7 @@ const styles=StyleSheet.create({
     transTitle:{
         fontWeight:"bold",
         fontSize:16,
+        // borderWidth:1,
+        width:130,
     }
 })

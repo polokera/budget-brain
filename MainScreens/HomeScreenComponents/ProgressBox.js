@@ -1,7 +1,47 @@
 import { StyleSheet,View,Text } from "react-native"
 import HomeScreenStyles from "./HomeScreenStyles"
+import { useEffect, useState } from "react"
+import { removeCommas } from "../../CustomModules/generalModules"
 
-export default function ProgressBox({goal}){
+export default function ProgressBox({goal,spent}){
+    const [perc,setPerc] = useState(null);
+    const [barColor,setBarColor] = useState("#fff");
+    const [barWidth,setBarWidth] = useState(0);
+    const getBarColor=()=>{
+        if(perc>=0 && perc<25){
+            setBarColor("rgba(0, 255, 0, 0.7)")
+        }
+        else if(perc>=25 && perc<50){
+            setBarColor("rgba(149, 255, 102, 0.7)")
+        }
+        else if(perc>=50&&perc<75){
+            setBarColor("rgba(255, 194, 166, 0.7)")
+
+        }
+        else if(perc>=75&&perc<100){
+            setBarColor("rgba(255, 107, 94, 0.7)")
+        }
+        else if(perc>=100){
+            setBarColor("rgba(255,0,0,0.7)")
+        }
+        console.log(barColor)
+    }
+    const getBarWidth=()=>{
+        const barWidth = Math.floor(((perc/100)*200))
+        barWidth < 200 ? setBarWidth(barWidth) : setBarWidth(220)
+        
+        console.log(barWidth);
+    }
+    useEffect(()=>{
+        const percentage = Math.trunc((removeCommas(spent)/removeCommas(goal))*100)
+        console.log(percentage)
+        setPerc(percentage);
+        
+    },[])
+    useEffect(()=>{
+        getBarColor()
+        getBarWidth()
+    },[perc])
     return(
         <View>
             <View style={[styles.progressBox,HomeScreenStyles.boxes]}>
@@ -10,7 +50,7 @@ export default function ProgressBox({goal}){
                     <View style={styles.top}>
                         {/* top */}
                         <View style={[styles.rightLeft,styles.left]}>
-                            <Text style={{fontSize:38}}>100%</Text>
+                            <Text style={styles.percentage}>{perc}%</Text>
                             <Text style={{textAlign:"center",verticalAlign:"middle"}}>Used</Text>
                         </View>
                         <View style={[styles.rightLeft,styles.right]}>
@@ -18,7 +58,7 @@ export default function ProgressBox({goal}){
                             <View style={{flexDirection:"column"}}>
                                 {/* right top */}
                                 <Text style={{color:"#190933",fontSize:12}}>Used this week: </Text>
-                                <Text style={[styles.values,{color:"#ca1818"}]}>MWK 10,000,000</Text>
+                                <Text style={[styles.values,{color:"#ca1818"}]}>MWK {spent}</Text>
                             </View>
                             <View style={{flexDirection:"column"}}>
                                 {/* right bottom */}
@@ -30,7 +70,7 @@ export default function ProgressBox({goal}){
                     <View>
                         {/* bottom */}
                         <View style={[styles.backgroundBar,styles.bothBars]}/>
-                        <View style={[styles.bar,styles.bothBars]}/>
+                        <View style={[styles.bar,styles.bothBars,{backgroundColor:barColor,width:barWidth}]}/>
                     </View>
                 </View>
             </View>
@@ -93,12 +133,19 @@ const styles=StyleSheet.create({
         left:10,
     },
     bar:{
-        backgroundColor:"red",
         width:200,
         position:"relative",
         bottom:5,
         left:14,
     },
+    percentage:{
+        height:85,
+        //borderWidth:1,
+        fontSize:32,
+        width:105,
+        textAlign:"center",
+        verticalAlign:"middle",
+    }
 
 
 })

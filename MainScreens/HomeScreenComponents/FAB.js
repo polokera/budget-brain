@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { FAB } from 'react-native-paper';
-import { getHomeScreenDetails, Test } from '../../CustomModules/HomeScreenDbModules';
+import { getHomeScreenDetails, getTransactionsInWeek, Test } from '../../CustomModules/HomeScreenDbModules';
 
 export default function Fab(){
     //floating action button(FAB)
@@ -14,7 +14,7 @@ export default function Fab(){
         icon="plus"
         color="black"
         style={styles.button}
-        onPress={pressHandler}
+        onPress={getTransactionsInWeek}
         />
     )
 }

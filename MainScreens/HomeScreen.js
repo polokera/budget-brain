@@ -8,7 +8,7 @@ import ProgressBox from "./HomeScreenComponents/ProgressBox";
 import CashTotalBox from "./HomeScreenComponents/CashTotalBox";
 import TransactionBox from "./HomeScreenComponents/TransactionsBox";
 import Fab from "./HomeScreenComponents/FAB";
-import { getCashTotal, getHomeScreenDetails, getWeeklyTarget,Test } from "../CustomModules/HomeScreenDbModules";
+import { getCashTotal, getHomeScreenDetails, getSpentinWeek, getWeeklyTarget,Test } from "../CustomModules/HomeScreenDbModules";
 
 export default function HomeScreen() {
   //this is where all the main tabs will be
@@ -41,14 +41,15 @@ export default function HomeScreen() {
   }
   const getHomeScreenDeets=async()=>{
     await getUserName()
-    const total = await Test();
+    const total = await getCashTotal();
     console.log("total is ",total)
     setCashTotal(total)
     const maTrans = await getHomeScreenDetails();
     setTranses(maTrans)
     const trgt = await getWeeklyTarget();
     setWeeklyGoal(trgt)
-    
+    const spent = await getSpentinWeek()
+    setSpentThisWeek(spent)
   }
   useEffect(()=>{
     getHomeScreenDeets();
@@ -58,7 +59,7 @@ export default function HomeScreen() {
     }
   },[])
   useEffect(()=>{
-    if(userName && cashTotal && transes && weeklyGoal){
+    if(userName && cashTotal && transes && weeklyGoal && spentThisWeek && transes){
       setIsLoading(false)
     }
   },[userName,cashTotal,weeklyGoal,spentThisWeek,weeklyGoal,transes])
@@ -103,7 +104,7 @@ export default function HomeScreen() {
               return(
                 <View>
                   <CashTotalBox cashTtl={cashTotal}/>
-                  <ProgressBox goal={weeklyGoal}/>
+                  <ProgressBox goal={weeklyGoal} spent={spentThisWeek}/>
                 </View>
               )
             }}

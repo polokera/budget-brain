@@ -1,4 +1,6 @@
 import openDatabase from "./DbModule";
+import * as Datefns from 'date-fns'
+import { AddComas } from "./generalModules";
 export async function getCashTotal(){
 
     try{
@@ -7,9 +9,11 @@ export async function getCashTotal(){
         // console.log(cashTotal)
         // return cashTotal;
         const dbx = await openDatabase()
-        let cashTotal = await dbx.getAllAsync(`SELECT * from wallets`)
+        let cashTotal = await dbx.getAllAsync(`SELECT balance,wName from wallets`)
         console.log(cashTotal)
-        cashTotal = cashTotal.reduce((sum,wallet)=>sum+wallet.balance,0)
+        cashTotal = cashTotal.map((wlt)=>String(wlt.balance).replace(/,/g,""))
+        console.log(cashTotal)
+        cashTotal = cashTotal.reduce((sum,balance)=>sum+Number(balance),0)
         return cashTotal;
     }
     catch(e){
@@ -45,6 +49,22 @@ export async function getWeeklyTarget(){
     catch(e){
         console.log(e)
     }
+}
+
+export async function getSpentinWeek(){
+    const dateOnSunday = Datefns.format((Datefns.startOfWeek(new Date())),"yyyy-MM-dd")
+    try{ 
+        const dbx = await openDatabase();
+        const transactionsInPastWeek = await dbx.getAllAsync(`SELECT amount,transDate from transactions where transDate >= "${dateOnSunday}"`)
+        console.log(transactionsInPastWeek)
+        const weeklySpent = transactionsInPastWeek.reduce((sum,transaction)=>sum+transaction.amount,0)
+        console.log(weeklySpent);
+        return AddComas(String(weeklySpent));
+    }
+    catch(e){
+        console.log(e)
+    }
+    
 }
 
 export async function Test(){

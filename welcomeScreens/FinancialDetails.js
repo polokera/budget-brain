@@ -1,5 +1,6 @@
 import {View,StyleSheet,Text,StatusBar, Pressable,FlatList, TextInput} from 'react-native'
 import { useEffect, useState } from 'react';
+import { AddComas } from '../CustomModules/generalModules';
 export default function WelcomeScreen({navigation,route}){
     const {wallets} = route.params;
     const [modifiedWallets,setModifiedWallets] = useState(wallets.map((wallet)=>{
@@ -15,22 +16,13 @@ export default function WelcomeScreen({navigation,route}){
     //     setSelectedId(id)
     // }
     const onValueChange = (value,id)=>{
-        //on each textbox
-        //takes the value of the textbox and puts it in the Amount state variable
-        //this it then used in the next function
-        //this is step 2
-        //this function formats content in the textbox, adds commas using regex.
-        const numeric = value.replace(/[^0-9]/g,'');
-        //removes all non numbers including commas
-        const formatted = numeric.replace(/\B(?=(\d{3})+(?!\d))/g,",")
-        //formats the values at this point there should be no previous commas 
-        //if there are commas it wont work thats why we have to remove commas at first.
+        //AddComas is a custom function
+        const formatted = AddComas(value)
         setModifiedWallets(prevWallets=>
             prevWallets.map(wallet=>
                 wallet.id === id?{...wallet,initialAmount:formatted} : wallet
             )
         )
-       // setAmount(formatted)
     }  
     return(
         <View style={styles.main}>

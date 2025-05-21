@@ -2,6 +2,7 @@ import {View,StyleSheet,Text, TextInput, Pressable} from 'react-native'
 import externalStyles from '../../CustomModules/generalStyles'
 import { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { AddComas } from '../../CustomModules/generalModules'
 
 export default function SetTargetPage({showHome,addWalletsToDb}){
 
@@ -9,11 +10,7 @@ export default function SetTargetPage({showHome,addWalletsToDb}){
 
     const handleChange =(text)=>{
     //this function formats content in the textbox, adds commas using regex.
-        const numeric = text.replace(/[^0-9]/g,'');
-        //removes all non numbers including commas
-        const formatted = numeric.replace(/\B(?=(\d{3})+(?!\d))/g,",")
-        //formats the values at this point there should be no previous commas 
-        //if there are commas it wont work thats why we have to remove commas at first.
+        const formatted = AddComas(text);
         setValue(formatted);
     }
     const [value,setValue] = useState(0)
@@ -21,13 +18,17 @@ export default function SetTargetPage({showHome,addWalletsToDb}){
         //this changes the async storage variable "isSignedUp" to true so that the next time the user 
         //launches the app it doesnt make them sign up all over again.
         await AsyncStorage.setItem("isSignedUp","true");
-        
-        navigation.navigate("Main Tabs")
     }
-    const onPress=()=>{
-        signUserUp()
-        addWalletsToDb(value);
-        showHome()
+    const onPress=async()=>{
+        try
+        {
+            await signUserUp()
+            await addWalletsToDb(value);
+            showHome()
+        }
+        catch(e){
+            console.log(e)
+        }
     }
     return(
         <View style={styles.main}>

@@ -8,24 +8,21 @@ import ProgressBox from "./HomeScreenComponents/ProgressBox";
 import CashTotalBox from "./HomeScreenComponents/CashTotalBox";
 import TransactionBox from "./HomeScreenComponents/TransactionsBox";
 import Fab from "./HomeScreenComponents/FAB";
+import { getCashTotal, getHomeScreenDetails, getSpentinWeek, getWeeklyTarget,Test } from "../CustomModules/HomeScreenDbModules";
 
 export default function HomeScreen() {
   //this is where all the main tabs will be
-  const [transes,setTranses] = useState([
-        {transId:1,themeColor:"#2fdb45",transTitle:"lunch pa so real",transDescription:"ate pa so real maufa pro max or something",amount:3000,transDate:"2025-05-19",transTime:"11:59",walletId:1},
-        {transId:2,themeColor:"#2fdb45",transTitle:"supper pa cloud",transDescription:"ate pa cloud 9 maufa pro max or something",amount:3000,transDate:"2025-05-18",transTime:"18:43",walletId:1},
-        {transId:3,themeColor:"#2fdb45",transTitle:"breakfast-gaba",transDesc:null,amount:800,transDate:"2025-05-17",transTime:"11:59",walletId:3},
-        //{transId:4,themeColor:"#2fdb45",transTitle:"breakfast-gaba",transDesc:null,amount:800,transDate:"18/05/2025",transTime:"11:59"},
-        //{transId:5,themeColor:"#2fdb45",transTitle:"breakfast-gaba",transDesc:null,amount:800,transDate:"18/05/2025",transTime:"11:59"},
-
-    ]);
-  const [userName, setUserName] = useState("");
+  const [transes,setTranses] = useState(null);
+  const [userName, setUserName] = useState(null);
+  const [cashTotal,setCashTotal] = useState(null)
+  const [weeklyGoal,setWeeklyGoal] = useState(null)
+  const [spentThisWeek,setSpentThisWeek] = useState(null);
   const [isLoading,setIsLoading] = useState(true)
   const getUserName = async () => {
     try {
       const UserName = await AsyncStorage.getItem("userName");
       setUserName(UserName);
-      setIsLoading(false);
+      //setIsLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -34,20 +31,38 @@ export default function HomeScreen() {
     const dbx=await openDatabase();
     const result = await dbx.runAsync(`DELETE from wallets`)
     const result2 = await dbx.runAsync(`DELETE from target`)
+    //const result3 = await dbx.runAsync(`DELETE from transactions`)
     if(result.changes > 0 && result2.changes >0){
-      console.log("both tables deleted")
+      console.log("all 3 tables deleted")
     }
     else{
       console.log("gaza");
     }
   }
+  const getHomeScreenDeets=async()=>{
+    await getUserName()
+    const total = await getCashTotal();
+    console.log("total is ",total)
+    setCashTotal(total)
+    const maTrans = await getHomeScreenDetails();
+    setTranses(maTrans)
+    const trgt = await getWeeklyTarget();
+    setWeeklyGoal(trgt)
+    const spent = await getSpentinWeek()
+    setSpentThisWeek(spent)
+  }
   useEffect(()=>{
-    getUserName()
+    getHomeScreenDeets();
 
     return()=>{
       deleteDb()
     }
   },[])
+  useEffect(()=>{
+    if(userName && cashTotal && transes && weeklyGoal && spentThisWeek && transes){
+      setIsLoading(false)
+    }
+  },[userName,cashTotal,weeklyGoal,spentThisWeek,weeklyGoal,transes])
   if(isLoading){
     return(
         <View style={generalStyles.main}>
@@ -73,8 +88,8 @@ export default function HomeScreen() {
              ListFooterComponent={()=>{
               return(
                 <View style={[styles.transactionBox,HomeScreenStyles.boxes]}>
-                  <Text style={HomeScreenStyles.boxTitle}>Recent Transactions</Text>
-                  {transes.map((item)=>{
+                  <Text style={HomeScreenStyles.boxTitle}>Recent Transactionss</Text>
+                  {transes == null || transes.length == 0?<Text>No transactions to show!</Text>:transes.map((item)=>{
                     return <TransactionBox key={item.transId} item={item}/>
                   })}
                 <Pressable style={styles.viewHistoryButton} onPress={()=>console.log("yafwifwa")}>
@@ -88,9 +103,8 @@ export default function HomeScreen() {
             ListHeaderComponent={()=>{
               return(
                 <View>
-                  <CashTotalBox/>
-                  <ProgressBox/>
-                  
+                  <CashTotalBox cashTtl={cashTotal}/>
+                  <ProgressBox goal={weeklyGoal} spent={spentThisWeek}/>
                 </View>
               )
             }}
@@ -125,7 +139,7 @@ const styles = StyleSheet.create({
   },
   transactionBox:{
     backgroundColor:"#fEEEEE",
-    //height:400,
+    minHeight:250,
     alignItems:"center",
     width:320,
     paddingBottom:20,

@@ -1,0 +1,1 @@
+SELECT sum(amount) from transactions where transDate >= "2025-05-18"

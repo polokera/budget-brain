@@ -1,16 +1,16 @@
 import { View, Text, StyleSheet, FlatList, Button,ScrollView, Pressable } from "react-native";
 import { useEffect, useState } from "react";
-import openDatabase from "../CustomModules/DbModule";
+import openDatabase from "../../CustomModules/DbModule";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import generalStyles from "../CustomModules/generalStyles";
-import HomeScreenStyles from "./HomeScreenComponents/HomeScreenStyles";
-import ProgressBox from "./HomeScreenComponents/ProgressBox";
-import CashTotalBox from "./HomeScreenComponents/CashTotalBox";
-import TransactionBox from "./HomeScreenComponents/TransactionsBox";
-import Fab from "./HomeScreenComponents/FAB";
-import { getCashTotal, getHomeScreenDetails, getSpentinWeek, getWeeklyTarget,Test } from "../CustomModules/HomeScreenDbModules";
+import generalStyles from "../../CustomModules/generalStyles";
+import HomeScreenStyles from "./HomeScreenStyles";
+import ProgressBox from "./ProgressBox";
+import CashTotalBox from "./CashTotalBox";
+import TransactionBox from "./TransactionsBox";
+import Fab from "./FAB";
+import { getCashTotal, getHomeScreenDetails, getSpentinWeek, getWeeklyTarget,Test } from "../../CustomModules/HomeScreenDbModules";
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
   //this is where all the main tabs will be
   const [transes,setTranses] = useState(null);
   const [userName, setUserName] = useState(null);
@@ -70,10 +70,14 @@ export default function HomeScreen() {
         </View>
     )
   }
+  const goToTransactionPage=()=>{
+    navigation.navigate("Transaction")
+    console.log("lmao")
+  }
   return(
     
     <View style={[generalStyles.main,{marginTop:-8,alignItems:"center",}]}>
-        <Fab/>
+        <Fab goToNext={goToTransactionPage}/>
         <View style={styles.container}>
           <View style={styles.welcomeMsg}>
             <Text style={styles.welcomeMsgText}>Hello, {userName}</Text>

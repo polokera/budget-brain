@@ -16,7 +16,7 @@ export default function App() {
     try{
       const isSignedUp = await AsyncStorage.getItem('isSignedUp')
       if(isSignedUp == null){
-        await AsyncStorage.setItem('isSignedUp', false)
+        await AsyncStorage.setItem('isSignedUp', "false")
       }
       else if(isSignedUp == true){
         setIsUserSignedUp(true)
@@ -30,11 +30,11 @@ export default function App() {
     }
   }
   useEffect(()=>{
-    //isSignedUp()
+    isSignedUp()
   },[])
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={isUserSignedUp?"Wallets":"Welcome"}>
+      <Stack.Navigator initialRouteName={isUserSignedUp?"Main Tabs":"Welcome"}>
         <Stack.Screen name='Welcome' component={WelcomeScreen} options={{
           headerShown:false,
         }}/>

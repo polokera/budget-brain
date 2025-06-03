@@ -2,19 +2,18 @@ import { StyleSheet } from 'react-native';
 import { FAB } from 'react-native-paper';
 import { getHomeScreenDetails, getTransactionsInWeek, Test } from '../../CustomModules/HomeScreenDbModules';
 
-export default function Fab(){
+export default function Fab({goToNext}){
     //floating action button(FAB)
     //the plus button for adding transaction
-    const pressHandler=async()=>{
-        const result = await Test();
-        console.log(result)
+    const pressHandler=()=>{
+       goToNext();
     }
     return(
         <FAB
         icon="plus"
         color="black"
         style={styles.button}
-        onPress={getTransactionsInWeek}
+        onPress={pressHandler}
         />
     )
 }

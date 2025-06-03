@@ -1,0 +1,35 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.5 Chrome/134.0.6998.205 Electron/35.3.0 Safari/537.36" version="27.0.5">
+  <diagram name="Page-1" id="efa7a0a1-bf9b-a30e-e6df-94a7791c09e9">
+    <mxGraphModel dx="1011" dy="501" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="21" value="&lt;p style=&quot;margin: 0px; margin-top: 4px; text-align: center; text-decoration: underline;&quot;&gt;&lt;b&gt;transactions&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px; margin-left: 8px;&quot;&gt;transId&lt;/p&gt;&lt;p style=&quot;margin: 0px; margin-left: 8px;&quot;&gt;walletId(fk)&lt;/p&gt;&lt;p style=&quot;margin: 0px; margin-left: 8px;&quot;&gt;Description&lt;/p&gt;&lt;p style=&quot;margin: 0px; margin-left: 8px;&quot;&gt;amount&lt;/p&gt;&lt;p style=&quot;margin: 0px; margin-left: 8px;&quot;&gt;date&lt;/p&gt;&lt;p style=&quot;margin: 0px; margin-left: 8px;&quot;&gt;time&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;strokeColor=#003366;shadow=1;fillColor=#D4E1F5;fontColor=#003366" parent="1" vertex="1">
+          <mxGeometry x="40" y="285" width="160" height="135" as="geometry" />
+        </mxCell>
+        <mxCell id="23" value="&lt;p style=&quot;margin: 0px; margin-top: 4px; text-align: center; text-decoration: underline;&quot;&gt;&lt;b&gt;target&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px; margin-left: 8px;&quot;&gt;targetId&lt;/p&gt;&lt;p style=&quot;margin: 0px; margin-left: 8px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 51, 102), rgb(161, 205, 249));&quot;&gt;target&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px; margin-left: 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;strokeColor=#003366;shadow=1;fillColor=#D4E1F5;fontColor=#003366" parent="1" vertex="1">
+          <mxGeometry x="370" y="120" width="110" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="25" value="&lt;p style=&quot;margin: 0px; margin-top: 4px; text-align: center; text-decoration: underline;&quot;&gt;&lt;strong&gt;wallets&lt;/strong&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px; margin-left: 8px;&quot;&gt;walletId(pk)&lt;/p&gt;&lt;p style=&quot;margin: 0px; margin-left: 8px;&quot;&gt;wName&lt;/p&gt;&lt;p style=&quot;margin: 0px; margin-left: 8px;&quot;&gt;availableAmount&lt;/p&gt;&lt;p style=&quot;margin: 0px; margin-left: 8px;&quot;&gt;themeColor&lt;/p&gt;&lt;p style=&quot;margin: 0px; margin-left: 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;strokeColor=#003366;shadow=1;fillColor=#D4E1F5;fontColor=#003366" parent="1" vertex="1">
+          <mxGeometry x="40" y="21.64" width="130" height="108.36" as="geometry" />
+        </mxCell>
+        <mxCell id="90" value="" style="endArrow=open;endSize=12;startArrow=diamondThin;startSize=14;startFill=0;edgeStyle=orthogonalEdgeStyle" parent="1" source="25" target="21" edge="1">
+          <mxGeometry x="620" y="340" as="geometry">
+            <mxPoint x="620" y="340" as="sourcePoint" />
+            <mxPoint x="780" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="91" value="0..n" style="resizable=0;align=left;verticalAlign=top;labelBackgroundColor=#ffffff;fontSize=10;strokeColor=#003366;shadow=1;fillColor=#D4E1F5;fontColor=#003366" parent="90" connectable="0" vertex="1">
+          <mxGeometry x="-1" relative="1" as="geometry">
+            <mxPoint x="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="92" value="1" style="resizable=0;align=right;verticalAlign=top;labelBackgroundColor=#ffffff;fontSize=10;strokeColor=#003366;shadow=1;fillColor=#D4E1F5;fontColor=#003366" parent="90" connectable="0" vertex="1">
+          <mxGeometry x="1" relative="1" as="geometry">
+            <mxPoint x="20" y="-24.99999999999981" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

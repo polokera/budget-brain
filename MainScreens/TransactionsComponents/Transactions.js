@@ -1,13 +1,15 @@
 import externalStyles from '../../CustomModules/generalStyles'
-import {View,Text,StyleSheet} from 'react-native'
+import {View,StyleSheet} from 'react-native'
 import ToggleBar from './ToggleBar'
 import { useState } from 'react'
+import WtW from './WtW.js'
 export default function Transaction(){
-    const [selectedScreen,setSelectedScreen] = useState("w2w")
+    const [selectedScreen,setSelectedScreen] = useState("fWallet")
     return(
         <View style={externalStyles.main}>
             <View style={styles.container}>
-                <ToggleBar/>
+                <ToggleBar selected={selectedScreen} toggleFn={setSelectedScreen}/>
+                <WtW/>
             </View>
             
         </View>
@@ -16,8 +18,8 @@ export default function Transaction(){
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor:"white",
-        justifyContent:"center",
+        // backgroundColor:"white",
+        //justifyContent:"center",
         alignItems:"center",
         flex:1,
     }

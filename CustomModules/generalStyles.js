@@ -26,4 +26,11 @@ export default StyleSheet.create({
         borderRadius: 12,
         height: 450,
       },
+      input:{
+        borderRadius: 20,
+        borderWidth: 0.4,
+        //paddingHorizontal: 10,
+        //marginVertical: 20,
+        backgroundColor:"#fff"
+      }
 })

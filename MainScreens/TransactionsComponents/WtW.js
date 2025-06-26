@@ -1,107 +1,147 @@
-import {View,Text,StyleSheet,TextInput,Pressable} from "react-native"
-import ExternalStyles from '../../CustomModules/generalStyles'
-import { RFValue } from "react-native-responsive-fontsize"
-import {Dropdown} from "react-native-paper-dropdown"
-import {Provider as PaperProvider, Provider} from 'react-native-paper'
-import { useState } from "react"
+import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
+import { useForm, Controller } from "react-hook-form";
+import externalStyles from "../../CustomModules/generalStyles";
+import TextField from "./TextField";
+import DropdownField from "./DropdownField";
+import * as DateFns from "date-fns";
+import { useState, useEffect, useContext } from "react";
+import { WalletToWalletTrans } from "./DBtransaction";
+import { RefreshFunctionContext } from "../../CustomModules/Contexts";
 
+export default function Fw({ data, show, hide, setMessage }) {
+  const { setRefreshKey } = useContext(RefreshFunctionContext);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      amount: "",
+      extraFees: "",
+      from: "",
+      to: "",
+    },
+  });
+  const [selectedWallet, setSelectedWallet] = useState(null);
+  const [filteredWallets, setFilteredWallets] = useState([]);
 
-export default function WtW(){
-    //wtw is  wallet to wallet transaction
-    const options = [
-        {label:"Male",value:"male"},
-        {label:"Female",value:"female"},
-        {label:"Boy",value:"boy"},
-    ]
-    const [gender,setGender] = useState("")
-    return(
-        <Provider>
-            <View style={styles.container}>
-            <View style={styles.row}>
-                <Text style={styles.title}>Title</Text>
-                <TextInput
-                style={[ExternalStyles.input,styles.input]}
-                />
-            </View>
-            <View style={styles.row}>
-                <Text style={styles.title}>Amount</Text>
-                <TextInput
-                style={[ExternalStyles.input,styles.input,{}]}
-                keyboardType="number-pad"
-                />
-            </View>
-            <View style={styles.row}>
-                <Text style={styles.title}>extra fees</Text>
-                <TextInput
-                style={[ExternalStyles.input,styles.input]}
-                />
-            </View>
-            <View style={styles.row}>
-                <Text style={styles.title}>From</Text>
-                <Dropdown
-                options={options}
-                label="gender"
-                placeholder="select gender"
-                onSelect={setGender}
-                value={gender}
-                />
-            </View>
-            <View style={styles.row}>
-                <Text style={styles.title}>To</Text>
-                <TextInput
-                style={[ExternalStyles.input,styles.input]}
-                />
-            </View>
-            <View style={[styles.row,{height:"17%"}]}>
-                <Text style={styles.title}>Description</Text>
-                <TextInput
-                multiline={true}
-                numberOfLines={3}
-                style={[ExternalStyles.input,styles.input,{height:"80%"}]}
-                />
-            </View>
-            <Pressable style={[ExternalStyles.button,styles.button]}>
-                <Text>Done</Text>
-            </Pressable>
-            </View>
-        </Provider>
-        
-    )
+  useEffect(() => {
+    const newW = selectedWallet
+      ? data.filter((wallet) => wallet.walletId !== selectedWallet.walletId)
+      : data;
+    setFilteredWallets(newW);
+  }, [selectedWallet]);
+
+  const onError = (errors) => console.log("errors: ", errors);
+  async function onSubmit(data) {
+    const { amount, extraFees, from } = data;
+    const totaltoDeduct = Number(amount) + Number(extraFees);
+    if (totaltoDeduct < Number(from.balance)) {
+      await WalletToWalletTrans(data);
+      console.log(setRefreshKey);
+      setRefreshKey((r) => r + 1);
+      show("Success", "Transaction successfully logged!", true);
+    } else {
+      show(
+        "Failed to log",
+        `Amount to transact is greater than the balance available in ${from.wName} (MWK${from.balance}). Please cross-check your values.`,
+        false
+      );
+    }
+  }
+  return (
+    <View style={styles.container}>
+      <TextField
+        fieldName="amount"
+        label="Amount (MWK)"
+        number
+        placeholder="the amount to transfer"
+        ctrl={control}
+        isRequired
+        errors={errors}
+      />
+      <TextField
+        fieldName="extraFees"
+        label="Transaction Fees"
+        ctrl={control}
+        number
+        placeholder="0"
+        errors={errors}
+      />
+      <DropdownField
+        fieldName="from"
+        label="From"
+        placeholder="Select a wallet"
+        isRequired
+        ctrl={control}
+        errors={errors}
+        data={filteredWallets}
+        property="wName"
+        setSelectedWallet={setSelectedWallet}
+      />
+      <DropdownField
+        fieldName="to"
+        label="To"
+        placeholder="Select a wallet"
+        isRequired
+        property="wName"
+        ctrl={control}
+        errors={errors}
+        data={filteredWallets}
+        setSelectedWallet={setSelectedWallet}
+      />
+      <Pressable
+        onPress={handleSubmit(onSubmit, onError)}
+        style={[externalStyles.button, styles.button]}
+      >
+        <Text>Press me</Text>
+      </Pressable>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container:{
-        backgroundColor:"#eefbfb",
-        width:"80%",
-        marginVertical:40,
-        //elevation:2,
-        borderWidth:0.8,
-        borderRadius:8,
-        alignItems:"center",
-        paddingVertical:20,
-        paddingHorizontal:10,
-    },
-    input:{
-        width:"60%",
-        fontSize:RFValue(11),
-        height:"55%",
-    },
-    row:{
-        flexDirection:"row",
-        height:"12%",
-    },
-    title:{
-        textAlign:"right",
-        verticalAlign:"middle",
-        fontSize:RFValue(14),
-        marginRight:20,
-        marginLeft:5,
-        width:"30%",
-        height:"50%",
-        borderWidth:1,
-    },
-    button:{
-        width:100,
-        height:45,
-    }
-})
+  container: {
+    alignItems: "center",
+    backgroundColor: "#eefbfb",
+    marginTop: 20,
+    width: 310,
+    paddingVertical: 20,
+    borderWidth: 0.5,
+    borderRadius: 20,
+  },
+  field: {
+    width: 300,
+    flexDirection: "row",
+    //borderWidth:1,
+    // backgroundColor:"yellow",
+    paddingVertical: 5,
+    paddingHorizontal: 6,
+  },
+  fieldName: {
+    verticalAlign: "middle",
+    textAlign: "right",
+    width: "25%",
+    paddingRight: 8,
+  },
+  input: {
+    width: "75%",
+    height: 40,
+    paddingHorizontal: 5,
+  },
+  button: {
+    width: 100,
+    height: 45,
+  },
+  errorMessage: {
+    color: "red",
+    fontStyle: "italic",
+    width: "100%",
+    // borderWidth:1,
+    textAlign: "center",
+  },
+  selectedItem: {
+    backgroundColor: "yellow",
+    width: 100,
+  },
+});

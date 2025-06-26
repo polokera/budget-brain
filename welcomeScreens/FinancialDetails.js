@@ -1,6 +1,6 @@
 import {View,StyleSheet,Text,StatusBar, Pressable,FlatList, TextInput} from 'react-native'
 import { useEffect, useState } from 'react';
-import { AddComas } from '../CustomModules/generalModules';
+import { AddComas, removeCommas } from '../CustomModules/generalModules';
 export default function WelcomeScreen({navigation,route}){
     const {wallets} = route.params;
     const [modifiedWallets,setModifiedWallets] = useState(wallets.map((wallet)=>{
@@ -36,7 +36,8 @@ export default function WelcomeScreen({navigation,route}){
                                 <Text style={styles.walletName}>{item.wName}:</Text>
                                 <TextInput 
                                // defaultValue='0'
-                                value={modifiedWallets.find(w=>w.id === item.id)?.initialAmount.toString()  || ""}
+                                placeholder='0'
+                                value={modifiedWallets.find(w=>w.id === item.id)?.initialAmount  || ""}
                                 keyboardType='number-pad'
                                 style={styles.input}
                                 //onFocus={()=>onFocus(item.id)}

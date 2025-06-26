@@ -8,6 +8,6 @@ export default function Component(){
     )
 }
 
-const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
     
 })

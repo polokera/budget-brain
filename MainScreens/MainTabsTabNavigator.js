@@ -10,7 +10,7 @@ export default function MainTabs(){
         <Tab.Navigator>
             <Tab.Screen name="HomestackNav" component={HomeStackNavigator} options={{
                 headerShown:false,
-                tabBarLabel:"Home"
+                tabBarLabel:"Home",
             }}/>
         </Tab.Navigator>
     )

@@ -1,12 +1,17 @@
-import { StyleSheet,View,Text } from "react-native"
+import { StyleSheet,View,Text,Dimensions } from "react-native"
 import HomeScreenStyles from "./HomeScreenStyles"
 import { useEffect, useState } from "react"
 import { removeCommas } from "../../CustomModules/generalModules"
+import { Divider } from "react-native-paper"
 
 export default function ProgressBox({goal,spent}){
     const [perc,setPerc] = useState(null);
     const [barColor,setBarColor] = useState("#fff");
     const [barWidth,setBarWidth] = useState(0);
+    const [leftToSpend,setLeftToSpend] = useState()
+    const getWidth=()=>{
+        return ((Dimensions.get("window").width)*0.83)
+    }
     const getBarColor=()=>{
         if(perc>=0 && perc<25){
             setBarColor("rgba(0, 255, 0, 0.7)")
@@ -24,19 +29,16 @@ export default function ProgressBox({goal,spent}){
         else if(perc>=100){
             setBarColor("rgba(255,0,0,0.7)")
         }
-        console.log(barColor)
     }
     const getBarWidth=()=>{
         const barWidth = Math.floor(((perc/100)*200))
-        barWidth < 200 ? setBarWidth(barWidth) : setBarWidth(220)
-        
-        console.log(barWidth);
+        barWidth < 200 ? setBarWidth(barWidth) : setBarWidth(220)  
     }
     useEffect(()=>{
         const percentage = Math.trunc((removeCommas(spent)/removeCommas(goal))*100)
-        console.log(percentage)
         setPerc(percentage);
-        
+        const lefttospend = (removeCommas(goal)-removeCommas(spent))
+        setLeftToSpend(lefttospend)        
     },[])
     useEffect(()=>{
         getBarColor()
@@ -44,14 +46,16 @@ export default function ProgressBox({goal,spent}){
     },[perc])
     return(
         <View>
-            <View style={[styles.progressBox,HomeScreenStyles.boxes]}>
+            <View style={[styles.progressBox,HomeScreenStyles.boxes,{width:getWidth()}]}>
                 <Text style={HomeScreenStyles.boxTitle}>Weekly Progress</Text>
                 <View style={styles.container}>
                     <View style={styles.top}>
                         {/* top */}
                         <View style={[styles.rightLeft,styles.left]}>
                             <Text style={styles.percentage}>{perc}%</Text>
-                            <Text style={{textAlign:"center",verticalAlign:"middle"}}>Used</Text>
+                            <Text style={{textAlign:"center",verticalAlign:"middle",color:"grey",fontStyle:"italic"}}>Used</Text>
+                            <Text style={{fontSize:12,color:"#190933"}}>Weekly target: </Text>
+                            <Text style={styles.values}>MWK {goal}</Text>
                         </View>
                         <View style={[styles.rightLeft,styles.right]}>
                             {/* right */}
@@ -62,8 +66,8 @@ export default function ProgressBox({goal,spent}){
                             </View>
                             <View style={{flexDirection:"column"}}>
                                 {/* right bottom */}
-                                <Text style={{fontSize:12,color:"#190933"}}>Weekly target: </Text>
-                                <Text style={styles.values}>MWK {goal}</Text>
+                                <Text style={{fontSize:12}}>Left to use this week:</Text>
+                                <Text style={[styles.values]}>MWK {leftToSpend}</Text>
                             </View>
                         </View>
                     </View>
@@ -81,15 +85,13 @@ export default function ProgressBox({goal,spent}){
 const styles=StyleSheet.create({
     progressBox:{
         backgroundColor:"#e0fbfb",
-        height:170,
-        width:320,
+        height:180,
     },
     container:{
         flexDirection:"column",
         justifyContent:"center",
         alignItems:"center",
-        //borderWidth:1,
-        height:160,
+        height:186,
         marginTop:-30,
     },
     top:{
@@ -98,26 +100,27 @@ const styles=StyleSheet.create({
     },
     left:{
         paddingLeft:0,
-        width:110,
+        alignItems:"center",
+        width:130,
     },
     right:{
-        width:175,
-        backgroundColor:"#fff",
-        elevation:4,
-        borderRadius:6,
+        width:150,
     },
     rightLeft:{
         flexDirection:"column",
         paddingHorizontal:10,
-       // borderWidth:1,
         width:133,
-        height:100,
+        height:115,
         marginTop:16,
+        backgroundColor:"#fff",
+        elevation:4,
+        borderRadius:6,
+        marginHorizontal:3,
     },
     values:{
         marginLeft:25,
         marginVertical:4,
-        fontSize:16,
+        fontSize:14,
         fontWeight:"bold",
     },
     bothBars:{
@@ -129,17 +132,17 @@ const styles=StyleSheet.create({
         backgroundColor:"#fff",
         width:200,
         position:"relative",
-        bottom:-2,
+        bottom:2,
         left:10,
     },
     bar:{
         width:200,
         position:"relative",
-        bottom:5,
+        bottom:9,
         left:14,
     },
     percentage:{
-        height:85,
+        height:40,
         //borderWidth:1,
         fontSize:32,
         width:105,

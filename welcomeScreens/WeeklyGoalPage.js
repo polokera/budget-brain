@@ -10,6 +10,8 @@ import { useState, useEffect } from "react";
 import OpeningScreen from "./secondWelcomeScreens/OpeningScreen";
 import SetTargetPage from "./secondWelcomeScreens/SetTargetpage";
 import openDatabase from "../CustomModules/DbModule";
+import { removeCommas } from "../CustomModules/generalModules";
+import { initial } from "lodash";
 
 export default function MoneyWallet({navigation,route}) {
   const {walletsArray} = route.params
@@ -21,8 +23,16 @@ export default function MoneyWallet({navigation,route}) {
   }
   const addWalletsToDb = async(weeklyTarget)=>{
     const dbx = await openDatabase();
+    const formattedWallets = walletsArray.map((wallet)=>{
+      const formattedAmount = removeCommas(wallet.initialAmount)
+      console.log(formattedAmount," is your formatted amount")
+      return(
+        {...wallet,initialAmount:formattedAmount}
+      )
+    })
+    console.log(formattedWallets)
     try{
-        for(const wlt of walletsArray){
+        for(const wlt of formattedWallets){
         //inserts wallets from the previous page into the database.
         await dbx.runAsync(`INSERT INTO wallets(walletId,wName,balance,themeColor)values(?,?,?,?)`,[wlt.id,wlt.wName,wlt.initialAmount,wlt.themeColor])
         }
@@ -53,6 +63,7 @@ export default function MoneyWallet({navigation,route}) {
     }
   };
   useEffect(() => {
+    console.log(walletsArray)
     getUserName();
   }, []);
   if (isLoading) {
@@ -71,7 +82,7 @@ export default function MoneyWallet({navigation,route}) {
   return (
     <View style={styles.main}>
       <View style={styles.container}>
-        <Text style={styles.title}>Welcome, {userName}</Text>
+        <Text style={styles.title}>Welcome, <Text style={{color:"#ee9e8e"}}>{userName}</Text></Text>
        <View style={{height:600,width:"90%"}}>
          {nextPressed? <SetTargetPage
           showHome={goToHome} 
@@ -108,6 +119,7 @@ const styles = StyleSheet.create({
   nextButton: {
     alignSelf: "flex-end",
     borderWidth: 1,
+    backgroundColor:"#e0fbfb"
   },
   container1:{
     flex:1,

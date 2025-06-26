@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     flex: 1,
+    paddingHorizontal:20,
   },
   walletContainer: {
     width: 200,

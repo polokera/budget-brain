@@ -1,11 +1,14 @@
-import { StyleSheet,View,Text } from "react-native"
+import { StyleSheet,View,Text,Dimensions } from "react-native"
 import HomeScreenStyles from "./HomeScreenStyles"
 import { AddComas } from "../../CustomModules/generalModules"
 
 export default function CashTotalBox({cashTtl}){
+    const getWidth=()=>{
+        return ((Dimensions.get("window").width)*0.6)
+    }
     const formattedCashTotal = AddComas(String(cashTtl))
     return(
-        <View style={[styles.cashTotalBox,HomeScreenStyles.boxes]}>
+        <View style={[styles.cashTotalBox,HomeScreenStyles.boxes,{width:getWidth()}]}>
             <Text style={HomeScreenStyles.boxTitle}>Cash total</Text>
             <View style={styles.amountBox}>
                  <Text style={styles.amountText}>MWK {formattedCashTotal}</Text>
@@ -26,7 +29,7 @@ const styles=StyleSheet.create({
         fontWeight:"bold",
     },
     cashTotalBox:{
-        height:120,
+        height:100,
         backgroundColor:"#FEEEEE",
         width:210,
     },

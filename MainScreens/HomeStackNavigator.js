@@ -3,10 +3,14 @@ import HomeScreen from "./HomeScreenComponents/HomeScreen";
 import { StyleSheet } from "react-native";
 import { Avatar } from 'react-native-paper';
 import Transactions from "./TransactionsComponents/Transactions";
+import { useState } from "react";
+import { RefreshFunctionContext } from "../CustomModules/Contexts";
 
 export default function HomeStackNavigator(){
     const Stack = createStackNavigator();
+      const [refreshKey,setRefreshKey] = useState(0);
     return(
+    <RefreshFunctionContext.Provider value={{refreshKey,setRefreshKey}}>
         <Stack.Navigator>
             <Stack.Screen name='Home' component={HomeScreen} options={{
                 headerStyle:styles.screenHeader,
@@ -18,6 +22,9 @@ export default function HomeStackNavigator(){
                 headerTitle:"Add a transaction"
             }}/>
         </Stack.Navigator>
+    </RefreshFunctionContext.Provider>
+        
+
     )
 }
 

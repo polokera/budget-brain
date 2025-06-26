@@ -1,4 +1,4 @@
-import {View,StyleSheet,Text, TextInput, Pressable} from 'react-native'
+import {View,StyleSheet,Text, TextInput, Pressable, Alert} from 'react-native'
 import externalStyles from '../../CustomModules/generalStyles'
 import { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -20,14 +20,19 @@ export default function SetTargetPage({showHome,addWalletsToDb}){
         await AsyncStorage.setItem("isSignedUp","true");
     }
     const onPress=async()=>{
-        try
-        {
-            await signUserUp()
-            await addWalletsToDb(value);
-            showHome()
+        if(Number(value) !== 0 && value){
+            try
+            {
+                await signUserUp()
+                await addWalletsToDb(value);
+                showHome()
+            }
+            catch(e){
+                console.log(e)
+            }
         }
-        catch(e){
-            console.log(e)
+        else{
+            Alert.alert("Alert","Please set a target first")
         }
     }
     return(
@@ -39,7 +44,12 @@ export default function SetTargetPage({showHome,addWalletsToDb}){
            <View style={[externalStyles.list,styles.container]}>
                 <View style={styles.row}>
                     <Text style={styles.text}>Weekly Amount(MWK):</Text>
-                    <TextInput style={styles.input} keyboardType='numeric' value={value} onChangeText={handleChange}/>
+                    <TextInput
+                    style={styles.input} 
+                    keyboardType='numeric'
+                    placeholder='0' 
+                    value={value} 
+                    onChangeText={handleChange}/>
                 </View>
                 <Pressable 
                 onPress={onPress}

@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     width: 200,
     height:40,
+    paddingHorizontal:15,
   },
   form: {
     gap: 10,

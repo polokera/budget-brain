@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MainTabs from './MainScreens/MainTabsTabNavigator';
 
 export default function App() {
-  const [isUserSignedUp,setIsUserSignedUp] = useState(false)
+  const [isUserSignedUp,setIsUserSignedUp] = useState(true)
   const Stack = createStackNavigator()
   const isSignedUp = async ()=>{
     try{

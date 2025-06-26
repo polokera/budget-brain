@@ -16,7 +16,6 @@ export default function Popup({visible,hide,title,message,success,goBack}){
             <View style={styles.container}>
                <View style={styles.popup}>
                     {success?<AntDesign name='checkcircle' color='green' size={120} style={styles.icon}/> : <Entypo name="circle-with-cross" size={120} color="tomato" style={styles.icon}/>}
-                    {/* <AntDesign name={success?'checkcircle':'checkcircle'} color="green" size={120} /> */}
                     <View style={styles.contentBox}>
                         <Text style={styles.title}>{title}</Text>
                         <Text style={styles.message}>{message}</Text>

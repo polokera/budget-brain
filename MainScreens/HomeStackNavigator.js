@@ -3,6 +3,7 @@ import HomeScreen from "./HomeScreenComponents/HomeScreen";
 import { StyleSheet } from "react-native";
 import { Avatar } from 'react-native-paper';
 import Transactions from "./TransactionsComponents/Transactions";
+import Troubleshooting from "../Troubleshooting";
 import { useState } from "react";
 import { RefreshFunctionContext } from "../CustomModules/Contexts";
 
@@ -18,8 +19,12 @@ export default function HomeStackNavigator(){
                     return <Avatar.Text size={24} label="XD" style={styles.avatar}/>
                 }
             }}/>
+
             <Stack.Screen name="Transaction" component={Transactions} options={{
                 headerTitle:"Add a transaction"
+            }}/>
+            <Stack.Screen name="Troubleshooting" component={Troubleshooting} options={{
+                headerTitle:"Troubleshooting"
             }}/>
         </Stack.Navigator>
     </RefreshFunctionContext.Provider>

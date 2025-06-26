@@ -16,14 +16,14 @@ export default function TransPopUp({visible,setVisible,data}){
                         <Text style={styles.walletName}>{data?.wName}</Text>
                         <View style={{height:130,borderWidth:1}}>
                             <ScrollView style={{flex:1}}>
-                                {data.transDescription !== ""?
-                                <Text>{data.transDescription}</Text>:
+                                {data?.transDescription !== ""?
+                                <Text>{data?.transDescription}</Text>:
                                 <Text>No description</Text>
                             }
                             </ScrollView> 
-                            <View style={{flexDirection:"row"}}>
+                            <View style={{flexDirection:"row",borderWidth:1}}>
                                 <Text style={styles.dateTime}>{data?.transTime}</Text>
-                                <Text style={styles.dateTime}>{data?.transDate}</Text>
+                                <Text style={[styles.dateTime,styles.date]}>{data?.transDate}</Text>
                             </View>  
                         </View>
                         <Pressable 
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
         borderRadius:10,
         paddingHorizontal:20,
         paddingTop:10,
+        alignItems:"center"
     },
     title:{
         fontSize:34,
@@ -101,9 +102,13 @@ const styles = StyleSheet.create({
     },
     dateTime:{
         width:"45%",
-        fontSize:"12",
-        marginHorizontal:5,
+        fontSize:12,
+        margin:5,
+        borderWidth:1,
     },
+    date:{
+        textAlign:"right",
+    }
     
 
 })

@@ -11,7 +11,7 @@ export async function WalletToWalletTrans(data){
         await dbx.withTransactionAsync(async()=>{
             const result = await dbx.getFirstAsync(`SELECT COUNT(*) from transactions`);
             const transId = result['COUNT(*)'] +100;
-           await dbx.runAsync(`INSERT into transactions(transId,walletId,transType,transDescription,amount,transDate,transTime,transSign)VALUES(?,?,?,?,?,?,?,?)`,[transId,from.walletId,"wallet transfer",`MwK${amount} moved from ${from.wName} to ${to.wName}`,extraFees,date,time,-1])
+           await dbx.runAsync(`INSERT into transactions(transId,walletId,transType,transDescription,amount,transDate,transTime,transSign)VALUES(?,?,?,?,?,?,?,?)`,[transId,from.walletId,"wallet transfer",`MwK${amount} moved from ${from.wName} to ${to.wName}`,Number(extraFees),date,time,-1])
            await dbx.runAsync(`UPDATE wallets set balance = balance - ? where walletId = ?`,[cashTotal,from.walletId])
            await dbx.runAsync(`UPDATE wallets set balance = balance + ? where walletId = ?`,[amount,to.walletId])
            console.log("checkpoint")

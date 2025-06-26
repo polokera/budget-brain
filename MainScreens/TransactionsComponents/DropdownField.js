@@ -28,7 +28,6 @@ export default function DropdownField({fieldName,placeholder,ctrl,isRequired,max
                         data={data}
                         onSelect={(selected)=>{
                             field.onChange(selected)
-                            console.log(selected)
                             setSelectedWallet&&setSelectedWallet(selected)
                         }}
                         renderButton={(selectedItem,isOpened)=>{

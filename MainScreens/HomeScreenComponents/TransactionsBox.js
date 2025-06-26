@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, View, Text, Pressable } from "react-native";
 import { useEffect, useState } from "react";
 import * as Datefns from "date-fns";
-import { AddComas } from "../../CustomModules/generalModules";
+import { AddComas,fixTimes } from "../../CustomModules/generalModules";
 
 export default function TransactionBox({ item,onPress }) {
   const [dateToShow, setDateToShow] = useState(null);
@@ -47,39 +47,40 @@ export default function TransactionBox({ item,onPress }) {
     }
   };
 
-  const fixTimes = () => {
-    const cleanTime = Datefns.parse(item.transTime, "HHmm", new Date());
-    const dateToday = Datefns.parse(item.transDate, "yyyy-MM-dd", new Date());
-    if (Datefns.isToday(dateToday)) {
-      const timeNow = new Date();
-      if (Datefns.differenceInMinutes(timeNow, cleanTime) < 60) {
-        const differenceInMinutes = Datefns.differenceInMinutes(
-          timeNow,
-          cleanTime
-        );
-        if (differenceInMinutes < 1) {
-          setTimeToShow("Just Now");
-        } else if (differenceInMinutes == 1) {
-          setTimeToShow("1 minute ago");
-        } else {
-          setTimeToShow(`${differenceInMinutes} minutes ago`);
-        }
-      } else {
-        const differenceInHours = Datefns.differenceInHours(timeNow, cleanTime);
-        const string = differenceInHours > 1 ? "hours" : "hour";
-        setTimeToShow(`${differenceInHours} ${string} ago`);
-      }
-    } else {
-      setTimeToShow(Datefns.format(cleanTime, "HH:mm"));
-    }
-  };
+  // const fixTimes = () => {
+  //   const cleanTime = Datefns.parse(item.transTime, "HHmm", new Date());
+  //   const dateToday = Datefns.parse(item.transDate, "yyyy-MM-dd", new Date());
+  //   if (Datefns.isToday(dateToday)) {
+  //     const timeNow = new Date();
+  //     if (Datefns.differenceInMinutes(timeNow, cleanTime) < 60) {
+  //       const differenceInMinutes = Datefns.differenceInMinutes(
+  //         timeNow,
+  //         cleanTime
+  //       );
+  //       if (differenceInMinutes < 1) {
+  //         setTimeToShow("Just Now");
+  //       } else if (differenceInMinutes == 1) {
+  //         setTimeToShow("1 minute ago");
+  //       } else {
+  //         setTimeToShow(`${differenceInMinutes} minutes ago`);
+  //       }
+  //     } else {
+  //       const differenceInHours = Datefns.differenceInHours(timeNow, cleanTime);
+  //       const string = differenceInHours > 1 ? "hours" : "hour";
+  //       setTimeToShow(`${differenceInHours} ${string} ago`);
+  //     }
+  //   } else {
+  //     setTimeToShow(Datefns.format(cleanTime, "HH:mm"));
+  //   }
+  // };
   const fixAmounts = () => {
     const cleanAmount = AddComas(String(item.amount));
     setAmountToShow(cleanAmount);
   };
   useEffect(() => {
     fixDates();
-    fixTimes();
+    const newTime = fixTimes(item.transTime,item.transDate);
+    setTimeToShow(newTime)
     fixAmounts();
   }, []);
   return (

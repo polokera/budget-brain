@@ -63,7 +63,7 @@ export async function getSpentinWeek(){
     try{ 
         const dbx = await openDatabase();
         const transactionsInPastWeek = await dbx.getAllAsync(`SELECT amount,transDate from transactions where transDate >= "${dateOnSunday}"`)
-        console.log(transactionsInPastWeek, " are the transactions this week")
+        console.log(transactionsInPastWeek)
         const weeklySpent = transactionsInPastWeek.reduce((sum,transaction)=>sum+transaction.amount,0)
         console.log(weeklySpent);
         return AddComas(String(weeklySpent));

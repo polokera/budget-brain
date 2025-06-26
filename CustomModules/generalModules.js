@@ -1,4 +1,3 @@
-import * as Datefns from "date-fns";
 
 export function AddComas(value){
     //this formats numbers and adds comas to them e.g 1100 to 1,100
@@ -17,36 +16,3 @@ export function removeCommas(value){
     const cleanValue = Number(String(value).replace(/,/g,""))
     return cleanValue;
 }
-
-export function fixTimes(dirtyTime,dirtyDate){
-    const cleanTime = Datefns.parse(dirtyTime, "HHmm", new Date());
-    const dateToday = Datefns.parse(dirtyDate, "yyyy-MM-dd", new Date());
-    if (Datefns.isToday(dateToday)) {
-      const timeNow = new Date();
-      if (Datefns.differenceInMinutes(timeNow, cleanTime) < 60) {
-        const differenceInMinutes = Datefns.differenceInMinutes(
-          timeNow,
-          cleanTime
-        );
-        if (differenceInMinutes < 1) {
-          return "Just Now";
-        } else if (differenceInMinutes == 1) {
-          return "1 minute ago";
-        } else {
-          return `${differenceInMinutes} minutes ago`
-        }
-      } else {
-        const differenceInHours = Datefns.differenceInHours(timeNow, cleanTime);
-        const string = differenceInHours > 1 ? "hours" : "hour";
-        return `${differenceInHours} ${string} ago`
-      }
-    } else {
-      return Datefns.format(cleanTime, "HH:mm")
-    }
-}
-
-export function fixDates(){
-
-}
-
-// export function fix

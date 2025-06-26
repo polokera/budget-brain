@@ -46,6 +46,7 @@ export default function HomeScreen({ navigation }) {
     try {
       const UserName = await AsyncStorage.getItem("userName");
       setUserName(UserName);
+      //setIsLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -78,11 +79,13 @@ export default function HomeScreen({ navigation }) {
     const fetchData = async () => {
       setIsLoading(true);
       await getHomeScreenDeets();
+      console.log(transes);
       setIsLoading(false);
     };
     fetchData();
   }, [refreshKey]);
   useEffect(() => {
+    // console.log(selectedTrans)
     return () => {
       // deleteDb();
     };
@@ -103,9 +106,6 @@ export default function HomeScreen({ navigation }) {
       wallets,
     });
   };
-  const goToTroubleShootingPage=()=>{
-     navigation.navigate("Troubleshooting");
-  }
   return (
     <View style={[generalStyles.main, { marginTop: -8, alignItems: "center" }]}>
       <Fab goToNext={goToTransactionPage} />
@@ -162,10 +162,7 @@ export default function HomeScreen({ navigation }) {
           ListHeaderComponent={() => {
             return (
               <View>
-                <Pressable onLongPress={goToTroubleShootingPage}>
-                  <CashTotalBox cashTtl={cashTotal} />
-                </Pressable>
-                
+                <CashTotalBox cashTtl={cashTotal} />
                 <ProgressBox goal={weeklyGoal} spent={spentThisWeek} />
               </View>
             );

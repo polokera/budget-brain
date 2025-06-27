@@ -4,6 +4,7 @@ import { StyleSheet } from "react-native";
 import { Avatar } from 'react-native-paper';
 import Transactions from "./TransactionsComponents/Transactions";
 import Troubleshooting from "../Troubleshooting";
+import AllTransactions from "./TransactionsComponents/AllTransactions";
 import { useState } from "react";
 import { RefreshFunctionContext } from "../CustomModules/Contexts";
 
@@ -21,10 +22,15 @@ export default function HomeStackNavigator(){
             }}/>
 
             <Stack.Screen name="Transaction" component={Transactions} options={{
+                headerStyle:styles.screenHeader,
                 headerTitle:"Add a transaction"
             }}/>
             <Stack.Screen name="Troubleshooting" component={Troubleshooting} options={{
                 headerTitle:"Troubleshooting"
+            }}/>
+            <Stack.Screen name="TransHistory" component={AllTransactions} options={{
+                headerStyle:styles.screenHeader,
+                headerTitle:"Transaction History"
             }}/>
         </Stack.Navigator>
     </RefreshFunctionContext.Provider>

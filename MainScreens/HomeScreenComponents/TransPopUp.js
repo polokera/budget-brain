@@ -1,6 +1,8 @@
 import {Modal,Text,View,StyleSheet, Button,ScrollView, Pressable} from 'react-native'
 import { useEffect, useState } from 'react';
 import externalStyles from '../../CustomModules/generalStyles'
+import { AddComas, } from '../../CustomModules/generalModules';
+// import { styles } from '../TransactionsComponents/AllTransactions'
 
 export default function TransPopUp({visible,setVisible,data}){
     return(
@@ -11,17 +13,21 @@ export default function TransPopUp({visible,setVisible,data}){
         <View style={styles.container}>
             <View style={styles.popup}>
                 <View style={styles.contentBox}>
-                    <View style={styles.content}>
-                        <Text style={styles.title}>{data?.transType}</Text>
-                        <Text style={styles.walletName}>{data?.wName}</Text>
-                        <View style={{height:130,borderWidth:1}}>
+                    <View style={styles.transaction}>
+                        <View style={styles.topRow}>
+                                <Text style={styles.transType}>{data?.transType}</Text>
+                                <Text style={[styles.walletName,{color:data?.themeColor}]}>{data?.wName}</Text>
+                        </View>
+                        <Text style={[styles.amount,{color:data?.transSign==-1?"tomato":"green"}]}><Text style={{fontWeight:"bold"}}> {data?.transSign==-1&&"-"} MWK </Text>{AddComas(data?.amount)}</Text>
+                        
+                        <View style={styles.description}>
                             <ScrollView style={{flex:1}}>
                                 {data?.transDescription !== ""?
-                                <Text>{data?.transDescription}</Text>:
+                                <Text style={styles.description}>{data?.transDescription}</Text>:
                                 <Text>No description</Text>
                             }
                             </ScrollView> 
-                            <View style={{flexDirection:"row",borderWidth:1}}>
+                            <View style={styles.bottomRow}>
                                 <Text style={styles.dateTime}>{data?.transTime}</Text>
                                 <Text style={[styles.dateTime,styles.date]}>{data?.transDate}</Text>
                             </View>  
@@ -40,13 +46,6 @@ export default function TransPopUp({visible,setVisible,data}){
 }
 
 const styles = StyleSheet.create({
-    icon:{
-        marginTop:-35,
-        elevation:20,
-        //backgroundColor:"#fff",
-        borderRadius:100,
-        padding:10,
-    },
     container:{
         backgroundColor:"#00000042",
         flex:1,
@@ -56,9 +55,11 @@ const styles = StyleSheet.create({
         height:400,
         width:"100%",
         alignItems:"center",
-        backgroundColor:"#fff",
+        backgroundColor:"#e0fbfb",
         borderTopEndRadius:30,
         borderTopStartRadius:30,
+        paddingHorizontal:20,
+
     },
     contentBox:{
         margin:5,
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
         paddingTop:30,
     },
     content:{
-        backgroundColor:"#bdffff",
+        backgroundColor:"#e0fbfb",
         width:"80%",
         flex:1,
         elevation:4,
@@ -81,34 +82,89 @@ const styles = StyleSheet.create({
         fontSize:34,
         color:"#000000",
         fontWeight:"bold",
-        
+        // borderWidth:1,
+        width:"90%",
+        marginLeft:20,
+    },
+    topRow:{
+        flexDirection:"row",
+        backgroundColor:"#fff",
+        padding:8,
+        borderWidth:0.5,
+        marginBottom:10,
+        borderRadius:3,
+    },
+    amountName:{
+        fontSize:12,
+        width:"40%",
     },
     walletName:{
-        fontSize:20,
-        fontWeight:"200",
         textAlign:"right",
+        backgroundColor:"white"
+    },
+    amount:{
+        borderRightWidth:0.8,
     },
     message:{
         width:"70%",
         height:"50%",
         textAlign:"center",
         fontSize:18,
-        fontWeight:"thin",
         marginTop:20,
     },
     button:{
         width:140,
         height:55,
     },
-    dateTime:{
-        width:"45%",
-        fontSize:12,
-        margin:5,
-        borderWidth:1,
+    transaction:{
+        backgroundColor:"#fff",
+        elevation:4,
+        borderRadius:10,
+        paddingHorizontal:10,
+        paddingVertical:8,
+        marginVertical:8,
+    },
+    topRow:{
+        flexDirection:"row",
+        marginBottom:10,
+    },
+    transType:{
+        fontSize:25,
+        fontWeight:"bold",
+        width:"63%",
+    },
+    walletName:{
+        width:"35%",
+        textAlign:"right",
+        borderRightWidth:2,
+        borderTopRightRadius:2,
+        borderBottomRightRadius:2,
+        borderColor:"grey",
+        padding:3,
+    },
+    amount:{
+        width:"100%",
+        textAlign:"right",
+        fontSize:16
+    },
+    description:{
+        height:140,
+        paddingHorizontal:6,
+        paddingTop:5,
+        backgroundColor:"#dde1ed",
+        marginVertical:10,
+        marginHorizontal:20,
+    },
+    bottomRow:{
+        flexDirection:"row",
+        marginBottom:10,
+    },
+    time:{
+        width:"50%",
     },
     date:{
+        width:"50%",
         textAlign:"right",
     }
-    
 
 })

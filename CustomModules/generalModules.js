@@ -2,7 +2,8 @@ import * as Datefns from "date-fns";
 
 export function AddComas(value){
     //this formats numbers and adds comas to them e.g 1100 to 1,100
-        const numeric = value.replace(/[^0-9]/g,'');
+        const str = String(value)
+        const numeric = str.replace(/[^0-9]/g,'');
         //removes all non numbers including commas
         const formatted = numeric.replace(/\B(?=(\d{3})+(?!\d))/g,",")
         //formats the values at this point there should be no previous commas 
@@ -45,8 +46,39 @@ export function fixTimes(dirtyTime,dirtyDate){
     }
 }
 
-export function fixDates(){
-
+export function fixDates(dirtyDate){
+const cleanDate = Datefns.parse(dirtyDate, "yyyy-MM-dd", new Date());
+    if (Datefns.isToday(cleanDate)) {
+      return "Aujourd'hui";
+      //change to english
+    } else if (Datefns.isYesterday(cleanDate)) {
+      return "Hier";
+      //change to english
+    } else if (Datefns.isThisWeek(cleanDate)) {
+      //console.log(Datefns.getDay(cleanDate))
+      switch (Datefns.getDay(cleanDate)) {
+        case 0:
+          return "Sunday";
+        case 1:
+          return "Monday";
+        case 2:
+          return "Tuesday";
+        case 3:
+          return "Wednesday";
+        case 4:
+          return "Thursday";
+        case 5:
+          return "Friday";
+        case 6:
+          return "Saturday";
+        default:
+          break;
+      }
+    } else {
+      return (Datefns.format(cleanDate, "dd/MM/yy"));
+    }
 }
 
-// export function fix
+export function fixAmounts(dirtyAmount){
+
+}

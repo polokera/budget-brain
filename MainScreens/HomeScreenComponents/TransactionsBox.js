@@ -1,51 +1,51 @@
 import { FlatList, StyleSheet, View, Text, Pressable } from "react-native";
 import { useEffect, useState } from "react";
 import * as Datefns from "date-fns";
-import { AddComas,fixTimes } from "../../CustomModules/generalModules";
+import { AddComas,fixTimes,fixDates } from "../../CustomModules/generalModules";
 
 export default function TransactionBox({ item,onPress }) {
   const [dateToShow, setDateToShow] = useState(null);
   const [timeToShow, setTimeToShow] = useState(null);
   const [amountToShow, setAmountToShow] = useState(null);
-  const fixDates = () => {
-    const cleanDate = Datefns.parse(item.transDate, "yyyy-MM-dd", new Date());
-    if (Datefns.isToday(cleanDate)) {
-      setDateToShow("Aujourd'hui");
-      //change to english
-    } else if (Datefns.isYesterday(cleanDate)) {
-      setDateToShow("Hier");
-      //change to english
-    } else if (Datefns.isThisWeek(cleanDate)) {
-      //console.log(Datefns.getDay(cleanDate))
-      switch (Datefns.getDay(cleanDate)) {
-        case 0:
-          setDateToShow("Sunday");
-          break;
-        case 1:
-          setDateToShow("Monday");
-          break;
-        case 2:
-          setDateToShow("Tuesday");
-          break;
-        case 3:
-          setDateToShow("Wednesday");
-          break;
-        case 4:
-          setDateToShow("Thursday");
-          break;
-        case 5:
-          setDateToShow("Friday");
-          break;
-        case 6:
-          setDateToShow("Saturday");
-          break;
-        default:
-          break;
-      }
-    } else {
-      setDateToShow(Datefns.format(cleanDate, "dd/MM/yy"));
-    }
-  };
+  // const fixDates = () => {
+  //   const cleanDate = Datefns.parse(item.transDate, "yyyy-MM-dd", new Date());
+  //   if (Datefns.isToday(cleanDate)) {
+  //     setDateToShow("Aujourd'hui");
+  //     //change to english
+  //   } else if (Datefns.isYesterday(cleanDate)) {
+  //     setDateToShow("Hier");
+  //     //change to english
+  //   } else if (Datefns.isThisWeek(cleanDate)) {
+  //     //console.log(Datefns.getDay(cleanDate))
+  //     switch (Datefns.getDay(cleanDate)) {
+  //       case 0:
+  //         setDateToShow("Sunday");
+  //         break;
+  //       case 1:
+  //         setDateToShow("Monday");
+  //         break;
+  //       case 2:
+  //         setDateToShow("Tuesday");
+  //         break;
+  //       case 3:
+  //         setDateToShow("Wednesday");
+  //         break;
+  //       case 4:
+  //         setDateToShow("Thursday");
+  //         break;
+  //       case 5:
+  //         setDateToShow("Friday");
+  //         break;
+  //       case 6:
+  //         setDateToShow("Saturday");
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //   } else {
+  //     setDateToShow(Datefns.format(cleanDate, "dd/MM/yy"));
+  //   }
+  // };
 
   // const fixTimes = () => {
   //   const cleanTime = Datefns.parse(item.transTime, "HHmm", new Date());
@@ -74,11 +74,12 @@ export default function TransactionBox({ item,onPress }) {
   //   }
   // };
   const fixAmounts = () => {
-    const cleanAmount = AddComas(String(item.amount));
+    const cleanAmount = AddComas(item.amount);
     setAmountToShow(cleanAmount);
   };
   useEffect(() => {
-    fixDates();
+    const newDate = fixDates(item.transDate);
+    setDateToShow(newDate)
     const newTime = fixTimes(item.transTime,item.transDate);
     setTimeToShow(newTime)
     fixAmounts();

@@ -33,7 +33,8 @@ export default function DropdownField({fieldName,placeholder,ctrl,isRequired,max
                         renderButton={(selectedItem,isOpened)=>{
                             return(
                                 <View style={[styles.input,externalStyles.input]}>
-                                    <Text style={{verticalAlign:"middle",height:"100%"}}>{field.value?field.value[property]:placeholder}</Text>
+                                    {selectedItem?.emoji&&<Text style={{alignSelf:"center"}}>{selectedItem.emoji}</Text>}
+                                    <Text style={{verticalAlign:"middle",height:"100%"}}> {field.value?field.value[property]:placeholder}</Text>
                                 </View>
                             )
                         }}
@@ -41,7 +42,8 @@ export default function DropdownField({fieldName,placeholder,ctrl,isRequired,max
                         renderItem={(item,_,isSelected)=>{
                             return(
                                 <View style={styles.dropdownContainer}>
-                                    <Text style={{color:isSelected?"teal":"black"}}>{item[property]}</Text>
+                                    {item.emoji&&<Text>{item.emoji}</Text>}
+                                    <Text style={{color:isSelected?"teal":"black"}}> {item[property]}</Text>
                                 </View>
                             )
                         }}
@@ -75,6 +77,7 @@ const styles = StyleSheet.create({
         width:"75%",
         height:40,
         paddingHorizontal:5,
+        flexDirection:"row",
     },
     errorMessage:{
         color:"red",
@@ -87,7 +90,8 @@ const styles = StyleSheet.create({
         // marginTop:-30,
         paddingVertical:9,
         borderRadius:8,
-        height:35,
+        height:38,
         paddingHorizontal:10,
+        flexDirection:"row",
     }
 })

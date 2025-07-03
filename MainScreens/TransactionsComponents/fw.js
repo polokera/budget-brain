@@ -21,14 +21,14 @@ export default function Fw({data,show,hide,setMessage,}){
     //will use wName for the categories because the custom built function requires 
     //it. I didnt know Ill need it for other components other than wallets
     const categories = [
-        {id:1,transType:"Food"},
-        {id:2,transType:"Groceries"},
-        {id:3,transType:"Bills & Membership"},
-        {id:4,transType:"Zinjoyi"},
-        {id:5,transType:"Education"},
-        {id:6,transType:"Loans repayment"},
-        {id:7,transType:"Religious fees"},
-        {id:8,transType:"others...."}]
+        {id:1,transType:"Food",emoji:"🍔"},
+        {id:2,transType:"Groceries",emoji:"🛒"},
+        {id:3,transType:"Bills & Membership",emoji:"💸"},
+        {id:4,transType:"Zinjoyi",emoji:"💃🏾"},
+        {id:5,transType:"Education",emoji:"📚"},
+        {id:6,transType:"Loans repayment",emoji:"💰"},
+        {id:7,transType:"Religious fees",emoji:"🛐"},
+        {id:8,transType:"others....",emoji:"🕳️"}]
     const onError=errors=>console.log("errors: ",errors)
     async function onSubmit(data) {
         const {amount,extraFees,from} = data; 

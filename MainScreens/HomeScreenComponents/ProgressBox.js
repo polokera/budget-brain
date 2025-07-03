@@ -2,7 +2,6 @@ import { StyleSheet,View,Text,Dimensions } from "react-native"
 import HomeScreenStyles from "./HomeScreenStyles"
 import { useEffect, useState } from "react"
 import { removeCommas } from "../../CustomModules/generalModules"
-import { Divider } from "react-native-paper"
 
 export default function ProgressBox({goal,spent}){
     const [perc,setPerc] = useState(null);

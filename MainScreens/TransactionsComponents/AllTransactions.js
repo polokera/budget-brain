@@ -6,7 +6,8 @@ import { AddComas, fixDates,fixTimes } from "../../CustomModules/generalModules"
 import FilterIcon from '@expo/vector-icons/FontAwesome'
 import FilterPopUp from './FilterPopUp'
 
-export default function AllTransactions(){
+export default function AllTransactions({route}){
+    const {wallets} = route.params;
     const [loading,setLoading] = useState(false)
     const [filterPopUpVisible,setFilterPopUpVisible] = useState(true)
     const [transactions,setTransactions] = useState(
@@ -63,8 +64,10 @@ export default function AllTransactions(){
         <View style={[externalStyles.main,styles.main]}>
             <View style={styles.container}>
                 <FilterPopUp
+                data={transactions}
                 visible={filterPopUpVisible}
                 setVisible={setFilterPopUpVisible}
+                wallets={wallets}
                 />
                 <Pressable onPress={()=>setFilterPopUpVisible(true)}>
                     <View style={styles.filterButton}>

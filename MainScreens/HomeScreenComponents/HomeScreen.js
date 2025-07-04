@@ -149,7 +149,9 @@ export default function HomeScreen({ navigation }) {
                 {transes.length == 3 && (
                   <Pressable
                     style={styles.viewHistoryButton}
-                    onPress={() => navigation.navigate("TransHistory")}
+                    onPress={() => navigation.navigate("TransHistory",{
+                      wallets
+                    })}
                   >
                     <Text style={styles.viewHistoryButton}>
                       ...View full History

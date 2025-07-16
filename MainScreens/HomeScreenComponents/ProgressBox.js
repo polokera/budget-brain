@@ -1,7 +1,7 @@
 import { StyleSheet,View,Text,Dimensions } from "react-native"
 import HomeScreenStyles from "./HomeScreenStyles"
 import { useEffect, useState } from "react"
-import { removeCommas } from "../../CustomModules/generalModules"
+import { AddComas, removeCommas } from "../../CustomModules/generalModules"
 
 export default function ProgressBox({goal,spent}){
     const [perc,setPerc] = useState(null);
@@ -66,7 +66,7 @@ export default function ProgressBox({goal,spent}){
                             <View style={{flexDirection:"column"}}>
                                 {/* right bottom */}
                                 <Text style={{fontSize:12}}>Left to use this week:</Text>
-                                <Text style={[styles.values]}>MWK {leftToSpend}</Text>
+                                <Text style={[styles.values]}>MWK {AddComas(leftToSpend)}</Text>
                             </View>
                         </View>
                     </View>

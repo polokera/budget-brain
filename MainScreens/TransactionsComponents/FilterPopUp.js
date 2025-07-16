@@ -11,9 +11,10 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import externalStyles from "../../CustomModules/generalStyles";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { MultiSelect } from "react-native-element-dropdown";
+import { MultiSelect,Dropdown } from "react-native-element-dropdown";
 import { useState } from "react";
 import Entypo from "@expo/vector-icons/Entypo";
+import AddCommas, { AddComas } from "../../CustomModules/generalModules"
 
 export default function FilterPopUp({ visible, setVisible, data,wallets }) {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
@@ -28,6 +29,12 @@ export default function FilterPopUp({ visible, setVisible, data,wallets }) {
     { id: 7, transType: "Religious fees", emoji: "🛐" },
     { id: 8, transType: "others....", emoji: "🕳️" },
   ];
+  const transSign = [
+    {label:"Money coming in",value:-1},
+    {label:"Money spent",value:1},
+    {label:"All",value:0},
+
+  ]
   const {
     handleSubmit,
     reset,
@@ -47,6 +54,8 @@ export default function FilterPopUp({ visible, setVisible, data,wallets }) {
   const onSubmit = (data) => console.log(data);
   const start = watch("start");
   const end = watch("end");
+  const minPrice = ("minPrice")
+  const maxPrice = ("maxPrice")
   const applyFilter = () => {
     setVisible(false);
     handleSubmit(onSubmit)();
@@ -160,6 +169,23 @@ export default function FilterPopUp({ visible, setVisible, data,wallets }) {
                     />
                   </View>
                 </View>
+                <Text style={styles.titles}>Transaction Type:</Text>
+                <Controller
+                name="transType"
+                control={control}
+                render={({field})=>{
+                  return(
+                    <Dropdown
+                    data={transSign}
+                    labelField="label"
+                    valueField="value"
+                    value={field.value||"Select wallet type"}
+                    style={styles.dropdown}
+                    onChange={field.onChange}
+                    />
+                  )
+                }}
+                />
                 <View style={styles.dateRow}>
                   <View style={styles.dateField}>
                     <Text style={styles.titles}>Start Date</Text>
@@ -246,8 +272,8 @@ export default function FilterPopUp({ visible, setVisible, data,wallets }) {
                           <TextInput
                             style={[externalStyles.input, styles.priceInput]}
                             keyboardType="number-pad"
-                            value={field.value}
-                             placeholder="0"
+                            value={AddComas(field.value)}
+                            placeholder="0"
                             onChangeText={field.onChange}
                           />
                         );
@@ -264,7 +290,7 @@ export default function FilterPopUp({ visible, setVisible, data,wallets }) {
                           <TextInput
                             style={[externalStyles.input, styles.priceInput]}
                             keyboardType="number-pad"
-                            value={field.value}
+                            value={AddComas(field.value)}
                             placeholder="0"
                             onChangeText={field.onChange}
                           />

@@ -9,7 +9,8 @@ import FilterPopUp from './FilterPopUp'
 export default function AllTransactions({route}){
     const {wallets} = route.params;
     const [loading,setLoading] = useState(false)
-    const [filterPopUpVisible,setFilterPopUpVisible] = useState(true)
+    const [filterPopUpVisible,setFilterPopUpVisible] = useState(false)
+    const [conditions,setConditions] = useState()
     const [transactions,setTransactions] = useState(
       [
         {"amount": 26000, "transDate": "2025-06-23", "transDescription": "Limoblazeeeeeee", "transId": 100, "transSign": -1, "transTime": "1650", "transType": "Food", "wName": "Mpamba", "themeColor": "#2fdb45",}, 
@@ -34,24 +35,12 @@ export default function AllTransactions({route}){
            categories:["Education"],
         }
     )
-    const filterFunc =()=>{
-        const filtered = transactions.filter((transaction)=>{
-            const date = new Date(transaction.transDate)
-            const start = new Date(filters.startDate)
-            const end = new Date(filters.endDate)
-            if(transaction.amount < filters.minAmount)
-                return false
-            if(transaction.amount > filters.maxAmount)
-                return false
-            if(transaction.transSign == filters.transSign)
-                return false;
-            if(!filters.categories.includes(transaction.transType))
-                return false;
-            if(date<start || date>end)
-                return false
-            return true
-        })
-        setFilteredTransactions(filtered)
+   
+    const filterFunc = async()=>{
+        const dbx = await openDatabase()
+        const filteredTransactions = await dbx.getAllAsync(`SELECT * FROM transactions 
+            where `)
+
     }
     if(loading){
         return(
@@ -81,7 +70,7 @@ export default function AllTransactions({route}){
                 ListFooterComponent={<View style={{height:30,}}/>}
                 renderItem={({item})=>{
                     return(
-                        <View style={styles.transaction}>
+                        <View style={styles.transaction} key={item.transId}>
                             <View style={styles.topRow}>
                                 <Text style={styles.transType}>{item.transType}</Text>
                                 <Text style={[styles.walletName,{color:item.themeColor}]}>{item.wName}</Text>

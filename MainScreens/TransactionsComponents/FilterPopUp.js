@@ -16,7 +16,7 @@ import { useState } from "react";
 import Entypo from "@expo/vector-icons/Entypo";
 import AddCommas, { AddComas } from "../../CustomModules/generalModules"
 
-export default function FilterPopUp({ visible, setVisible, data,wallets }) {
+export default function FilterPopUp({ visible, setVisible, data,wallets,setFilters }) {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const categories = [
@@ -46,19 +46,33 @@ export default function FilterPopUp({ visible, setVisible, data,wallets }) {
       start: "",
       end: "",
       minPrice: "",
-      maxPrice: "",
+      maxPrice: "9000000",
+      transType:0,
       selectedWallets: [],
       selectedCategories: [],
     },
   });
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    setFilters(
+      {
+        minAmount:Number(data.minPrice),
+        maxAmount:Number(data.maxPrice),
+        transSign:data.transType,
+        startDate:"2025-03-23",
+        endDate:"2050-06-29",
+        categories:["Education","Groceries","Food","Zinjoyi","Bills & Membership"],
+        wallets:["Mpamba","Airtel Money"]
+      }
+    )
+    console.log(data)
+  };
   const start = watch("start");
   const end = watch("end");
   const minPrice = ("minPrice")
   const maxPrice = ("maxPrice")
   const applyFilter = () => {
-    setVisible(false);
     handleSubmit(onSubmit)();
+    setVisible(false);
   };
   const cancelFilters = () => {
     reset();

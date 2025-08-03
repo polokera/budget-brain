@@ -10,38 +10,60 @@ export default function AllTransactions({route}){
     const {wallets} = route.params;
     const [loading,setLoading] = useState(false)
     const [filterPopUpVisible,setFilterPopUpVisible] = useState(false)
-    const [conditions,setConditions] = useState()
-    const [transactions,setTransactions] = useState(
-      [
-        {"amount": 26000, "transDate": "2025-06-23", "transDescription": "Limoblazeeeeeee", "transId": 100, "transSign": -1, "transTime": "1650", "transType": "Food", "wName": "Mpamba", "themeColor": "#2fdb45",}, 
-        {"amount": 55, "transDate": "2025-06-23", "transDescription": "Shayimoto", "transId": 101, "transSign": -1, "transTime": "1741", "transType": "Groceries", "wName": "National Bank", "themeColor": "#6985db",},
-        {"amount": 55, "transDate": "2025-06-26", "transDescription": "One handshake from my brother and you just gotta wave me goodbye and give me love for the way", "transId": 102, "transSign": -1, "transTime": "1030", "transType": "Education",  "wName": "Airtel Money", "themeColor": "#f61f1f",}, 
-        {"amount": 260, "transDate": "2025-06-23", "transDescription": "Limoblazeeeeeee", "transId": 103, "transSign": -1, "transTime": "1650", "transType": "Food", "wName": "Mpamba", "themeColor": "#2fdb45",}, 
-        {"amount": 55, "transDate": "2025-06-23", "transDescription": "Shayimoto", "transId": 104, "transSign": -1, "transTime": "1741", "transType": "Groceries", "wName": "National Bank", "themeColor": "#6985db",},
-        {"amount": 55, "transDate": "2025-06-26", "transDescription": "", "transId": 105, "transSign": -1, "transTime": "1030", "transType": "Bills & Membership",  "wName": "Airtel Money", "themeColor": "#f61f1f",}, 
-        {"amount": 260, "transDate": "2025-06-23", "transDescription": "Limoblazeeeeeee", "transId": 106, "transSign": -1, "transTime": "1650", "transType": "Food", "wName": "Mpamba", "themeColor": "#2fdb45",}, 
-        {"amount": 55, "transDate": "2025-06-23", "transDescription": "Shayimoto", "transId": 107, "transSign": -1, "transTime": "1741", "transType": "Groceries", "wName": "National Bank", "themeColor": "#6985db",},
-        {"amount": 55, "transDate": "2025-06-26", "transDescription": "", "transId": 108, "transSign": -1, "transTime": "1030", "transType": "Education",  "wName": "Airtel Money", "themeColor": "#f61f1f",}, 
-    ]
-    )
+    const [transactions,setTransactions] = useState([])
     const [filteredTransactions,setFilteredTransactions] = useState(null)
     const [filters,setFilters] = useState(
         {
            minAmount:0,
            maxAmount:1000000,
            transSign:1,
-           startDate:"2025-06-23",
-           endDate:"2025-06-29",
-           categories:["Education"],
+           startDate:"2025-03-23",
+           endDate:"2050-06-29",
+           categories:["Education","Groceries","Food","Zinjoyi","Bills & Membership"],
+           wallets:["Mpamba","Airtel Money"]
         }
     )
    
     const filterFunc = async()=>{
+        setLoading(true)
         const dbx = await openDatabase()
-        const filteredTransactions = await dbx.getAllAsync(`SELECT * FROM transactions 
-            where `)
-
+        const categoryList = filters.categories.map((cat)=>`'${cat.replace(/"/g,"'")}'`).join(",");
+        const walletList = filters.wallets.map((wal)=>`'${wal.replace(/"/g,"'")}'`).join(",");
+        try
+        {
+            const sql = `
+            SELECT
+            transactions.transId,transactions.transSign,transactions.transType,transactions.amount,transactions.transDate,transactions.transTime,transactions.transDescription,wallets.themeColor,wallets.wName
+            FROM transactions INNER JOIN wallets
+            ON transactions.walletId = wallets.walletId
+            where
+            transactions.transSign != ${filters.transSign} 
+            and transactions.amount >= ${filters.minAmount} and
+            transactions.amount <= ${filters.maxAmount}
+            and
+            transactions.transDate >= '${filters.startDate}'
+            and
+            transactions.transDate <= '${filters.endDate}' 
+            and
+            transactions.transType IN (${categoryList})
+            and wallets.wName IN (${walletList})
+            ORDER BY transactions.transDate desc,transactions.transTime desc
+            limit 25
+            `
+            console.log(sql)
+            const filteredTransactions = await dbx.getAllAsync(sql)
+            console.log(filteredTransactions)
+            setTransactions(filteredTransactions)
+            setLoading(false)
+        }
+        catch(e){
+            console.log(e)
+        }
+        
     }
+    useEffect(()=>{
+        filterFunc()  
+    },[filters])
     if(loading){
         return(
             <View style={externalStyles.main}>
@@ -53,7 +75,7 @@ export default function AllTransactions({route}){
         <View style={[externalStyles.main,styles.main]}>
             <View style={styles.container}>
                 <FilterPopUp
-                data={transactions}
+                setFilters={setFilters}
                 visible={filterPopUpVisible}
                 setVisible={setFilterPopUpVisible}
                 wallets={wallets}

@@ -14,9 +14,10 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { MultiSelect,Dropdown } from "react-native-element-dropdown";
 import { useState } from "react";
 import Entypo from "@expo/vector-icons/Entypo";
-import AddCommas, { AddComas } from "../../CustomModules/generalModules"
+import AddCommas, { AddComas, removeCommas } from "../../CustomModules/generalModules"
+import * as DateFns from 'date-fns'
 
-export default function FilterPopUp({ visible, setVisible, data,wallets,setFilters }) {
+export default function FilterPopUp({ visible, setVisible, data,wallets,setFilters,filters }) {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const categories = [
@@ -43,33 +44,31 @@ export default function FilterPopUp({ visible, setVisible, data,wallets,setFilte
     watch,
   } = useForm({
     defaultValues: {
-      start: "",
-      end: "",
-      minPrice: "",
-      maxPrice: "9000000",
-      transType:0,
-      selectedWallets: [],
-      selectedCategories: [],
+      start: new Date(filters.startDate),
+      end: new Date(filters.endDate),
+      minPrice: filters.minAmount,
+      maxPrice: filters.maxAmount,
+      transType:filters.transSign,
+      selectedWallets:filters.wallets,
+      selectedCategories: filters.categories,
     },
   });
   const onSubmit = (data) => {
     setFilters(
       {
-        minAmount:Number(data.minPrice),
-        maxAmount:Number(data.maxPrice),
+        minAmount:Number(removeCommas(data.minPrice)),
+        maxAmount:Number(removeCommas(data.maxPrice)),
         transSign:data.transType,
-        startDate:"2025-03-23",
-        endDate:"2050-06-29",
-        categories:["Education","Groceries","Food","Zinjoyi","Bills & Membership"],
-        wallets:["Mpamba","Airtel Money"]
+        startDate:data.start,
+        endDate:data.end,
+        categories:data.selectedCategories.length?data.selectedCategories:["Education","Groceries","Food","Zinjoyi","Bills & Membership"],
+        wallets:data.selectedWallets,
       }
     )
     console.log(data)
   };
   const start = watch("start");
   const end = watch("end");
-  const minPrice = ("minPrice")
-  const maxPrice = ("maxPrice")
   const applyFilter = () => {
     handleSubmit(onSubmit)();
     setVisible(false);
@@ -206,7 +205,7 @@ export default function FilterPopUp({ visible, setVisible, data,wallets,setFilte
                     <Pressable onPress={() => setShowStartDatePicker(true)}>
                       {start ? (
                         <Text style={[styles.dateInput]}>
-                          {start?.toDateString()}
+                          {DateFns.format(start,"d MMMM yyyy")}
                         </Text>
                       ) : (
                         <Text style={[styles.dateInput,{fontSize:12,color:"grey"}]}>Select a start Date</Text>
@@ -242,7 +241,7 @@ export default function FilterPopUp({ visible, setVisible, data,wallets,setFilte
                     <Pressable onPress={() => setShowEndDatePicker(true)}>
                       {end ? (
                         <Text style={styles.dateInput}>
-                          {end?.toDateString()}
+                          {DateFns.format(end,"d MMMM yyyy")}
                         </Text>
                       ) : (
                         <Text style={[styles.dateInput,{fontSize:12,color:"grey"}]}>Select an end Date</Text>
@@ -255,7 +254,7 @@ export default function FilterPopUp({ visible, setVisible, data,wallets,setFilte
                             <>
                               {showEndDatePicker && (
                                 <DateTimePicker
-                                  value={field.value || new Date()}
+                                  value={(field.value) || new Date()}
                                   mode="date"
                                   minimumDate={start ? start : null}
                                   maximumDate={new Date()}

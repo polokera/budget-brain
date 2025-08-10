@@ -1,5 +1,6 @@
 import {View,Text,StyleSheet, Button} from "react-native"
 import openDatabase from "./CustomModules/DbModule"
+import * as Datefns from "date-fns"
 
 export default function Troubleshooting(){
     const getAllTransactions =async()=>{
@@ -22,6 +23,11 @@ export default function Troubleshooting(){
             console.log(e)
         }
     }
+    const convertDate=()=>{
+        const cleanDate = Datefns.parseISO("2025-08-01T09:28:00.000Z");
+        const Formated = Datefns.format(cleanDate,"yyyy-MM-dd")
+        console.log(Formated)
+    }
     return(
         <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
             <Text>Ndatsala pang'ono pang'ono chabe</Text>
@@ -35,7 +41,7 @@ export default function Troubleshooting(){
             />
             <Button
             title="Surpise button"
-            onPress={Anything}
+            onPress={convertDate}
             />
         </View>
     )

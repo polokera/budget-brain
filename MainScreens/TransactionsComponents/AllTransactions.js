@@ -5,6 +5,7 @@ import { useState,useEffect } from "react"
 import { AddComas, fixDates,fixTimes } from "../../CustomModules/generalModules"
 import FilterIcon from '@expo/vector-icons/FontAwesome'
 import FilterPopUp from './FilterPopUp'
+import { format } from "date-fns"
 
 export default function AllTransactions({route}){
     const {wallets} = route.params;
@@ -14,36 +15,40 @@ export default function AllTransactions({route}){
     const [filteredTransactions,setFilteredTransactions] = useState(null)
     const [filters,setFilters] = useState(
         {
-           minAmount:0,
-           maxAmount:1000000,
-           transSign:1,
-           startDate:"2025-03-23",
-           endDate:"2050-06-29",
-           categories:["Education","Groceries","Food","Zinjoyi","Bills & Membership"],
-           wallets:["Mpamba","Airtel Money"]
+           minAmount:"",
+           maxAmount:"",
+           transSign:{label:"All",value:0},
+           startDate:"2025-05-08T10:02:00.000Z",
+           endDate:new Date(),
+           categories:["Education","Groceries","Food","Zinjoyi","Bills & Membership","Religious fees","others....","Loans repayment"],
+           wallets:wallets.map((w)=>w.wName),
         }
     )
    
     const filterFunc = async()=>{
-        setLoading(true)
-        const dbx = await openDatabase()
-        const categoryList = filters.categories.map((cat)=>`'${cat.replace(/"/g,"'")}'`).join(",");
-        const walletList = filters.wallets.map((wal)=>`'${wal.replace(/"/g,"'")}'`).join(",");
         try
         {
+            const fixedStartDate = format(filters.startDate,"yyyy-MM-dd")
+            const fixedEndDate = format(filters.endDate,"yyyy-MM-dd")
+            const fixedMinimum = filters.minAmount === "" ? 0 : filters.minAmount
+            const fixedMaximum = filters.maxAmount === "" ? 999999999 : filters.maxAmount
+            setLoading(true)
+            const dbx = await openDatabase()
+            const categoryList = filters.categories.map((cat)=>`'${cat.replace(/"/g,"'")}'`).join(",");
+            const walletList = filters.wallets.map((wal)=>`'${wal.replace(/"/g,"'")}'`).join(",");
             const sql = `
             SELECT
             transactions.transId,transactions.transSign,transactions.transType,transactions.amount,transactions.transDate,transactions.transTime,transactions.transDescription,wallets.themeColor,wallets.wName
             FROM transactions INNER JOIN wallets
             ON transactions.walletId = wallets.walletId
             where
-            transactions.transSign != ${filters.transSign} 
-            and transactions.amount >= ${filters.minAmount} and
-            transactions.amount <= ${filters.maxAmount}
+            transactions.transSign != ${filters.transSign.value} 
+            and transactions.amount >= ${fixedMinimum} and
+            transactions.amount <= ${fixedMaximum}
             and
-            transactions.transDate >= '${filters.startDate}'
+            transactions.transDate >= '${fixedStartDate}'
             and
-            transactions.transDate <= '${filters.endDate}' 
+            transactions.transDate <= '${fixedEndDate}' 
             and
             transactions.transType IN (${categoryList})
             and wallets.wName IN (${walletList})
@@ -52,12 +57,13 @@ export default function AllTransactions({route}){
             `
             console.log(sql)
             const filteredTransactions = await dbx.getAllAsync(sql)
-            console.log(filteredTransactions)
             setTransactions(filteredTransactions)
-            setLoading(false)
         }
         catch(e){
             console.log(e)
+        }
+        finally{
+            setLoading(false)
         }
         
     }
@@ -76,6 +82,7 @@ export default function AllTransactions({route}){
             <View style={styles.container}>
                 <FilterPopUp
                 setFilters={setFilters}
+                filters={filters}
                 visible={filterPopUpVisible}
                 setVisible={setFilterPopUpVisible}
                 wallets={wallets}

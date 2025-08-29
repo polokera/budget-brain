@@ -13,7 +13,7 @@ import openDatabase from "../CustomModules/DbModule";
 import { removeCommas } from "../CustomModules/generalModules";
 import { initial } from "lodash";
 
-export default function MoneyWallet({navigation,route}) {
+export default function MoneyWallet({navigation,route,setIsUserSignedUp}) {
   const {walletsArray} = route.params
   const [userName, setUserName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -25,12 +25,10 @@ export default function MoneyWallet({navigation,route}) {
     const dbx = await openDatabase();
     const formattedWallets = walletsArray.map((wallet)=>{
       const formattedAmount = removeCommas(wallet.initialAmount)
-      console.log(formattedAmount," is your formatted amount")
       return(
         {...wallet,initialAmount:formattedAmount}
       )
     })
-    console.log(formattedWallets)
     try{
         for(const wlt of formattedWallets){
         //inserts wallets from the previous page into the database.
@@ -38,11 +36,7 @@ export default function MoneyWallet({navigation,route}) {
         }
         console.log("wallets Inserted");
         await dbx.runAsync(`INSERT into target(targetId,target)values(?,?)`,[1,weeklyTarget])
-//         await dbx.runAsync(`
-// INSERT INTO transactions ("transId", "walletId", "transTitle", "transDescription", "amount", "transDate", "transTime") VALUES ('101', '1', 'lunch-cloud 9', 'went to buy phwanya there myself', '2500', '2025-05-18
-// ', '2330');
-
-//           `)
+        setIsUserSignedUp(true)
         console.log("target inserted");
     }
     catch(e){
@@ -63,7 +57,6 @@ export default function MoneyWallet({navigation,route}) {
     }
   };
   useEffect(() => {
-    console.log(walletsArray)
     getUserName();
   }, []);
   if (isLoading) {
@@ -87,7 +80,9 @@ export default function MoneyWallet({navigation,route}) {
          {nextPressed? <SetTargetPage
           showHome={goToHome} 
           addWalletsToDb={addWalletsToDb}
-          walletsArray={walletsArray}/> : <OpeningScreen goNext={showNext}/>}
+          walletsArray={walletsArray}
+          setIsUserSignedUp={setIsUserSignedUp}
+          /> : <OpeningScreen goNext={showNext}/>}
        </View>
        
       </View>

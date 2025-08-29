@@ -27,6 +27,7 @@ export default function WelcomeScreen({navigation,route}){
     return(
         <View style={styles.main}>
             <View style={styles.container}>
+                <Text style={styles.text}>How much money do  you currently have in each of these wallets?</Text>
                 <View style={styles.list}>
                     <FlatList
                     data={wallets}
@@ -104,6 +105,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         elevation: 4,
+    },
+    text:{
+        paddingHorizontal:30,
+        fontSize:18,
+        paddingBottom:10,
     }
 
 })

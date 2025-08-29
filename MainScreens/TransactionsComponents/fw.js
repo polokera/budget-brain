@@ -58,7 +58,7 @@ export default function Fw({data,show,hide,setMessage,}){
             />
             <TextField
             fieldName="amount"
-            label="Amount"
+            label="Amount (MWK)"
             number
             placeholder="0"
             ctrl={control}

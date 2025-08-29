@@ -5,9 +5,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AddComas } from '../../CustomModules/generalModules'
 
 export default function SetTargetPage({showHome,addWalletsToDb}){
-
-
-
     const handleChange =(text)=>{
     //this function formats content in the textbox, adds commas using regex.
         const formatted = AddComas(text);
@@ -20,12 +17,16 @@ export default function SetTargetPage({showHome,addWalletsToDb}){
         await AsyncStorage.setItem("isSignedUp","true");
     }
     const onPress=async()=>{
+        //the value  here is the weekly goal
+        //it checks whether the weekly goal is not 0  and actually a value
+        //then it passes is it to  the function which enters it to the table 
+        //using an sql statement.
         if(Number(value) !== 0 && value){
             try
             {
                 await signUserUp()
                 await addWalletsToDb(value);
-                showHome()
+                // showHome()
             }
             catch(e){
                 console.log(e)
@@ -57,7 +58,6 @@ export default function SetTargetPage({showHome,addWalletsToDb}){
                         <Text style={externalStyles.buttonText}>Done</Text>
                 </Pressable>                
            </View>
-
         </View>
     )
 }

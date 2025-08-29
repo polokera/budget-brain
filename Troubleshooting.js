@@ -1,6 +1,7 @@
 import {View,Text,StyleSheet, Button} from "react-native"
 import openDatabase from "./CustomModules/DbModule"
 import * as Datefns from "date-fns"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export default function Troubleshooting(){
     const getAllTransactions =async()=>{
@@ -16,8 +17,17 @@ export default function Troubleshooting(){
     const Anything =async()=>{
         try{
         const dbx = await openDatabase()
-        const result = await dbx.runAsync(`DELETE from transactions where transId = ?`,[105])
+        const result = await dbx.runAsync(`DELETE from target`)
         result>0&&console.log("deleted")
+        }
+        catch(e){
+            console.log(e)
+        }
+    }
+    const removeKey=async()=>{
+        try{
+            await AsyncStorage.removeItem("isSignedUp")
+            console.log("key has been removed")
         }
         catch(e){
             console.log(e)
@@ -41,7 +51,7 @@ export default function Troubleshooting(){
             />
             <Button
             title="Surpise button"
-            onPress={convertDate}
+            onPress={removeKey}
             />
         </View>
     )

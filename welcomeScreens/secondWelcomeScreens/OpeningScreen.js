@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     borderBottomWidth:4.1,
     borderRightWidth:2.05,
+    backgroundColor:"#fEEEEE"
   },
   container1: {
     flex: 1,

@@ -41,7 +41,7 @@ export default function WelcomeScreen({ navigation }) {
             <TextInput
               value={userName}
               onChangeText={setUserName}
-              style={styles.input}
+              style={[styles.input,externalStyles.input]}
             />
           </View>
           <Pressable onPress={validation} style={[externalStyles.button,styles.button]}>
@@ -67,10 +67,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     width: 200,
     height:40,
-    borderRadius: 20,
-    borderWidth: 0.4,
-    paddingHorizontal: 10,
-    marginVertical: 20,
+    paddingHorizontal:15,
   },
   form: {
     gap: 10,

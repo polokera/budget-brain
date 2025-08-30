@@ -10,8 +10,10 @@ import { useState, useEffect } from "react";
 import OpeningScreen from "./secondWelcomeScreens/OpeningScreen";
 import SetTargetPage from "./secondWelcomeScreens/SetTargetpage";
 import openDatabase from "../CustomModules/DbModule";
+import { removeCommas } from "../CustomModules/generalModules";
+import { initial } from "lodash";
 
-export default function MoneyWallet({navigation,route}) {
+export default function MoneyWallet({navigation,route,setIsUserSignedUp}) {
   const {walletsArray} = route.params
   const [userName, setUserName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -21,18 +23,20 @@ export default function MoneyWallet({navigation,route}) {
   }
   const addWalletsToDb = async(weeklyTarget)=>{
     const dbx = await openDatabase();
+    const formattedWallets = walletsArray.map((wallet)=>{
+      const formattedAmount = removeCommas(wallet.initialAmount)
+      return(
+        {...wallet,initialAmount:formattedAmount}
+      )
+    })
     try{
-        for(const wlt of walletsArray){
+        for(const wlt of formattedWallets){
         //inserts wallets from the previous page into the database.
         await dbx.runAsync(`INSERT INTO wallets(walletId,wName,balance,themeColor)values(?,?,?,?)`,[wlt.id,wlt.wName,wlt.initialAmount,wlt.themeColor])
         }
         console.log("wallets Inserted");
         await dbx.runAsync(`INSERT into target(targetId,target)values(?,?)`,[1,weeklyTarget])
-//         await dbx.runAsync(`
-// INSERT INTO transactions ("transId", "walletId", "transTitle", "transDescription", "amount", "transDate", "transTime") VALUES ('101', '1', 'lunch-cloud 9', 'went to buy phwanya there myself', '2500', '2025-05-18
-// ', '2330');
-
-//           `)
+        setIsUserSignedUp(true)
         console.log("target inserted");
     }
     catch(e){
@@ -71,12 +75,14 @@ export default function MoneyWallet({navigation,route}) {
   return (
     <View style={styles.main}>
       <View style={styles.container}>
-        <Text style={styles.title}>Welcome, {userName}</Text>
+        <Text style={styles.title}>Welcome, <Text style={{color:"#ee9e8e"}}>{userName}</Text></Text>
        <View style={{height:600,width:"90%"}}>
          {nextPressed? <SetTargetPage
           showHome={goToHome} 
           addWalletsToDb={addWalletsToDb}
-          walletsArray={walletsArray}/> : <OpeningScreen goNext={showNext}/>}
+          walletsArray={walletsArray}
+          setIsUserSignedUp={setIsUserSignedUp}
+          /> : <OpeningScreen goNext={showNext}/>}
        </View>
        
       </View>
@@ -108,6 +114,7 @@ const styles = StyleSheet.create({
   nextButton: {
     alignSelf: "flex-end",
     borderWidth: 1,
+    backgroundColor:"#e0fbfb"
   },
   container1:{
     flex:1,

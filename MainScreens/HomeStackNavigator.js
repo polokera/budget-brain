@@ -1,0 +1,61 @@
+import { createStackNavigator } from "@react-navigation/stack"
+import HomeScreen from "./HomeScreenComponents/HomeScreen";
+import { StyleSheet } from "react-native";
+import { Avatar } from 'react-native-paper';
+import Transactions from "./TransactionsComponents/Transactions";
+import Troubleshooting from "../Troubleshooting";
+import AllTransactions from "./TransactionsComponents/AllTransactions";
+import { useState } from "react";
+import { RefreshFunctionContext } from "../CustomModules/Contexts";
+
+export default function HomeStackNavigator(){
+    const Stack = createStackNavigator();
+      const [refreshKey,setRefreshKey] = useState(0);
+    return(
+    <RefreshFunctionContext.Provider value={{refreshKey,setRefreshKey}}>
+        <Stack.Navigator>
+            <Stack.Screen name='Home' component={HomeScreen} options={{
+                headerStyle:styles.screenHeader,
+                headerRight:()=>{
+                    return <Avatar.Text size={24} label="XD" style={styles.avatar}/>
+                }
+            }}/>
+
+            <Stack.Screen name="Transaction" component={Transactions} options={{
+                headerStyle:styles.screenHeader,
+                headerTitle:"Add a transaction"
+            }}/>
+            <Stack.Screen name="Troubleshooting" component={Troubleshooting} options={{
+                headerTitle:"Troubleshooting"
+            }}/>
+            <Stack.Screen name="TransHistory" component={AllTransactions} options={{
+                headerStyle:styles.screenHeader,
+                headerTitle:"Transaction History"
+            }}/>
+        </Stack.Navigator>
+    </RefreshFunctionContext.Provider>
+        
+
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+    },
+    screenHeader:{
+        backgroundColor:"#fff",
+        elevation:7,
+        borderRadius:22.5,        
+    },
+    avatar:{
+        backgroundColor:"#ffe3e3",
+        marginRight:10,
+        width:45,
+        height:45,
+        borderRadius:30,
+    }
+});

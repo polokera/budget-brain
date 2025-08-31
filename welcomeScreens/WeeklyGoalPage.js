@@ -36,10 +36,7 @@ export default function MoneyWallet({navigation,route,setIsUserSignedUp}) {
         }
         console.log("wallets Inserted");
         await dbx.runAsync(`INSERT into target(targetId,target)values(?,?)`,[1,weeklyTarget])
-<<<<<<< HEAD
-=======
         await AsyncStorage.setItem("isSignedUp","true");
->>>>>>> d4953a5 (trying to merge and stuff so yeah)
         setIsUserSignedUp(true)
         console.log("target inserted");
     }

@@ -36,16 +36,16 @@ export default function MoneyWallet({navigation,route,setIsUserSignedUp}) {
         }
         console.log("wallets Inserted");
         await dbx.runAsync(`INSERT into target(targetId,target)values(?,?)`,[1,weeklyTarget])
+<<<<<<< HEAD
+=======
+        await AsyncStorage.setItem("isSignedUp","true");
+>>>>>>> d4953a5 (trying to merge and stuff so yeah)
         setIsUserSignedUp(true)
         console.log("target inserted");
     }
     catch(e){
       console.log(e);
     }
-  }
-  const goToHome=()=>{
-    //go to the home page
-    navigation.navigate('Main Tabs')
   }
   const getUserName = async () => {
     try {
@@ -78,7 +78,6 @@ export default function MoneyWallet({navigation,route,setIsUserSignedUp}) {
         <Text style={styles.title}>Welcome, <Text style={{color:"#ee9e8e"}}>{userName}</Text></Text>
        <View style={{height:600,width:"90%"}}>
          {nextPressed? <SetTargetPage
-          showHome={goToHome} 
           addWalletsToDb={addWalletsToDb}
           walletsArray={walletsArray}
           setIsUserSignedUp={setIsUserSignedUp}

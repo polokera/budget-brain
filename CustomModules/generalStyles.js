@@ -32,5 +32,10 @@ export default StyleSheet.create({
         //paddingHorizontal: 10,
         //marginVertical: 20,
         backgroundColor:"#fff"
-      }
+      },
+      screenHeader:{
+        backgroundColor:"#fff",
+        elevation:7,
+        borderRadius:22.5,        
+      },
 })

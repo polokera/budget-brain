@@ -7,6 +7,7 @@ import Troubleshooting from "../Troubleshooting";
 import AllTransactions from "./TransactionsComponents/AllTransactions";
 import { useState } from "react";
 import { RefreshFunctionContext } from "../CustomModules/Contexts";
+import externalStyles from '../CustomModules/generalStyles'
 
 export default function HomeStackNavigator(){
     const Stack = createStackNavigator();
@@ -15,21 +16,21 @@ export default function HomeStackNavigator(){
     <RefreshFunctionContext.Provider value={{refreshKey,setRefreshKey}}>
         <Stack.Navigator>
             <Stack.Screen name='Home' component={HomeScreen} options={{
-                headerStyle:styles.screenHeader,
+                headerStyle:externalStyles.screenHeader,
                 headerRight:()=>{
                     return <Avatar.Text size={24} label="XD" style={styles.avatar}/>
                 }
             }}/>
 
             <Stack.Screen name="Transaction" component={Transactions} options={{
-                headerStyle:styles.screenHeader,
+                headerStyle:externalStyles.screenHeader,
                 headerTitle:"Add a transaction"
             }}/>
             <Stack.Screen name="Troubleshooting" component={Troubleshooting} options={{
                 headerTitle:"Troubleshooting"
             }}/>
             <Stack.Screen name="TransHistory" component={AllTransactions} options={{
-                headerStyle:styles.screenHeader,
+                headerStyle:externalStyles.screenHeader,
                 headerTitle:"Transaction History"
             }}/>
         </Stack.Navigator>
@@ -45,11 +46,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fff',
-    },
-    screenHeader:{
-        backgroundColor:"#fff",
-        elevation:7,
-        borderRadius:22.5,        
     },
     avatar:{
         backgroundColor:"#ffe3e3",

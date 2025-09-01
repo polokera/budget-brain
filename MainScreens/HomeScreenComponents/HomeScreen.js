@@ -72,6 +72,7 @@ export default function HomeScreen({ navigation }) {
     const spent = await getSpentinWeek();
     setSpentThisWeek(spent);
     const wallets = await getWallets();
+    console.log(wallets);
     setWallets(wallets);
   };
   useEffect(() => {

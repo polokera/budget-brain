@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeStackNavigator from "./HomeStackNavigator";
 import WalletScreen from "./WalletsComponents/WalletsScreen";
+import WalletStack from "./WalletsComponents/WalletStack";
 import Insights from './InsightsComponents/Insights'
 import Settings from './SettingsComponents/Settings'
 import { StyleSheet} from "react-native";
@@ -16,9 +17,9 @@ export default function MainTabs(){
                 headerShown:false,
                 tabBarLabel:"Home",
             }}/>
-            <Tab.Screen name="WalletsScreen" component={WalletScreen} options={{
+            <Tab.Screen name="Balances" component={WalletStack} options={{
                 headerStyle:externalStyles.screenHeader,
-                tabBarLabel:"Wallets",
+                tabBarLabel:"Balances",
             }}/>
             <Tab.Screen name="Insights" component={Insights} options={{
                 headerStyle:externalStyles.screenHeader,

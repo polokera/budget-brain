@@ -9,7 +9,7 @@ export async function getWallets(){
         // console.log(cashTotal)
         // return cashTotal;
         const dbx = await openDatabase()
-        let cashTotal = await dbx.getAllAsync(`SELECT balance,wName,walletId from wallets`)
+        let cashTotal = await dbx.getAllAsync(`SELECT balance,wName,walletId,themeColor from wallets`)
         return cashTotal;
         // console.log(cashTotal)
         // cashTotal = cashTotal.map((wlt)=>String(wlt.balance).replace(/,/g,""))

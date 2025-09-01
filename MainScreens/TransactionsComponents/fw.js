@@ -7,7 +7,7 @@ import { fromWalletTransaction } from "./DBtransaction"
 import { RefreshFunctionContext } from "../../CustomModules/Contexts"
 import { useContext } from "react"
 
-export default function Fw({data,show,hide,setMessage,}){
+export default function Fw({data,show,hide,setMessage,goBack}){
     const {setRefreshKey} = useContext(RefreshFunctionContext)
     const {control,handleSubmit,formState:{errors}} = useForm({
         defaultValues:{

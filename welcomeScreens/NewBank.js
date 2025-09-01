@@ -15,17 +15,17 @@ export default function NewBank({add,hide,visible}) {
           <Text>Add a new money wallet</Text>
           <TextInput style={styles.input} value={newWalletName} onChangeText={setnewWalletname} />
           <View style={{ flexDirection: "row" }}>
-            <Pressable 
-            onPress={()=>addNewWallet()}
-            style={[styles.button, { backgroundColor: "lightgreen" }]}
-            >
-              <Text>Add</Text>
-            </Pressable>
             <Pressable
               onPress={hide}
               style={[styles.button, { backgroundColor: "#f50000" }]}
             >
               <Text>Cancel</Text>
+            </Pressable>
+            <Pressable 
+            onPress={()=>addNewWallet()}
+            style={[styles.button, { backgroundColor: "lightgreen" }]}
+            >
+              <Text>Add</Text>
             </Pressable>
           </View>
         </View>

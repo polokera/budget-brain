@@ -50,6 +50,7 @@ export default function Transaction({route,navigation}){
                 />:
                 <Fw 
                 data={wallets} 
+                goBack={goBackToHome}
                 show={show} 
                 setMessage={setPopUpMessage} 
                 />}

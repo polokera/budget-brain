@@ -20,7 +20,10 @@ export default function Popup({visible,hide,title,message,success,goBack}){
                         <Text style={styles.title}>{title}</Text>
                         <Text style={styles.message}>{message}</Text>
                         <Pressable 
-                        onPress={()=>{hide();goBack()}}
+                        onPress={()=>{
+                            hide();
+                            success&&goBack()
+                        }}
                         style={[externalStyles.button,styles.button]}>
                             <Text style={externalStyles.buttonText}>Close</Text>
                         </Pressable>

@@ -18,6 +18,7 @@ export default function MainTabs(){
                 tabBarLabel:"Home",
             }}/>
             <Tab.Screen name="Balances" component={WalletStack} options={{
+                headerShown:false,
                 headerStyle:externalStyles.screenHeader,
                 tabBarLabel:"Balances",
             }}/>

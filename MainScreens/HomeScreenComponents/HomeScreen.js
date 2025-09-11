@@ -108,7 +108,7 @@ export default function HomeScreen({ navigation }) {
      navigation.navigate("Troubleshooting");
   }
   return (
-    <View style={[generalStyles.main, { marginTop: -8, alignItems: "center" }]}>
+    <View style={[generalStyles.main, {  alignItems: "center" }]}>
       <Fab goToNext={goToTransactionPage} />
       <TransPopUp
         visible={transPopUpVisible}

@@ -6,6 +6,7 @@ export default StyleSheet.create({
       backgroundColor: "#fff5e0",
       flex: 1,
       paddingTop: StatusBar.currentHeight,
+      marginTop: -10,
     },
     button: {
         backgroundColor: "#ee9e8e",

@@ -26,7 +26,6 @@ export default function TextField({fieldName,placeholder,ctrl,numberOfLines,numb
                 control={ctrl}
                 name={fieldName}
                 rules={getRules()}
-                //rules={{required:`${fieldName} cannot be empty`,maxLength:{value:10,message:`${fieldName} should be less than 10 characters`}}}
                 render={({field})=>{
                     return(
                         <TextInput 

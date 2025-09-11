@@ -1,18 +1,74 @@
-import {View,Text,StyleSheet,FlatList, Pressable} from "react-native"
+import {View,Text,StyleSheet,FlatList, Pressable,TextInput} from "react-native"
 import { useState,useEffect } from "react"
 import externalStyles from '../../CustomModules/generalStyles'
 import { AddComas } from "../../CustomModules/generalModules"
+import { useForm,Controller } from "react-hook-form"
+import openDatabase from '../../CustomModules/DbModule'
 
-export default function WalletScreen(){
+export default function WalletScreen({route}){
     const [wallets,setWallets]=useState([{"balance": 435, "themeColor": "#2fdb45", "wName": "Mpamba", "walletId": 1}, 
         {"balance": 3503, "themeColor": "#f61f1f", "wName": "Airtel Money", "walletId": 2}])
-    const onPress=()=>{
-        console.log("lmao");
+    const {wltId,wName} = route.params;
+    const {control,formState:{errors},handleSubmit} = useForm({
+        defaultValues:{
+            description:"",
+            amountToAdd:"",
+        }
+    })
+    const onSubmit=(data)=>{
+        //when writing sql remove commas from amount to add.
+
+        console.log(data);
     }
+    
+    const onPress=()=>{
+        console.log(cashAmount);
+    }
+    useEffect(()=>{
+        // const dbx = 
+    },[])
     return(
         <View style={externalStyles.main}>
             <View style={styles.container}>
-              <Text>ngati wachita kutumidwa ndi ex waine umuwuze, kuti nkhope ngati phazi</Text>
+                <View style={styles.list}>
+                    <Text style={styles.accountName}>{wName}</Text>
+                    <Text style={styles.descriptionText}>How much money do you want to add to your {wName} account?</Text>
+                    <Controller
+                    name="amountToAdd"
+                    rules={{required:"Please enter the amount you want to add"}}
+                    control={control}
+                    render={({field})=>
+                        <TextInput
+                            value={AddComas(field.value)}
+                            onChangeText={field.onChange}
+                            keyboardAppearance="dark"
+                            placeholder="0"
+                            keyboardType="number-pad"
+                            style={[styles.input,externalStyles.input]}
+                        /> 
+                    }
+                    />
+                    {errors.amountToAdd&&<Text style={{color:"red",textAlign:"center"}}>{errors.amountToAdd.message}</Text>}
+                    <Text style={styles.fieldName}>Description</Text>
+                    <Controller
+                    name="description"
+                    control={control}
+                    render={({field})=>
+                        <TextInput
+                        value={field.value}
+                        onChangeText={field.onChange}
+                        placeholder="(Optional)"
+                        numberOfLines={5}
+                        multiline
+                        style={[styles.input,externalStyles.input,styles.descriptionInput]}
+                        />}
+                    />
+                    <Pressable 
+                    onPress={handleSubmit(onSubmit)}
+                    style={[externalStyles.button,styles.button]}>
+                        <Text>Add Money</Text>
+                    </Pressable>
+                </View>
             </View>
         </View>
     )
@@ -26,30 +82,14 @@ const styles = StyleSheet.create({
     list:{
         backgroundColor:"#eefbfb",
         padding:10,
+        paddingTop:28,
         borderRadius:9,
         marginBottom:50,
         borderWidth:0.4,
-        paddingTop:48,
-    },
-    wallet:{
-        backgroundColor:"white",
-        width:265,
-        marginVertical:4,
-        borderRadius:5,
-        padding:7,
-        flexDirection:"row",
-        elevation:3,
+        width:300,
     },
     left:{
         width:"70%",
-    },
-    addButton:{
-        width:55,
-        height:55,
-        borderRadius:50,
-        justifyContent:"center",
-        alignItems:"center",
-        elevation:6,
     },
     walletName:{
         fontStyle:"italic",
@@ -59,5 +99,34 @@ const styles = StyleSheet.create({
     balance:{
         fontSize:16,
         paddingBottom:10,
+    },
+    accountName:{
+        fontSize:24,
+    },
+    descriptionText:{
+        fontSize:15,
+        margin:10,
+    },
+    input:{
+        width:200,
+        height:40,
+        alignSelf:"center",
+        borderRadius:3,
+        margin:14,
+        paddingHorizontal:10,
+    },
+    descriptionInput:{
+        height:100,
+        textAlignVertical:"top"
+    },
+    button:{
+        width:100,
+        height:40,
+        alignSelf:"center",
+        margin:14,
+    },
+    fieldName:{
+        fontSize:14,
+        fontWeight:"bold",
     }
 })

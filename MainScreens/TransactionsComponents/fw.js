@@ -35,7 +35,6 @@ export default function Fw({data,show,hide,setMessage,goBack}){
         const totaltoDeduct = Number(amount) + Number(extraFees);
         if((totaltoDeduct)<Number(from.balance)){
             await fromWalletTransaction(data)
-            // console.log("Refresh function ",RefreshFunction)
             setRefreshKey(r=>r+1)
             show("Success","Transaction successfully logged!",true)
         }

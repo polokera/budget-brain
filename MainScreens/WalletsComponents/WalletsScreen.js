@@ -2,20 +2,57 @@ import {View,Text,StyleSheet,FlatList, Pressable} from "react-native"
 import { useState,useEffect } from "react"
 import externalStyles from '../../CustomModules/generalStyles'
 import { AddComas } from "../../CustomModules/generalModules"
+import Entypo from '@expo/vector-icons/Entypo';
+import openDatabase from "../../CustomModules/DbModule";
 
 export default function WalletScreen({navigation}){
-    const [wallets,setWallets]=useState([{"balance": 435, "themeColor": "#2fdb45", "wName": "Mpamba", "walletId": 1}, 
-        {"balance": 3503, "themeColor": "#f61f1f", "wName": "Airtel Money", "walletId": 2}])
-    const onPress=()=>{
-        navigation.navigate("AddMoney")
+    const [wallets,setWallets]=useState([])
+    const goToAddMoneyPage=(walletId,walletName)=>{
+        navigation.navigate("AddMoney",{
+            wltId:walletId,
+            wName:walletName,
+        })
     }
+    const getWallets=async()=>{
+       try{
+         const dbx = await openDatabase();
+         const wallets = await dbx.getAllAsync(`SELECT wName,balance,themeColor from wallets`);
+         setWallets(wallets);
+        }
+        catch(e){
+            console.log(e);
+        }
+
+    }
+    const onButtonPress=()=>{
+        navigation.navigate("AddWallet",{
+            wallets:wallets,
+        })
+    }
+    useEffect(()=>{
+        const initialise=async()=>{
+            await getWallets();
+        }
+        initialise();
+
+    },[])
     return(
         <View style={externalStyles.main}>
             <View style={styles.container}>
-              <Text>ngati wachita kutumidwa ndi ex waine umuwuze, kuti nkhope ngati phazi</Text>
               <FlatList
-              style={styles.list}
+                style={styles.list}
                 data={wallets}
+                ListFooterComponent={
+                //this is the button that you press when you 
+                // want to add a new wallet>
+                <Pressable onPress={onButtonPress}>
+                    <View style={styles.addNewWallet}>
+                        <Entypo name="plus" size={34} color="gray" />
+                        <Text style={styles.addNewWalletText}> Add a new wallet</Text>
+                    </View>
+                </Pressable>
+                
+            }
                 renderItem={({item})=>{
                     return(
                         <View style={styles.wallet} key={item.walletId}>
@@ -28,12 +65,11 @@ export default function WalletScreen({navigation}){
                             </View>
                             <View style={{justifyContent:"center"}}>
                                 <Pressable 
-                                onPress={onPress}
+                                onPress={()=>goToAddMoneyPage(item.walletId,item.wName)}
                                 style={[styles.addButton,{backgroundColor:item.themeColor}]}>
                                     <Text style={{fontSize:35}}>+</Text>
                                 </Pressable>   
                             </View>
-                            
                         </View>
                     )
                 }}
@@ -49,7 +85,7 @@ const styles = StyleSheet.create({
         alignItems:"center",
     },
     list:{
-        backgroundColor:"#eefbfb",
+        backgroundColor:"#eefbfbff",
         padding:10,
         borderRadius:9,
         marginBottom:50,
@@ -57,7 +93,7 @@ const styles = StyleSheet.create({
         paddingTop:48,
     },
     wallet:{
-        backgroundColor:"white",
+        backgroundColor:"#fffcfcff",
         width:265,
         marginVertical:4,
         borderRadius:5,
@@ -84,5 +120,23 @@ const styles = StyleSheet.create({
     balance:{
         fontSize:16,
         paddingBottom:10,
+    },
+    addNewWallet:{
+        backgroundColor:"#fffcfcff",
+        width:265,
+        marginVertical:4,
+        borderRadius:5,
+        padding:7,
+        flexDirection:"row",
+        borderStyle:"dashed",
+        borderWidth:1,
+        height:70,
+        textAlign:"center",
+        alignItems:"center",
+        elevation:3,
+    },
+    addNewWalletText:{
+        fontSize:22,
+        color:"gray",
     }
 })

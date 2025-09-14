@@ -9,6 +9,7 @@ import { useContext } from "react"
 
 export default function Fw({data,show,hide,setMessage,goBack}){
     const {setRefreshKey} = useContext(RefreshFunctionContext)
+    //this refreshes the home page once a user enters a new transaction.
     const {control,handleSubmit,formState:{errors}} = useForm({
         defaultValues:{
             transType:"",

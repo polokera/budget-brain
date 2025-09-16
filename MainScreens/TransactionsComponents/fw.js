@@ -4,7 +4,7 @@ import externalStyles from '../../CustomModules/generalStyles'
 import TextField from "./TextField"
 import DropdownField from './DropdownField'
 import { fromWalletTransaction } from "./DBtransaction"
-import { RefreshFunctionContext } from "../../CustomModules/Contexts"
+import { RefreshFunctionContext,BalancesRefreshContext } from "../../CustomModules/Contexts"
 import { useContext } from "react"
 
 export default function Fw({data,show,hide,setMessage,goBack}){

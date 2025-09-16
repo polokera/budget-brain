@@ -1,28 +1,69 @@
 import {View,Text,StyleSheet,FlatList, Pressable,TextInput} from "react-native"
-import { useState,useEffect } from "react"
+import { useState,useEffect, useContext } from "react"
 import externalStyles from '../../CustomModules/generalStyles'
-import { AddComas } from "../../CustomModules/generalModules"
+import { AddComas, removeCommas } from "../../CustomModules/generalModules"
 import { useForm,Controller } from "react-hook-form"
+import openDatabase from "../../CustomModules/DbModule"
+import { BalancesRefreshContext, RefreshFunctionContext } from "../../CustomModules/Contexts"
+import Popup from "../../CustomModules/Popup"
 
-export default function WalletScreen({route}){
-    const {wallets} = route.params
+export default function WalletScreen({navigation,route}){
+    const {setRefreshKey} = useContext(RefreshFunctionContext) 
+    const [popUpDetails,setPopUpDetails] = useState({title:"Marizu",visible:false,message:"Noone and nothing",success:true,})
+    const hidePopUp=()=>{
+        setPopUpDetails({...popUpDetails,visible:false});
+    }
+    const goBackwards=()=>{
+        navigation.goBack()
+    }
     const getRandColor=()=>{
          return `#${Math.floor(Math.random()*16777215).toString(16).padStart(6,'0')}`
     }
-    const {control,handleSubmit,formState:{errors}} = useForm();
-    const onSubmit=data=>console.log(data)
+    const {control,handleSubmit,formState:{errors}} = useForm({
+        defaultValues:{
+            amountInWallet:"",
+        }
+    });
+    const onSubmit=async(data)=>{
+       const {amountInWallet,walletName} = data;
+       const randomColor = getRandColor();
+        try{
+            const dbx = await openDatabase();
+            const numberOfWallets = await dbx.getFirstAsync(`SELECT COUNT(*) FROM wallets`);
+            console.log(amountInWallet==undefined?0:removeCommas(amountInWallet));
+            await dbx.runAsync(`INSERT INTO wallets(walletId,wName,balance,themeColor)VALUES(?,?,?,?)`,[numberOfWallets["COUNT(*)"]+100,walletName,amountInWallet==undefined?0:removeCommas(amountInWallet),randomColor])
+      
+            setRefreshKey(r=>r+3);
+            //this refreshes the home screen and wallets page
+            
+            setPopUpDetails({...popUpDetails,visible:true,message:`The Wallet '${walletName}' was successfully added!`,success:true})
+            console.log("Successfull added new wallet");
+        }
+        catch(e){
+            console.log(e)
+            setPopUpDetails({...popUpDetails,visible:true,message:"There was an error!",success:false})            
+        }
+    }
     return(
         <View style={externalStyles.main}>
+            <Popup 
+            visible={popUpDetails.visible}
+            title={popUpDetails.title}
+            message={popUpDetails.message}
+            success={popUpDetails.success}
+            hide={hidePopUp}
+            goBack={goBackwards}
+            />
             <View style={styles.container}>
                 <View style={styles.list}>
                     <Text style={styles.text}>Name of your new account?</Text>
                     <Controller
                     name="walletName"
-                    rules={{required:"Please enter the name of the wallet"}}
+                    rules={{required:"Please enter the name of the wallet",maxLength:{value:12,message:"Wallet name should be at most 12 characters."}}}
                     control={control}
                     render={({field})=>
                         <TextInput
-                            value={AddComas(field.value)}
+                            value={field.value}
                             onChangeText={field.onChange}
                             keyboardAppearance="dark"
                             style={[styles.input,externalStyles.input]}
@@ -36,7 +77,7 @@ export default function WalletScreen({route}){
                     control={control}
                     render={({field})=>
                         <TextInput
-                        value={field.value}
+                        value={AddComas(field.value)}
                         onChangeText={field.onChange}
                         keyboardType="number-pad"
                         placeholder="0"

@@ -6,14 +6,12 @@ import Transactions from "./TransactionsComponents/Transactions";
 import Troubleshooting from "../Troubleshooting";
 import AllTransactions from "./TransactionsComponents/AllTransactions";
 import { useState } from "react";
-import { RefreshFunctionContext } from "../CustomModules/Contexts";
 import externalStyles from '../CustomModules/generalStyles'
 
 export default function HomeStackNavigator(){
     const Stack = createStackNavigator();
-      const [refreshKey,setRefreshKey] = useState(0);
     return(
-    <RefreshFunctionContext.Provider value={{refreshKey,setRefreshKey}}>
+    
         <Stack.Navigator>
             <Stack.Screen name='Home' component={HomeScreen} options={{
                 headerStyle:externalStyles.screenHeader,
@@ -34,7 +32,7 @@ export default function HomeStackNavigator(){
                 headerTitle:"Transaction History"
             }}/>
         </Stack.Navigator>
-    </RefreshFunctionContext.Provider>
+    
         
 
     )

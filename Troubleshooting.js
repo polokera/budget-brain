@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 export default function Troubleshooting(){
     const getAllTransactions =async()=>{
         const dbx = await openDatabase()
-        const transactions = await dbx.getAllAsync(`SELECT amount FROM transactions`)
+        const transactions = await dbx.getAllAsync(`SELECT * FROM transactions`)
         console.log(transactions)
     }
     const getAllWallets =async()=>{
@@ -17,7 +17,7 @@ export default function Troubleshooting(){
     const Anything =async()=>{
         try{
         const dbx = await openDatabase()
-        const result = await dbx.runAsync(`DELETE from target`)
+        const result = await dbx.runAsync(`DELETE from transactions where transId= ?`,[113])
         result>0&&console.log("deleted")
         }
         catch(e){
@@ -51,7 +51,7 @@ export default function Troubleshooting(){
             />
             <Button
             title="Surpise button"
-            onPress={removeKey}
+            onPress={Anything}
             />
         </View>
     )

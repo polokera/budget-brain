@@ -43,7 +43,7 @@ export default function TransPopUp({visible,setVisible,data}){
                             }
                             </ScrollView> 
                             <View style={styles.bottomRow}>
-                                <Text style={styles.dateTime}>{timeToShow}</Text>
+                                <Text style={[styles.dateTime,styles.time]}>{timeToShow}</Text>
                                 <Text style={[styles.dateTime,styles.date]}>{dateToShow}</Text>
                             </View>  
                         </View>

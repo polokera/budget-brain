@@ -4,19 +4,22 @@ import externalStyles from '../../CustomModules/generalStyles'
 import { AddComas } from "../../CustomModules/generalModules"
 import Entypo from '@expo/vector-icons/Entypo';
 import openDatabase from "../../CustomModules/DbModule";
+import { RefreshFunctionContext } from "../../CustomModules/Contexts";
 
 export default function WalletScreen({navigation}){
+    const {refreshKey} = useContext(RefreshFunctionContext);
     const [wallets,setWallets]=useState([])
-    const goToAddMoneyPage=(walletId,walletName)=>{
+    const goToAddMoneyPage=(item)=>{
+        console.log(item," is your wallet")
         navigation.navigate("AddMoney",{
-            wltId:walletId,
-            wName:walletName,
+            wltId:item.walletId,
+            wName:item.walletName,
         })
     }
     const getWallets=async()=>{
        try{
          const dbx = await openDatabase();
-         const wallets = await dbx.getAllAsync(`SELECT wName,balance,themeColor from wallets`);
+         const wallets = await dbx.getAllAsync(`SELECT wName,balance,themeColor,walletId from wallets`);
          setWallets(wallets);
         }
         catch(e){
@@ -35,13 +38,14 @@ export default function WalletScreen({navigation}){
         }
         initialise();
 
-    },[])
+    },[refreshKey])
     return(
         <View style={externalStyles.main}>
             <View style={styles.container}>
               <FlatList
                 style={styles.list}
                 data={wallets}
+                ListFooterComponentStyle={{marginBottom:80,}}
                 ListFooterComponent={
                 //this is the button that you press when you 
                 // want to add a new wallet>
@@ -65,7 +69,7 @@ export default function WalletScreen({navigation}){
                             </View>
                             <View style={{justifyContent:"center"}}>
                                 <Pressable 
-                                onPress={()=>goToAddMoneyPage(item.walletId,item.wName)}
+                                onPress={()=>goToAddMoneyPage(item)}
                                 style={[styles.addButton,{backgroundColor:item.themeColor}]}>
                                     <Text style={{fontSize:35}}>+</Text>
                                 </Pressable>   

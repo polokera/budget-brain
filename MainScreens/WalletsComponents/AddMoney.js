@@ -1,13 +1,16 @@
 import {View,Text,StyleSheet,FlatList, Pressable,TextInput} from "react-native"
-import { useState,useEffect } from "react"
+import { useState,useEffect, useContext } from "react"
 import externalStyles from '../../CustomModules/generalStyles'
 import { AddComas } from "../../CustomModules/generalModules"
 import { useForm,Controller } from "react-hook-form"
 import openDatabase from '../../CustomModules/DbModule'
+import * as DateFns from "date-fns"
+import Popup from "../../CustomModules/Popup"
+import { RefreshFunctionContext } from "../../CustomModules/Contexts"
 
-export default function WalletScreen({route}){
-    const [wallets,setWallets]=useState([{"balance": 435, "themeColor": "#2fdb45", "wName": "Mpamba", "walletId": 1}, 
-        {"balance": 3503, "themeColor": "#f61f1f", "wName": "Airtel Money", "walletId": 2}])
+export default function WalletScreen({navigation,route}){
+    const {setRefreshKey} = useContext(RefreshFunctionContext);
+    const [popUpDetails,setPopUpDetails] = useState({visible:false,success:false,message:"Malawian Star",title:"King chadadi"})
     const {wltId,wName} = route.params;
     const {control,formState:{errors},handleSubmit} = useForm({
         defaultValues:{
@@ -15,20 +18,50 @@ export default function WalletScreen({route}){
             amountToAdd:"",
         }
     })
-    const onSubmit=(data)=>{
-        //when writing sql remove commas from amount to add.
-
-        console.log(data);
+    const hidePopUp=()=>{
+        setPopUpDetails({...popUpDetails,visible:false})
     }
-    
+    const onSubmit=async(data)=>{
+        //when writing sql remove commas from amount to add.
+        const dbx = await openDatabase();
+        const date = DateFns.format(new Date(),"yyyy-MM-dd")
+        const time = DateFns.format(new Date(),"HHmm")
+        try{
+            await dbx.withTransactionAsync(async()=>{
+            const result = await dbx.getFirstAsync(`SELECT COUNT(*) from transactions`);
+            const transId = result['COUNT(*)'] +100;
+            await dbx.runAsync(`UPDATE wallets set balance = balance + ? where walletId = ?`,[data.amountToAdd,wltId])
+            await dbx.runAsync(`INSERT into transactions(transId,walletId,transType,transDescription,amount,transDate,transTime,transSign)VALUES(?,?,?,?,?,?,?,?)`,[transId,wltId,"adding money",data.description,data.amountToAdd,date,time,1])
+            console.log(wltId,"is your wallet id");
+            setRefreshKey(r=>r+1);
+            setPopUpDetails({message:`MWK ${AddComas(data.amountToAdd)} has been succesfully added to your ${wName} wallet`,success:true,title:"Success",visible:true})
+            })
+            
+        }
+        catch(e){
+            console.log(e)
+            setPopUpDetails({message:`There was an error`,success:false,title:"Error",visible:true})
+        }
+       
+    }
+    const goBackwards=()=>{
+        navigation.goBack();
+    }
     const onPress=()=>{
         console.log(cashAmount);
     }
     useEffect(()=>{
-        // const dbx = 
+        
     },[])
     return(
         <View style={externalStyles.main}>
+            <Popup
+            visible={popUpDetails.visible}
+            message={popUpDetails.message}
+            success={popUpDetails.success}
+            hide={hidePopUp}
+            goBack={goBackwards}
+            />
             <View style={styles.container}>
                 <View style={styles.list}>
                     <Text style={styles.accountName}>{wName}</Text>

@@ -17,7 +17,7 @@ export default function Troubleshooting(){
     const Anything =async()=>{
         try{
         const dbx = await openDatabase()
-        const result = await dbx.runAsync(`DELETE from transactions where transId= ?`,[113])
+        const result = await dbx.runAsync(`DELETE from transactions where transId= ?`,[102])
         result>0&&console.log("deleted")
         }
         catch(e){

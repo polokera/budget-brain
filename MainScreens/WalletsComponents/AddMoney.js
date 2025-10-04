@@ -1,7 +1,7 @@
 import {View,Text,StyleSheet,FlatList, Pressable,TextInput} from "react-native"
 import { useState,useEffect, useContext } from "react"
 import externalStyles from '../../CustomModules/generalStyles'
-import { AddComas } from "../../CustomModules/generalModules"
+import { AddComas, removeCommas } from "../../CustomModules/generalModules"
 import { useForm,Controller } from "react-hook-form"
 import openDatabase from '../../CustomModules/DbModule'
 import * as DateFns from "date-fns"
@@ -29,9 +29,10 @@ export default function WalletScreen({navigation,route}){
         try{
             await dbx.withTransactionAsync(async()=>{
             const result = await dbx.getFirstAsync(`SELECT COUNT(*) from transactions`);
+            const amount = Number(removeCommas(data.amountToAdd))
             const transId = result['COUNT(*)'] +100;
-            await dbx.runAsync(`UPDATE wallets set balance = balance + ? where walletId = ?`,[data.amountToAdd,wltId])
-            await dbx.runAsync(`INSERT into transactions(transId,walletId,transType,transDescription,amount,transDate,transTime,transSign)VALUES(?,?,?,?,?,?,?,?)`,[transId,wltId,"adding money",data.description,data.amountToAdd,date,time,1])
+            await dbx.runAsync(`UPDATE wallets set balance = balance + ? where walletId = ?`,[amount,wltId])
+            await dbx.runAsync(`INSERT into transactions(transId,walletId,transType,transDescription,amount,transDate,transTime,transSign)VALUES(?,?,?,?,?,?,?,?)`,[transId,wltId,"adding money",data.description,amount,date,time,1])
             console.log(wltId,"is your wallet id");
             setRefreshKey(r=>r+1);
             setPopUpDetails({message:`MWK ${AddComas(data.amountToAdd)} has been succesfully added to your ${wName} wallet`,success:true,title:"Success",visible:true})

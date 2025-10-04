@@ -56,10 +56,10 @@ export default function WalletScreen({navigation,route}){
             />
             <View style={styles.container}>
                 <View style={styles.list}>
-                    <Text style={styles.text}>Name of your new account?</Text>
+                    <Text style={styles.text}>Name of your new wallet?</Text>
                     <Controller
                     name="walletName"
-                    rules={{required:"Please enter the name of the wallet",maxLength:{value:12,message:"Wallet name should be at most 12 characters."}}}
+                    rules={{required:"Please enter the name of the wallet",maxLength:{value:20,message:"Wallet name should be at most 20 characters."}}}
                     control={control}
                     render={({field})=>
                         <TextInput

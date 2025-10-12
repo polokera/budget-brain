@@ -3,6 +3,7 @@ import { useState,useEffect } from 'react'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
 import externalStyles from '../CustomModules/generalStyles'
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 
 export default function Popup({visible,hide,title,message,success,goBack}){
@@ -15,7 +16,7 @@ export default function Popup({visible,hide,title,message,success,goBack}){
         >
             <View style={styles.container}>
                <View style={styles.popup}>
-                    {success?<AntDesign name='checkcircle' color='green' size={120} style={styles.icon}/> : <Entypo name="circle-with-cross" size={120} color="tomato" style={styles.icon}/>}
+                    {success?<FontAwesome name="check-circle" size={120} color="green" style={styles.icon} /> : <Entypo name="circle-with-cross" size={120} color="tomato" style={styles.icon}/>}
                     <View style={styles.contentBox}>
                         <Text style={styles.title}>{title}</Text>
                         <Text style={styles.message}>{message}</Text>

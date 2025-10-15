@@ -16,11 +16,11 @@ export default function AllTransactions({route}){
     const [filters,setFilters] = useState(
         {
            minAmount:"",
-           maxAmount:"",
+           maxAmount:"100000000",
            transSign:{label:"All",value:0},
            startDate:"2025-05-08T10:02:00.000Z",
            endDate:new Date(),
-           categories:["Education","Groceries","Food","Zinjoyi","Bills & Membership","Religious fees","others....","Loans repayment"],
+           categories:["Education","Groceries","Food","Zinjoyi","Bills & Membership","Religious fees","others....","Loans repayment","adding money"],
            wallets:wallets.map((w)=>w.wName),
         }
     )
@@ -55,7 +55,8 @@ export default function AllTransactions({route}){
             ORDER BY transactions.transDate desc,transactions.transTime desc
             limit 25
             `
-            console.log(sql)
+           
+            // console.log(sql)
             const filteredTransactions = await dbx.getAllAsync(sql)
             setTransactions(filteredTransactions)
         }

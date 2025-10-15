@@ -17,6 +17,7 @@ import Entypo from "@expo/vector-icons/Entypo";
 import AddCommas, { AddComas, removeCommas } from "../../CustomModules/generalModules"
 import * as DateFns from 'date-fns'
 
+//comes from alltransaction.js
 export default function FilterPopUp({ visible, setVisible, data,wallets,setFilters,filters }) {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
@@ -303,8 +304,8 @@ export default function FilterPopUp({ visible, setVisible, data,wallets,setFilte
                           <TextInput
                             style={[externalStyles.input, styles.priceInput]}
                             keyboardType="number-pad"
-                            value={AddComas(field.value)}
-                            placeholder="0"
+                            value={field.value=='100000000'? '':AddComas(field.value)}
+                            placeholder="max"
                             onChangeText={field.onChange}
                           />
                         );

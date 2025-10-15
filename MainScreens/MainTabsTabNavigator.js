@@ -8,6 +8,7 @@ import { StyleSheet} from "react-native";
 import externalStyles from '../CustomModules/generalStyles'
 import { BalancesRefreshContext,RefreshFunctionContext } from "../CustomModules/Contexts";
 import { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 
 
 export default function MainTabs(){
@@ -16,7 +17,29 @@ export default function MainTabs(){
     const Tab = createBottomTabNavigator();
     return(
         <RefreshFunctionContext.Provider value={{refreshKey,setRefreshKey}}>
-                <Tab.Navigator>
+                <Tab.Navigator
+                screenOptions={({route})=>({
+                    tabBarIcon:({focused,color,size})=>{
+                        let iconName;
+                        if(route.name=="HomestackNav"){
+                            iconName=focused?'home':'home-outline';
+                        }
+                        else if(route.name=='Settings'){
+                            iconName=focused?'settings':'settings-outline'
+                        }
+                        else if(route.name=='Balances'){
+                            iconName=focused?'wallet':'wallet-outline'
+                        }
+                        else if(route.name=='Settings'){
+                            iconName=focused?'settings':'settings-outline'
+                        }
+                        else if(route.name=='Insights'){
+                            iconName=focused?'stats-chart':'stats-chart-outline'
+                        }
+                        return<Ionicons name={iconName} size={size} color={color}/>
+                    }
+                })}
+                >
                     <Tab.Screen name="HomestackNav" component={HomeStackNavigator} options={{
                         headerShown:false,
                         tabBarLabel:"Home",

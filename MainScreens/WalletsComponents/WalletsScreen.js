@@ -13,7 +13,7 @@ export default function WalletScreen({navigation}){
         console.log(item," is your wallet")
         navigation.navigate("AddMoney",{
             wltId:item.walletId,
-            wName:item.walletName,
+            wName:item.wName,
         })
     }
     const getWallets=async()=>{

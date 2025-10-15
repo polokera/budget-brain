@@ -3,7 +3,7 @@ import {View,Text,StyleSheet} from "react-native"
 export default function Insights(){
     return(
         <View>
-            <Text>Atambwali</Text>
+            <Text>coming soon</Text>
         </View>
     )
 }

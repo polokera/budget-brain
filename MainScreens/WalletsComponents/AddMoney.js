@@ -60,6 +60,7 @@ export default function WalletScreen({navigation,route}){
             visible={popUpDetails.visible}
             message={popUpDetails.message}
             success={popUpDetails.success}
+            title={popUpDetails.title}
             hide={hidePopUp}
             goBack={goBackwards}
             />

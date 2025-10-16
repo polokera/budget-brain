@@ -9,6 +9,7 @@ import WeeklyGoalPage from './welcomeScreens/WeeklyGoalPage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MainTabs from './MainScreens/MainTabsTabNavigator';
 import {View,Text} from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
   const [isUserSignedUp,setIsUserSignedUp] = useState(true)
@@ -48,6 +49,7 @@ export default function App() {
   }
   return (
     <NavigationContainer>
+      <StatusBar style='dark' hidden={false}/>
       <Stack.Navigator>
         {isUserSignedUp===true?
         (<Stack.Screen name='Main Tabs' component={MainTabs}

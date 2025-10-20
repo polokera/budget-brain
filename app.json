@@ -21,13 +21,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.polokera.bbrain",
-      "androidStatusBar":{
-        "barStyle":"dark-content",
-        "backgroundColor":"#ffffff",
-        "hidden":false,
-        "translucent":false
-      }
+      "package": "com.polokera.bbrain"
     },
     "web": {
       "favicon": "./assets/favicon.png"

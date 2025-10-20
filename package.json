@@ -25,16 +25,13 @@
     "lodash": "^4.17.21",
     "react": "19.0.0",
     "react-hook-form": "^7.57.0",
-    "react-native": "0.79.5",
+    "react-native": "0.79.6",
     "react-native-element-dropdown": "^2.12.4",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-paper": "^5.14.4",
-    "react-native-paper-dropdown": "^2.3.1",
-    "react-native-responsive-fontsize": "^0.5.1",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
-    "react-native-select-dropdown": "^4.0.1",
-    "react-native-sqlite-storage": "^6.0.1"
+    "react-native-select-dropdown": "^4.0.1"
   },
   "private": true,
   "devDependencies": {

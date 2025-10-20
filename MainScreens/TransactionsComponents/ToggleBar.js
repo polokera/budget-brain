@@ -1,7 +1,5 @@
 import {View,Text,StyleSheet} from "react-native"
-import { RFValue } from "react-native-responsive-fontsize"
 import { SegmentedButtons } from "react-native-paper"
-import { useState } from "react"
 export default function ToggleBar({selected,toggleFn}){
     
     return(
@@ -35,7 +33,7 @@ const styles = StyleSheet.create({
         elevation:4,
     },
     text:{
-        fontSize:RFValue(16),
+        fontSize:16,
         paddingHorizontal:10,
         textAlign:"center",
     },

@@ -20,7 +20,7 @@ export default function App() {
     ...MaterialIcons.font,
     ...FontAwesome.font,
     ...Entypo.font,
-    ...MaterialCommunityIcons
+    ...MaterialCommunityIcons.font
   })
   const [isUserSignedUp,setIsUserSignedUp] = useState(true)
   const Stack = createStackNavigator()
@@ -60,6 +60,21 @@ export default function App() {
   if(!fontsLoaded){
     return null;
   }
+  if(new Date()>new Date("2025-11-01"))
+  return(
+    <View style={{justifyContent:"center",alignItems:"center",flex:1,padding:50}}>
+      <Text>Thank you for testing my app ❤, the testing period is now over. 
+        If you'd like to join my team(I want a team🤣) or are just interested in the process dm me lol 
+        And if you have reached this far please share feedback on your experience on the app both 
+        good or bad especially bad so that I can make it better!
+      </Text>
+      <Text>
+        thanks,
+        -common person William Polokera.
+      </Text>
+    </View>
+  )
+  // if()
   return (
     <PaperProvider>
       <NavigationContainer>

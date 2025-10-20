@@ -52,9 +52,10 @@ export default function Fw({ data, show, hide, setMessage, goBack }) {
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
+      keyboardVerticalOffset={Platform.OS==='ios'?80:0} 
     >
       <ScrollView
-        contentContainerStyle={{ alignItems: "center", paddingVertical: 20 }}
+        contentContainerStyle={{ alignItems: "center", paddingBottom: 40 ,flexGrow:1}}
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.container}>

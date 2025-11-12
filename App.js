@@ -9,8 +9,19 @@ import WeeklyGoalPage from './welcomeScreens/WeeklyGoalPage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MainTabs from './MainScreens/MainTabsTabNavigator';
 import {View,Text} from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { useFonts } from 'expo-font';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { MaterialIcons,Ionicons, FontAwesome, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    ...Ionicons.font,
+    ...MaterialIcons.font,
+    ...FontAwesome.font,
+    ...Entypo.font,
+    ...MaterialCommunityIcons.font
+  })
   const [isUserSignedUp,setIsUserSignedUp] = useState(true)
   const Stack = createStackNavigator()
   const isSignedUp = async ()=>{
@@ -46,55 +57,63 @@ export default function App() {
       </View>
     )
   }
+  if(!fontsLoaded){
+    return null;
+  }
+  // if()
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {isUserSignedUp===true?
-        (<Stack.Screen name='Main Tabs' component={MainTabs}
-        options={{
-          headerShown:false,
-          headerStyle:{
-            backgroundColor:"#fff5e0",
-            elevation:0,
-          },
-        }}/>):(
-        <>
-          <Stack.Screen name='Welcome' component={WelcomeScreen} options={{
-          headerShown:false,
-          }}/>
-          <Stack.Screen name='Sign up' component={Signup} options={{
-            headerStyle:{
-              backgroundColor:"#fff5e0",
-              elevation:0,
-            }
-          }}/>
-          <Stack.Screen name='Wallets' component={Wallets} options={{
-            headerStyle:{
-              backgroundColor:"#fff5e0",
-              elevation:0,
-            }
-          }}/>
-          <Stack.Screen name='Details' component={Details} options={{
-            headerStyle:{
-              backgroundColor:"#fff5e0",
-              elevation:0,
-            }
-          }}/>
-          <Stack.Screen name='WeeklyGoalPage' options={{
+    <PaperProvider>
+      <NavigationContainer>
+        <StatusBar style='dark' hidden={false}/>
+        <Stack.Navigator>
+          {isUserSignedUp===true?
+          (<Stack.Screen name='Main Tabs' component={MainTabs}
+          options={{
             headerShown:false,
-            gestureEnabled:false,
-          }}>
-            {(props)=><WeeklyGoalPage
-            {...props}
-            setIsUserSignedUp={setIsUserSignedUp}
-            />}
-          </Stack.Screen>
-        </>
-        )
-        }
-        
-        
-      </Stack.Navigator>
-    </NavigationContainer>
+            headerStyle:{
+              backgroundColor:"#fff5e0",
+              elevation:0,
+            },
+          }}/>):(
+          <>
+            <Stack.Screen name='Welcome' component={WelcomeScreen} options={{
+            headerShown:false,
+            }}/>
+            <Stack.Screen name='Sign up' component={Signup} options={{
+              headerStyle:{
+                backgroundColor:"#fff5e0",
+                elevation:0,
+              }
+            }}/>
+            <Stack.Screen name='Wallets' component={Wallets} options={{
+              headerStyle:{
+                backgroundColor:"#fff5e0",
+                elevation:0,
+              }
+            }}/>
+            <Stack.Screen name='Details' component={Details} options={{
+              headerStyle:{
+                backgroundColor:"#fff5e0",
+                elevation:0,
+              }
+            }}/>
+            <Stack.Screen name='WeeklyGoalPage' options={{
+              headerShown:false,
+              gestureEnabled:false,
+            }}>
+              {(props)=><WeeklyGoalPage
+              {...props}
+              setIsUserSignedUp={setIsUserSignedUp}
+              />}
+            </Stack.Screen>
+          </>
+          )
+          }
+          
+          
+        </Stack.Navigator>
+     </NavigationContainer>
+    </PaperProvider>
+    
   );
 }

@@ -52,9 +52,8 @@ export default function HomeScreen({ navigation }) {
   };
   const deleteDb = async () => {
     const dbx = await openDatabase();
-    const result = await dbx.runAsync(`DELETE from wallets`);
-    const result2 = await dbx.runAsync(`DELETE from target`);
-    const result3 = await dbx.runAsync(`DELETE from transactions`);
+    const result = await dbx.runAsync(`DELETE from weeks`);
+    const result2 = await dbx.runAsync(`DELETE from transactions`);
     if (result.changes > 0 && result2.changes > 0) {
       console.log("all 3 tables deleted");
     } else {

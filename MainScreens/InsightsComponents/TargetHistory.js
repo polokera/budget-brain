@@ -1,10 +1,31 @@
 import {View,StyleSheet,Text, FlatList} from 'react-native'
 import {useState} from 'react'
+import {parse,format} from "date-fns"
+import { AddComas } from '../../CustomModules/generalModules'
 
 export default function TargetHistory(){
-    const [history,setHistory] = useState([
-        {weekStart:"21-05-2025",target:20000,spent:18000}
-    ])
+    const [history,setHistory] = useState([])
+
+    const getPercentageColor=(spent,target)=>{
+        const percentage = (spent/target)*100;
+        if(percentage<50){
+            return "green"
+        }
+        if(percentage>=50 && percentage <75){
+            return "yellow"
+        }
+        if(percentage>=75 && percentage<100){
+            return "orange"
+        }
+        if(percentage>100){
+            return "red"
+        }
+    }
+
+    const getFormattedDate=(oldDate)=>{
+       const date = parse(oldDate,"dd-MM-yyyy",new Date())
+       return format(date,"dd MMM yy");
+    }
     return(
         <View style={styles.container}>
            <View style={styles.header}>
@@ -18,15 +39,17 @@ export default function TargetHistory(){
             renderItem={({item})=>{
                 return(
                     <View key={item.weekStart} style={styles.record}>
-                        <Text style={[{width:"22%"},styles.item]}>{item.weekStart}</Text>
-                        <Text style={[{width:"22%"},styles.item]}>{item.target}</Text>
-                        <Text style={[{width:"22%"},styles.item]}>{item.spent}</Text>
-                        <Text>{item.target}</Text>
-                        <Text style={[styles.item,{width:"22%",borderRightWidth:0}]}>{(item.target)-(item.spent)}</Text>
+                        <Text style={[{width:"22%"},styles.item]}>{getFormattedDate(item.weekStart)}</Text>
+                        <Text style={[{width:"22%"},styles.item]}>{AddComas(parseInt(item.target))}</Text>
+                        <Text style={[{width:"22%"},styles.item]}>{AddComas(parseInt(item.spent))}</Text>
+                        <Text style={[styles.item,{width:"22%",borderRightWidth:0}]}>{AddComas((parseInt(item.target)-parseInt(item.spent)))}</Text>
+                         <Text style={[styles.percentage,{color:getPercentageColor(item.spent,item.target)}]}>{parseInt((parseInt(item.spent)/parseInt(item.target))*100)}%</Text>
                     </View>
                 )
             }}
+            ListEmptyComponent={<Text style={styles.emptyMessage}>No data to work with yet come back after sunday</Text>}
            />
+
         </View>
     )
 }
@@ -39,6 +62,8 @@ const styles= StyleSheet.create({
     },
     container:{
         padding:6,
+        height:450,
+        paddingBottom:10,
     },
     headerText:{
         textAlign:"center",
@@ -47,8 +72,8 @@ const styles= StyleSheet.create({
     record:{
         flexDirection:"row",
         backgroundColor:"#fdf5f4",
-        height:40,
-        marginVertical:10,
+        height:50,
+        marginVertical:6,
         justifyContent:"center",
         borderRadius:14,
         elevation:6,
@@ -58,6 +83,18 @@ const styles= StyleSheet.create({
         textAlign:"center",
         verticalAlign:"middle",
         borderRightWidth:0.6,
-        borderRightColor:"grey"
+        borderRightColor:"grey",
+    },
+    percentage:{
+        position:"relative",
+        fontSize:11,
+        left:-94,
+        bottom:-18,
+    },
+    emptyMessage:{
+        marginTop:50,
+        marginHorizontal:10,
+        fontStyle:"italic",
+        color:"#8b8b8bff",
     }
 })

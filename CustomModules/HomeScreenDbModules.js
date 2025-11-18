@@ -1,5 +1,5 @@
 import openDatabase from "./DbModule";
-import * as Datefns from 'date-fns'
+import {isSunday,formatDate,previousSunday,startOfWeek,format} from 'date-fns'
 import { AddComas } from "./generalModules";
 export async function getWallets(){
 
@@ -50,8 +50,35 @@ export async function getHomeScreenDetails(){
 export async function getWeeklyTarget(){
     try{
         const dbx = await openDatabase()
-        let weeklyTargetObj = await dbx.getFirstAsync(`SELECT target from target`)
-        return weeklyTargetObj.target;
+        // let weeklyTargetObj = await dbx.getFirstAsync(`SELECT target from target`)
+        // return weeklyTargetObj.target;
+        const dateToday = new Date();
+        if(isSunday(dateToday)){
+            //check whether todays date is in database
+             const formattedDate = formatDate(dateToday,"yyyy-MM-dd");
+            const result = await dbx.getAllAsync(`SELECT COUNT(*) as count FROM weeks where weekStart = "${formattedDate}"`)
+           if(result[0].count!=0){
+             const result2 = await dbx.runAsync(`INSERT INTO weeks(weekStart,weekTarget,weekSPent)values(?,?)`,[formattedDate,30000,0])
+           }
+            console.log(parsedDate)
+           //test this on a sunday please
+            
+        }
+        else{
+            const parsedDate = formatDate(dateToday,"yyyy-MM-dd");
+            const previousSundayDate = formatDate(previousSunday(new Date(parsedDate)),"yyyy-MM-dd")
+            const result = await dbx.getAllAsync(`SELECT COUNT(*) as count FROM weeks where weekStart = "${previousSundayDate}"`)
+           console.log(result)
+            if(result[0].count == undefined || result[0].count == 0){
+               //this means this week doesnt exist yet in the database
+               //create the week give it a weekid,startdate and weektarget
+               //weektarget will be stored in asyncStorage
+              console.log(previousSundayDate, " is the previous sunday")
+               const result2 = await dbx.runAsync(`INSERT INTO weeks(weekStart,weekTarget,weekSPent)values(?,?)`,[previousSundayDate,30000,0])
+            }
+        }
+
+        return 10;
     }
     catch(e){
         console.log(e)
@@ -59,7 +86,7 @@ export async function getWeeklyTarget(){
 }
 
 export async function getSpentinWeek(){
-    const dateOnSunday = Datefns.format((Datefns.startOfWeek(new Date())),"yyyy-MM-dd")
+    const dateOnSunday = format((startOfWeek(new Date())),"yyyy-MM-dd")
     try{ 
         const dbx = await openDatabase();
         const transactionsInPastWeek = await dbx.getAllAsync(`SELECT amount,transDate from transactions where transDate >= "${dateOnSunday}" and transSign=-1 `)

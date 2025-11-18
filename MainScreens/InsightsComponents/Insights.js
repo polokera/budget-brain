@@ -11,7 +11,7 @@ export default function Insights(){
     return(
         <View style={externalStyles.main}>
             <View style={styles.container}>
-                <View style={styles.segContainer}>
+                {/* <View style={styles.segContainer}> */}
                     <SegmentedButtons
                         theme={{
                             colors:{primary:"#fdf5f4"}
@@ -24,12 +24,12 @@ export default function Insights(){
                         ]}
                         value={selectedScreen}
                     />
-                </View>
+                {/* </View> */}
                 <View style={styles.mainContent}>
                     {selectedScreen=="targetHistory"?<TargetHistory/>:<Categories/>}
                 </View>
                 
-                 <Text>Atambwali</Text>
+                 {/* <Text>Atambwali</Text> */}
             </View>
         </View>
     )
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     mainContent:{
         width:"95%",
         backgroundColor:"#e0fbfb",
-        height:"70%",
+        height:"80%",
         elevation:3,
         borderWidth:0.4,
         marginVertical:30,

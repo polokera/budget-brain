@@ -1,12 +1,14 @@
 import {View,StyleSheet,Text, FlatList} from 'react-native'
-import {useState,useEffect} from 'react'
+import {useState,useEffect, useContext} from 'react'
 import {parse,format} from "date-fns"
 import { AddComas } from '../../CustomModules/generalModules'
 import openMyDatabase from '../../CustomModules/DbModule'
+import { RefreshFunctionContext } from '../../CustomModules/Contexts'
 
 export default function TargetHistory(){
     const [history,setHistory] = useState([])
     const [loading,setIsLoading] = useState(false)
+    const {refreshKey} = useContext(RefreshFunctionContext)
     const getHistory=async()=>{
         const dbx = await openMyDatabase()
         const weekHistory = await dbx.getAllAsync(`SELECT * FROM weeks LIMIT 52`);
@@ -20,7 +22,7 @@ export default function TargetHistory(){
     }
     useEffect(()=>{
        loadHistory()
-    },[])
+    },[refreshKey])
 
     const getPercentageColor=(spent,target)=>{
         const percentage = (spent/target)*100;

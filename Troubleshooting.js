@@ -1,22 +1,22 @@
 import {View,Text,StyleSheet, Button} from "react-native"
-import openDatabase from "./CustomModules/DbModule"
+import openMyDatabase from "./CustomModules/DbModule"
 import * as Datefns from "date-fns"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export default function Troubleshooting(){
     const getAllTransactions =async()=>{
-        const dbx = await openDatabase()
+        const dbx = await openMyDatabase()
         const transactions = await dbx.getAllAsync(`SELECT * FROM transactions`)
         console.log(transactions)
     }
     const getAllWallets =async()=>{
-        const dbx = await openDatabase()
+        const dbx = await openMyDatabase()
         const transactions = await dbx.getAllAsync(`SELECT * FROM wallets`)
         console.log(transactions)
     }
     const Anything =async()=>{
         try{
-        const dbx = await openDatabase()
+        const dbx = await openMyDatabase()
         const result = await dbx.getAllAsync(`select * from weeks `)
         console.log(result)
         }
@@ -27,7 +27,8 @@ export default function Troubleshooting(){
     const removeKey=async()=>{
         try{
             await AsyncStorage.removeItem("isSignedUp")
-            console.log("key has been removed")
+            await AsyncStorage.removeItem("weeklyTarget")
+            console.log("keys have been removed")
         }
         catch(e){
             console.log(e)

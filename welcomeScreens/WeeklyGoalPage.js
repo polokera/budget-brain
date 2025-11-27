@@ -9,7 +9,7 @@ import {
 import { useState, useEffect } from "react";
 import OpeningScreen from "./secondWelcomeScreens/OpeningScreen";
 import SetTargetPage from "./secondWelcomeScreens/SetTargetpage";
-import openDatabase from "../CustomModules/DbModule";
+import openMyDatabase from "../CustomModules/DbModule";
 import { removeCommas } from "../CustomModules/generalModules";
 import { initial } from "lodash";
 
@@ -22,7 +22,7 @@ export default function MoneyWallet({navigation,route,setIsUserSignedUp}) {
     setNextPressed(true)
   }
   const addWalletsToDb = async(weeklyTarget)=>{
-    const dbx = await openDatabase();
+    const dbx = await openMyDatabase();
     const formattedWallets = walletsArray.map((wallet)=>{
       const formattedAmount = removeCommas(wallet.initialAmount)
       return(
@@ -33,10 +33,11 @@ export default function MoneyWallet({navigation,route,setIsUserSignedUp}) {
         for(const wlt of formattedWallets){
         //inserts wallets from the previous page into the database.
         await dbx.runAsync(`INSERT INTO wallets(walletId,wName,balance,themeColor)values(?,?,?,?)`,[wlt.id,wlt.wName,wlt.initialAmount,wlt.themeColor])
+        // await dbx.runAsync(`DELETE from wallets`)
         }
         console.log("wallets Inserted");
-        await dbx.runAsync(`INSERT into target(targetId,target)values(?,?)`,[1,weeklyTarget])
         await AsyncStorage.setItem("isSignedUp","true");
+        await AsyncStorage.setItem("weeklyTarget",String(removeCommas(weeklyTarget)));
         setIsUserSignedUp(true)
         console.log("target inserted");
     }

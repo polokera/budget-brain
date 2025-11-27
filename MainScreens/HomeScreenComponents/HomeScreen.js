@@ -7,7 +7,7 @@ import {
   Pressable,
 } from "react-native";
 import { useEffect, useState, useCallback, useContext } from "react";
-import openDatabase from "../../CustomModules/DbModule";
+import openMyDatabase from "../../CustomModules/DbModule";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import generalStyles from "../../CustomModules/generalStyles";
 import HomeScreenStyles from "./HomeScreenStyles";
@@ -51,8 +51,9 @@ export default function HomeScreen({ navigation }) {
     }
   };
   const deleteDb = async () => {
-    const dbx = await openDatabase();
+    const dbx = await openMyDatabase();
     const result = await dbx.runAsync(`DELETE from weeks`);
+    const result1 = await dbx.runAsync(`DELETE from wallets`);
     const result2 = await dbx.runAsync(`DELETE from transactions`);
     if (result.changes > 0 && result2.changes > 0) {
       console.log("all 3 tables deleted");

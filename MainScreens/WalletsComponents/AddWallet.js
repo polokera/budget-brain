@@ -3,7 +3,7 @@ import { useState,useEffect, useContext } from "react"
 import externalStyles from '../../CustomModules/generalStyles'
 import { AddComas, removeCommas } from "../../CustomModules/generalModules"
 import { useForm,Controller } from "react-hook-form"
-import openDatabase from "../../CustomModules/DbModule"
+import openMyDatabase from "../../CustomModules/DbModule"
 import { BalancesRefreshContext, RefreshFunctionContext } from "../../CustomModules/Contexts"
 import Popup from "../../CustomModules/Popup"
 
@@ -28,7 +28,7 @@ export default function WalletScreen({navigation,route}){
        const {amountInWallet,walletName} = data;
        const randomColor = getRandColor();
         try{
-            const dbx = await openDatabase();
+            const dbx = await openMyDatabase();
             const numberOfWallets = await dbx.getFirstAsync(`SELECT COUNT(*) FROM wallets`);
             console.log(amountInWallet==undefined?0:removeCommas(amountInWallet));
             await dbx.runAsync(`INSERT INTO wallets(walletId,wName,balance,themeColor)VALUES(?,?,?,?)`,[numberOfWallets["COUNT(*)"]+100,walletName,amountInWallet==undefined?0:removeCommas(amountInWallet),randomColor])

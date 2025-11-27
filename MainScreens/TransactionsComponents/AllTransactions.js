@@ -1,5 +1,5 @@
 import {View,Text,StyleSheet, FlatList, Pressable} from "react-native"
-import openDatabase from "../../CustomModules/DbModule"
+import openMyDatabase from "../../CustomModules/DbModule"
 import externalStyles from '../../CustomModules/generalStyles'
 import { useState,useEffect } from "react"
 import { AddComas, fixDates,fixTimes } from "../../CustomModules/generalModules"
@@ -33,7 +33,7 @@ export default function AllTransactions({route}){
             const fixedMinimum = filters.minAmount === "" ? 0 : filters.minAmount
             const fixedMaximum = filters.maxAmount === "" ? 999999999 : filters.maxAmount
             setLoading(true)
-            const dbx = await openDatabase()
+            const dbx = await openMyDatabase()
             const categoryList = filters.categories.map((cat)=>`'${cat.replace(/"/g,"'")}'`).join(",");
             const walletList = filters.wallets.map((wal)=>`'${wal.replace(/"/g,"'")}'`).join(",");
             const sql = `

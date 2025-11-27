@@ -3,7 +3,7 @@ import { useState,useEffect, useContext } from "react"
 import externalStyles from '../../CustomModules/generalStyles'
 import { AddComas, removeCommas } from "../../CustomModules/generalModules"
 import { useForm,Controller } from "react-hook-form"
-import openDatabase from '../../CustomModules/DbModule'
+import openMyDatabase from '../../CustomModules/DbModule'
 import * as DateFns from "date-fns"
 import Popup from "../../CustomModules/Popup"
 import { RefreshFunctionContext } from "../../CustomModules/Contexts"
@@ -23,7 +23,7 @@ export default function WalletScreen({navigation,route}){
     }
     const onSubmit=async(data)=>{
         //when writing sql remove commas from amount to add.
-        const dbx = await openDatabase();
+        const dbx = await openMyDatabase();
         const date = DateFns.format(new Date(),"yyyy-MM-dd")
         const time = DateFns.format(new Date(),"HHmm")
         try{

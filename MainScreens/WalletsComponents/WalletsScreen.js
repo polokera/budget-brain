@@ -3,7 +3,7 @@ import { useState,useEffect, useContext } from "react"
 import externalStyles from '../../CustomModules/generalStyles'
 import { AddComas } from "../../CustomModules/generalModules"
 import Entypo from '@expo/vector-icons/Entypo';
-import openDatabase from "../../CustomModules/DbModule";
+import openMyDatabase from "../../CustomModules/DbModule";
 import { RefreshFunctionContext } from "../../CustomModules/Contexts";
 
 export default function WalletScreen({navigation}){
@@ -18,7 +18,7 @@ export default function WalletScreen({navigation}){
     }
     const getWallets=async()=>{
        try{
-         const dbx = await openDatabase();
+         const dbx = await openMyDatabase();
          const wallets = await dbx.getAllAsync(`SELECT wName,balance,themeColor,walletId from wallets`);
          setWallets(wallets);
         }

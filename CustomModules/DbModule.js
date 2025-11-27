@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite'
 let dbInstance = null;
-export default async function openDatabase(){
+export default async function openMyDatabase(){
     if(!dbInstance){
        try{
          dbInstance = await SQLite.openDatabaseAsync("mudzi.db");

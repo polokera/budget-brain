@@ -1,10 +1,26 @@
 import {View,StyleSheet,Text, FlatList} from 'react-native'
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 import {parse,format} from "date-fns"
 import { AddComas } from '../../CustomModules/generalModules'
+import openMyDatabase from '../../CustomModules/DbModule'
 
 export default function TargetHistory(){
     const [history,setHistory] = useState([])
+    const [loading,setIsLoading] = useState(false)
+    const getHistory=async()=>{
+        const dbx = await openMyDatabase()
+        const weekHistory = await dbx.getAllAsync(`SELECT * FROM weeks LIMIT 52`);
+        setHistory(weekHistory)
+
+    }
+    const loadHistory=async()=>{
+        setIsLoading(true)
+        await getHistory()
+        setIsLoading(false)
+    }
+    useEffect(()=>{
+       loadHistory()
+    },[])
 
     const getPercentageColor=(spent,target)=>{
         const percentage = (spent/target)*100;
@@ -23,8 +39,15 @@ export default function TargetHistory(){
     }
 
     const getFormattedDate=(oldDate)=>{
-       const date = parse(oldDate,"dd-MM-yyyy",new Date())
+       const date = parse(oldDate,"yyyy-MM-dd",new Date())
        return format(date,"dd MMM yy");
+    }
+    if(loading){
+        return(
+            <View style={{justifyContent:"center",alignItems:"center"}}>
+                <Text>Loadng by central cee.....</Text>
+            </View>
+        )
     }
     return(
         <View style={styles.container}>
@@ -40,10 +63,10 @@ export default function TargetHistory(){
                 return(
                     <View key={item.weekStart} style={styles.record}>
                         <Text style={[{width:"22%"},styles.item]}>{getFormattedDate(item.weekStart)}</Text>
-                        <Text style={[{width:"22%"},styles.item]}>{AddComas(parseInt(item.target))}</Text>
-                        <Text style={[{width:"22%"},styles.item]}>{AddComas(parseInt(item.spent))}</Text>
-                        <Text style={[styles.item,{width:"22%",borderRightWidth:0}]}>{AddComas((parseInt(item.target)-parseInt(item.spent)))}</Text>
-                         <Text style={[styles.percentage,{color:getPercentageColor(item.spent,item.target)}]}>{parseInt((parseInt(item.spent)/parseInt(item.target))*100)}%</Text>
+                        <Text style={[{width:"22%"},styles.item]}>{AddComas(parseInt(item.weekTarget))}</Text>
+                        <Text style={[{width:"22%"},styles.item]}>{AddComas(parseInt(item.weekSpent))}</Text>
+                        <Text style={[styles.item,{width:"22%",borderRightWidth:0}]}>{AddComas((parseInt(item.weekTarget)-parseInt(item.weekSpent)))}</Text>
+                        <Text style={[styles.percentage,{color:getPercentageColor(item.weekSpent,item.weekTarget)}]}>{parseInt((parseInt(item.weekSpent)/parseInt(item.weekTarget))*100)}%</Text>
                     </View>
                 )
             }}

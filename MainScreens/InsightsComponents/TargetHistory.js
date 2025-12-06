@@ -18,9 +18,7 @@ export default function TargetHistory(){
         }
         catch(e){
             console.log(e)
-        }
-        
-        
+        } 
     }
     const loadHistory=async()=>{
         setIsLoading(true)
@@ -94,8 +92,12 @@ const styles= StyleSheet.create({
     },
     container:{
         padding:6,
-        height:450,
+        height:200,
         paddingBottom:10,
+        backgroundColor:"#e0fbfb",
+        elevation:3,
+        borderWidth:0.65,
+        borderRadius:10,
     },
     headerText:{
         textAlign:"center",
@@ -104,7 +106,7 @@ const styles= StyleSheet.create({
     record:{
         flexDirection:"row",
         backgroundColor:"#fdf5f4",
-        height:50,
+        height:32,
         marginVertical:6,
         justifyContent:"center",
         borderRadius:14,
@@ -120,8 +122,8 @@ const styles= StyleSheet.create({
     percentage:{
         position:"relative",
         fontSize:11,
-        left:-94,
-        bottom:-18,
+        left:-98,
+        bottom:-11,
     },
     emptyMessage:{
         marginTop:50,

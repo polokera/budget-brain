@@ -55,7 +55,6 @@ export default function AllTransactions({route}){
             ORDER BY transactions.transDate desc,transactions.transTime desc
             limit 25
             `
-            console.log(sql)
             const filteredTransactions = await dbx.getAllAsync(sql)
             setTransactions(filteredTransactions)
         }

@@ -9,11 +9,18 @@ export default function TargetHistory(){
     const [history,setHistory] = useState([])
     const [loading,setIsLoading] = useState(false)
     const {refreshKey} = useContext(RefreshFunctionContext)
-    const getHistory=async()=>{
-        const dbx = await openMyDatabase()
-        const weekHistory = await dbx.getAllAsync(`SELECT * FROM weeks LIMIT 52`);
-        setHistory(weekHistory)
-
+    const getHistory=async()=>{ 
+        try{
+            const dbx = await openMyDatabase()
+            const weekHistory = await dbx.getAllAsync(`SELECT * FROM weeks ORDER BY weekId DESC LIMIT 52`);
+            console.log(weekHistory," is the week history")
+            setHistory(weekHistory)
+        }
+        catch(e){
+            console.log(e)
+        }
+        
+        
     }
     const loadHistory=async()=>{
         setIsLoading(true)

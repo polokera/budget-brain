@@ -1,20 +1,60 @@
-import {View,StyleSheet,Text, FlatList} from 'react-native'
+import {View,StyleSheet,Text, FlatList, Pressable} from 'react-native'
 import {useState,useEffect, useContext} from 'react'
-import {parse,format} from "date-fns"
+import {parse,format,getWeek} from "date-fns"
 import { AddComas } from '../../CustomModules/generalModules'
 import openMyDatabase from '../../CustomModules/DbModule'
 import { RefreshFunctionContext } from '../../CustomModules/Contexts'
+import FullTargetHistory from './ModalTgtHistory'
 
-export default function TargetHistory(){
+export default function TargetHistory({timeFrame}){
     const [history,setHistory] = useState([])
+    const [resizedHistory,setResizedHistory] = useState([]);
     const [loading,setIsLoading] = useState(false)
+    const [popUpVisible,setPopUpVisible] = useState(true)
     const {refreshKey} = useContext(RefreshFunctionContext)
+    const getStartDate=()=>{
+        //this function takes the timeframe e.g 1 week or 1 month
+        //it uses that time frame to calculate the start date 
+        //it uses the current date and then subtracts the time frame from it
+        //that date is then used in the sql
+        if(timeFrame=="Last week"){
+            const dateToday = new Date()
+            console.log(getWeek(dateToday))
+        }
+    }
     const getHistory=async()=>{ 
         try{
             const dbx = await openMyDatabase()
             const weekHistory = await dbx.getAllAsync(`SELECT * FROM weeks ORDER BY weekId DESC LIMIT 52`);
             console.log(weekHistory," is the week history")
+            const test = [
+                {"weekId": 1, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 2, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 4, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 5, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 6, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 7, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 8, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 9, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 10, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 11, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 12, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 14, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 15, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 16, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 17, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 18, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 19, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+                {"weekId": 100, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
+            ]
             setHistory(weekHistory)
+            if(weekHistory.length>3){
+                const rh = weekHistory.slice(0,3)
+                setResizedHistory(rh);
+            }
+            else{
+                setResizedHistory(weekHistory);
+            }
         }
         catch(e){
             console.log(e)
@@ -27,6 +67,7 @@ export default function TargetHistory(){
     }
     useEffect(()=>{
        loadHistory()
+       getStartDate();
     },[refreshKey])
 
     const getPercentageColor=(spent,target)=>{
@@ -58,17 +99,22 @@ export default function TargetHistory(){
     }
     return(
         <View style={styles.container}>
-           <View style={styles.header}>
-            <Text style={[{width:"22%"},styles.headerText]}>Week{'\n'}starting</Text>
-            <Text style={[{width:"22%"},styles.headerText]}>Target {'\n'}(MWK)</Text>
-            <Text style={[{width:"22%"},styles.headerText]}>Spent {'\n'}(MWK)</Text>
-            <Text style={[{width:"22%"},styles.headerText]}>Saved during week</Text>
-           </View>
-           <FlatList
-            data={history}
-            renderItem={({item})=>{
+            <FullTargetHistory
+            popUpVisible={popUpVisible}
+            setPopUpVisible={setPopUpVisible}
+            history={history}
+            getFormattedDate={getFormattedDate}
+            getPercentageColor={getPercentageColor}
+            />
+            <View style={styles.header}>
+                <Text style={[{width:"22%"},styles.headerText]}>Week{'\n'}starting</Text>
+                <Text style={[{width:"22%"},styles.headerText]}>Target {'\n'}(MWK)</Text>
+                <Text style={[{width:"22%"},styles.headerText]}>Spent {'\n'}(MWK)</Text>
+                <Text style={[{width:"22%"},styles.headerText]}>Saved during week</Text>
+            </View>
+           {resizedHistory.map(item=>{
                 return(
-                    <View key={item.weekStart} style={styles.record}>
+                    <View key={item.weekId} style={styles.record}>
                         <Text style={[{width:"22%"},styles.item]}>{getFormattedDate(item.weekStart)}</Text>
                         <Text style={[{width:"22%"},styles.item]}>{AddComas(parseInt(item.weekTarget))}</Text>
                         <Text style={[{width:"22%"},styles.item]}>{AddComas(parseInt(item.weekSpent))}</Text>
@@ -76,10 +122,14 @@ export default function TargetHistory(){
                         <Text style={[styles.percentage,{color:getPercentageColor(item.weekSpent,item.weekTarget)}]}>{parseInt((parseInt(item.weekSpent)/parseInt(item.weekTarget))*100)}%</Text>
                     </View>
                 )
-            }}
-            ListEmptyComponent={<Text style={styles.emptyMessage}>No data to work with yet come back after sunday</Text>}
-           />
-
+           })}
+           {
+            history.length>3 &&
+            <Pressable onPress={()=>setPopUpVisible(true)}>
+                <Text style={styles.link}>see more...</Text>
+           </Pressable>
+           }
+           
         </View>
     )
 }
@@ -92,7 +142,7 @@ const styles= StyleSheet.create({
     },
     container:{
         padding:6,
-        height:200,
+        height:230,
         paddingBottom:10,
         backgroundColor:"#e0fbfb",
         elevation:3,
@@ -106,7 +156,7 @@ const styles= StyleSheet.create({
     record:{
         flexDirection:"row",
         backgroundColor:"#fdf5f4",
-        height:32,
+        height:29,
         marginVertical:6,
         justifyContent:"center",
         borderRadius:14,
@@ -122,13 +172,21 @@ const styles= StyleSheet.create({
     percentage:{
         position:"relative",
         fontSize:11,
-        left:-98,
-        bottom:-11,
+        left:-100,
+        bottom:-7,
     },
     emptyMessage:{
         marginTop:50,
         marginHorizontal:10,
         fontStyle:"italic",
         color:"#8b8b8bff",
+    },
+    link:{
+        // borderWidth:1,
+        textAlign:"right",
+        marginTop:15,
+        color:"#0000EE",
+        textDecorationLine:"underline",
+        paddingHorizontal:10,
     }
 })

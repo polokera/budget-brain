@@ -46,10 +46,10 @@ export default function Fw({ data, show, hide, setMessage, goBack }) {
         false
       );
     }
-  }
+  }   
 
   return (
-    <KeyboardAvoidingView
+    <KeyboardAvoidingView      
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
       keyboardVerticalOffset={Platform.OS==='ios'?80:0} 

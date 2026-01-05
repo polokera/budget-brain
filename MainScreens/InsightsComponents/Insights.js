@@ -1,22 +1,28 @@
-import {View,Text,StyleSheet} from "react-native"
+import {View,Text,StyleSheet, ScrollView} from "react-native"
 import externalStyles from '../../CustomModules/generalStyles'
 import { SegmentedButtons } from "react-native-paper"
 import { useState,useEffect } from "react"
 import TargetHistory from "./TargetHistory"
 import Categories from "./Categories"
 import SegButtons from "./Topbuttons"
+import SpendingByWallet from "./SpendingByWallet"
 
 export default function Insights(){
-    const [selectedTimeFrame,setSelectedTimeFrame] = useState("Last week")
-
+    const [selectedTimeFrame,setSelectedTimeFrame] = useState({label:"Last week",value:"-7 days"})
+    
+   
     return(
         <View style={externalStyles.main}>
             <View style={styles.container}>
                 <SegButtons selectedTimeFrame={selectedTimeFrame} setSelectedTimeFrame={setSelectedTimeFrame}/>
-                <View style={styles.mainContent}>
-                  <TargetHistory timeFrame={selectedTimeFrame}/>
+                {/* <View > */}
+                <ScrollView style={styles.mainContent}>
+                  <TargetHistory timeFrame={selectedTimeFrame} />
+                  <SpendingByWallet timeFrame={selectedTimeFrame} />
                   <Categories timeFrame={selectedTimeFrame}/>
-                </View>
+                </ScrollView>
+                  
+                {/* </View> */}
             </View>
         </View>
     )

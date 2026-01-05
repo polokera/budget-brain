@@ -11,10 +11,10 @@ export default function SegButtons({selectedTimeFrame,setSelectedTimeFrame}){
     }
     return(
         <View style={styles.buttonContainer}>
-            <Pressable onPress={()=>onSelectItem("Last week")}>
+            <Pressable onPress={()=>onSelectItem({label:"Last week",value:"-7 days"})}>
                 <Text 
                     style={[styles.item,
-                        selectedTimeFrame=="Last week"&&{backgroundColor:"#ee9e8e"},
+                        selectedTimeFrame.label=="Last week"&&{backgroundColor:"#ee9e8e"},
                         {
                             borderRightWidth:0.78,
                             borderTopLeftRadius:19,
@@ -25,11 +25,11 @@ export default function SegButtons({selectedTimeFrame,setSelectedTimeFrame}){
                     Last week
                 </Text>
             </Pressable>
-            <Pressable onPress={()=>onSelectItem("Last Month")}>
-                <Text style={[styles.item,selectedTimeFrame=="Last Month"&&{backgroundColor:"#ee9e8e"},{borderRightWidth:0.78}]}>Last Month</Text>
+            <Pressable onPress={()=>onSelectItem({label:"Last Month",value:"-1 month"})}>
+                <Text style={[styles.item,selectedTimeFrame.label=="Last Month"&&{backgroundColor:"#ee9e8e"},{borderRightWidth:0.78}]}>Last Month</Text>
             </Pressable>
-            <Pressable onPress={()=>onSelectItem("Last 3 Months")}>
-                <Text style={[styles.item,selectedTimeFrame=="Last 3 Months"&&{backgroundColor:"#ee9e8e"},
+            <Pressable onPress={()=>onSelectItem({label:"Last 3 Months",value:"-3 months"})}>
+                <Text style={[styles.item,selectedTimeFrame.label=="Last 3 Months"&&{backgroundColor:"#ee9e8e"},
                     {
                         borderTopRightRadius:19,
                         borderBottomRightRadius:19

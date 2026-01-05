@@ -5,28 +5,21 @@ import { AddComas } from '../../CustomModules/generalModules'
 import openMyDatabase from '../../CustomModules/DbModule'
 import { RefreshFunctionContext } from '../../CustomModules/Contexts'
 import FullTargetHistory from './ModalTgtHistory'
+import StylesInsights from './StylesInsights'
 
 export default function TargetHistory({timeFrame}){
     const [history,setHistory] = useState([])
     const [resizedHistory,setResizedHistory] = useState([]);
-    const [loading,setIsLoading] = useState(false)
-    const [popUpVisible,setPopUpVisible] = useState(true)
+    const [popUpVisible,setPopUpVisible] = useState(false)
     const {refreshKey} = useContext(RefreshFunctionContext)
-    const getStartDate=()=>{
-        //this function takes the timeframe e.g 1 week or 1 month
-        //it uses that time frame to calculate the start date 
-        //it uses the current date and then subtracts the time frame from it
-        //that date is then used in the sql
-        if(timeFrame=="Last week"){
-            const dateToday = new Date()
-            console.log(getWeek(dateToday))
-        }
+    const sqlByTimeFrame=()=>{
+        return `SELECT * FROM weeks where weekStart>= date("now","${timeFrame.value}") ORDER BY weekId DESC LIMIT 52`
     }
     const getHistory=async()=>{ 
         try{
             const dbx = await openMyDatabase()
-            const weekHistory = await dbx.getAllAsync(`SELECT * FROM weeks ORDER BY weekId DESC LIMIT 52`);
-            console.log(weekHistory," is the week history")
+            const weekHistory = await dbx.getAllAsync(sqlByTimeFrame());
+            console.log(weekHistory)
             const test = [
                 {"weekId": 1, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
                 {"weekId": 2, "weekSpent": 0, "weekStart": "2025-11-30", "weekTarget": 66800},
@@ -51,6 +44,10 @@ export default function TargetHistory({timeFrame}){
             if(weekHistory.length>3){
                 const rh = weekHistory.slice(0,3)
                 setResizedHistory(rh);
+                /* 
+                    resized history because I wnt only 3 to be showing up
+                    initially so it cuts the list to the 3 latest weeks
+                */
             }
             else{
                 setResizedHistory(weekHistory);
@@ -58,17 +55,17 @@ export default function TargetHistory({timeFrame}){
         }
         catch(e){
             console.log(e)
-        } 
+        }
+        finally{
+            
+        }
     }
     const loadHistory=async()=>{
-        setIsLoading(true)
         await getHistory()
-        setIsLoading(false)
     }
     useEffect(()=>{
        loadHistory()
-       getStartDate();
-    },[refreshKey])
+    },[refreshKey,timeFrame.value])
 
     const getPercentageColor=(spent,target)=>{
         const percentage = (spent/target)*100;
@@ -76,7 +73,7 @@ export default function TargetHistory({timeFrame}){
             return "green"
         }
         if(percentage>=50 && percentage <75){
-            return "yellow"
+            return "#81890b"
         }
         if(percentage>=75 && percentage<100){
             return "orange"
@@ -90,13 +87,13 @@ export default function TargetHistory({timeFrame}){
        const date = parse(oldDate,"yyyy-MM-dd",new Date())
        return format(date,"dd MMM yy");
     }
-    if(loading){
-        return(
-            <View style={{justifyContent:"center",alignItems:"center"}}>
-                <Text>Loadng by central cee.....</Text>
-            </View>
-        )
-    }
+    // if(loading){
+    //     return(
+    //         <View style={{justifyContent:"center",alignItems:"center"}}>
+    //             <Text>Loadng by central cee.....</Text>
+    //         </View>
+    //     )
+    // }
     return(
         <View style={styles.container}>
             <FullTargetHistory
@@ -106,6 +103,7 @@ export default function TargetHistory({timeFrame}){
             getFormattedDate={getFormattedDate}
             getPercentageColor={getPercentageColor}
             />
+            <Text style={StylesInsights.titleBox}>Target History</Text>
             <View style={styles.header}>
                 <Text style={[{width:"22%"},styles.headerText]}>Week{'\n'}starting</Text>
                 <Text style={[{width:"22%"},styles.headerText]}>Target {'\n'}(MWK)</Text>
@@ -142,12 +140,13 @@ const styles= StyleSheet.create({
     },
     container:{
         padding:6,
-        height:230,
+        // height:230,
         paddingBottom:10,
         backgroundColor:"#e0fbfb",
         elevation:3,
         borderWidth:0.65,
         borderRadius:10,
+        marginVertical:25,
     },
     headerText:{
         textAlign:"center",
@@ -172,7 +171,7 @@ const styles= StyleSheet.create({
     percentage:{
         position:"relative",
         fontSize:11,
-        left:-100,
+        left:-90,
         bottom:-7,
     },
     emptyMessage:{

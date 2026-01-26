@@ -4,7 +4,6 @@ import AddMoney from './AddMoney'
 import AddWallet from './AddWallet'
 import { Pressable } from "react-native";
 import externalStyles from '../../CustomModules/generalStyles'
-import {BalancesRefreshContext} from '../../CustomModules/Contexts'
 
 export default function WalletStack(){
     const Stack = createStackNavigator()

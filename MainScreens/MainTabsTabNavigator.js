@@ -6,7 +6,7 @@ import Insights from './InsightsComponents/Insights'
 import Settings from './SettingsComponents/Settings'
 import { StyleSheet} from "react-native";
 import externalStyles from '../CustomModules/generalStyles'
-import { BalancesRefreshContext,RefreshFunctionContext } from "../CustomModules/Contexts";
+import { RefreshFunctionContext } from "../CustomModules/Contexts";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 

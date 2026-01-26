@@ -4,7 +4,7 @@ import externalStyles from '../../CustomModules/generalStyles'
 import { AddComas, removeCommas } from "../../CustomModules/generalModules"
 import { useForm,Controller } from "react-hook-form"
 import openMyDatabase from "../../CustomModules/DbModule"
-import { BalancesRefreshContext, RefreshFunctionContext } from "../../CustomModules/Contexts"
+import {  RefreshFunctionContext } from "../../CustomModules/Contexts"
 import Popup from "../../CustomModules/Popup"
 
 export default function WalletScreen({navigation,route}){

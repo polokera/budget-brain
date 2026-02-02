@@ -25,6 +25,7 @@ export default function NewUsernameModal({visible,hide}){
         <Modal
         visible={visible}
         transparent
+        animationType='fade'
         >
             <Pressable
             style={styles.overlay}

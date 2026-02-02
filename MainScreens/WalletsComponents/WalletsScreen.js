@@ -5,10 +5,13 @@ import { AddComas } from "../../CustomModules/generalModules"
 import Entypo from '@expo/vector-icons/Entypo';
 import openMyDatabase from "../../CustomModules/DbModule";
 import { RefreshFunctionContext } from "../../CustomModules/Contexts";
+import generalStyles from "../../CustomModules/generalStyles";
+import NewTargetPopUp from "./NewTargetPopUp";
 
 export default function WalletScreen({navigation}){
     const {refreshKey} = useContext(RefreshFunctionContext);
     const [wallets,setWallets]=useState([])
+    const [popUpVisible,setPopUpVisible] = useState(false)
     const goToAddMoneyPage=(item)=>{
         console.log(item," is your wallet")
         navigation.navigate("AddMoney",{
@@ -41,11 +44,23 @@ export default function WalletScreen({navigation}){
     },[refreshKey])
     return(
         <View style={externalStyles.main}>
+            <NewTargetPopUp
+            visible={popUpVisible}
+            hide={()=>setPopUpVisible(false)}
+            />
             <View style={styles.container}>
               <FlatList
                 style={styles.list}
                 data={wallets}
+                ListHeaderComponent={
+                    <Pressable 
+                    onPress={()=>setPopUpVisible(true)}
+                    style={[generalStyles.button,styles.newTargetButton]}>
+                        <Text style={styles.buttonText}>Set a new weeekly target</Text>
+                    </Pressable>
+                }
                 ListFooterComponentStyle={{marginBottom:80,}}
+                ListHeaderComponentStyle={{alignItems:"flex-end",marginBottom:10}}
                 ListFooterComponent={
                 //this is the button that you press when you 
                 // want to add a new wallet>
@@ -55,8 +70,7 @@ export default function WalletScreen({navigation}){
                         <Text style={styles.addNewWalletText}> Add a new wallet</Text>
                     </View>
                 </Pressable>
-                
-            }
+                }
                 renderItem={({item})=>{
                     return(
                         <View style={styles.wallet} key={item.walletId}>
@@ -142,5 +156,14 @@ const styles = StyleSheet.create({
     addNewWalletText:{
         fontSize:22,
         color:"gray",
+    },
+    newTargetButton:{
+        width:120,
+        height:48,
+        padding:8,
+    },
+    buttonText:{
+        fontSize:12,
+        fontWeight:"900",
     }
 })

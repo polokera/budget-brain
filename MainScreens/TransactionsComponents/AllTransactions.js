@@ -16,11 +16,11 @@ export default function AllTransactions({route}){
     const [filters,setFilters] = useState(
         {
            minAmount:"",
-           maxAmount:"",
+           maxAmount:"10000000000",
            transSign:{label:"All",value:0},
            startDate:"2025-05-08T10:02:00.000Z",
            endDate:new Date(),
-           categories:["Education","Groceries","Food","Zinjoyi","Bills & Membership","Religious fees","others....","Loans repayment"],
+           categories:["Education","Groceries","Food","Zinjoyi","Bills & Membership","Religious fees","others...","Transport","Data/voice bundles"],
            wallets:wallets.map((w)=>w.wName),
         }
     )

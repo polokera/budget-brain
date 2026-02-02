@@ -12,7 +12,8 @@ import {View,Text} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { MaterialIcons,Ionicons, FontAwesome, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons,Ionicons, FontAwesome, Entypo, MaterialCommunityIcons, FontAwesome6 } from '@expo/vector-icons';
+import { DeviceEventEmitter } from 'react-native';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -20,7 +21,8 @@ export default function App() {
     ...MaterialIcons.font,
     ...FontAwesome.font,
     ...Entypo.font,
-    ...MaterialCommunityIcons.font
+    ...MaterialCommunityIcons.font,
+    ...FontAwesome6.font,
   })
   const [isUserSignedUp,setIsUserSignedUp] = useState(true)
   const Stack = createStackNavigator()
@@ -48,6 +50,11 @@ export default function App() {
   }
   useEffect(()=>{
     isSignedUp()
+    const subscription = DeviceEventEmitter.addListener('userLoggedOut',()=>{
+      setIsUserSignedUp(false);
+    })
+
+    return ()=> subscription.remove()
   },[isUserSignedUp])
   if(isUserSignedUp===null){
     return(

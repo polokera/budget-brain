@@ -54,7 +54,7 @@ export default function ProgressBox({goal,spent}){
                             <Text style={styles.percentage}>{perc}%</Text>
                             <Text style={{textAlign:"center",verticalAlign:"middle",color:"grey",fontStyle:"italic"}}>Used</Text>
                             <Text style={{fontSize:12,color:"#190933"}}>Weekly target: </Text>
-                            <Text style={styles.values}>MWK {goal}</Text>
+                            <Text style={styles.values}>MWK {AddComas(goal)}</Text>
                         </View>
                         <View style={[styles.rightLeft,styles.right]}>
                             {/* right */}

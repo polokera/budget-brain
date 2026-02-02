@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {View,Text,StyleSheet,FlatList} from 'react-native'
 import StylesInsights from './StylesInsights';
 import openMyDatabase from '../../CustomModules/DbModule';
-import generalStyles from '../../CustomModules/generalStyles';
+import generalStyles from '../../CustomModules/generalStyles'
+import { RefreshFunctionContext } from '../../CustomModules/Contexts';
 
 
 export default function SpendingByWallet({timeFrame}){
@@ -16,6 +17,7 @@ export default function SpendingByWallet({timeFrame}){
     //     // {wName:"fries",amount:8,walletId:7},
     //     // {wName:"fries",amount:8,walletId:8},
     // ]
+    const {refreshKey} = useContext(RefreshFunctionContext)
     const [walletData,setWalletData] = useState([]);
     const [isLoading,setisLoading] = useState(false);
 
@@ -32,7 +34,7 @@ export default function SpendingByWallet({timeFrame}){
         const loadWalletHistory=async()=>{
         try{
             const dbx = await openMyDatabase()
-            const result = await dbx.getAllAsync(`select wallets.wName,SUM(transactions.amount) as totalExpenses,wallets.walletId as walletId 
+            const result = await dbx.getAllAsync(`select wallets.wName,SUM(transactions.amount) as totalExpenses,wallets.walletId as walletId,wallets.themeColor as color
                 from wallets 
                 inner join transactions
                 on transactions.walletId=wallets.walletid
@@ -52,7 +54,7 @@ export default function SpendingByWallet({timeFrame}){
         loadWalletHistory();
         getWidth();
         setisLoading(false)
-    },[timeFrame])
+    },[timeFrame.value,refreshKey])
     if (isLoading) {
     return (
       <View style={generalStyles.main}>
@@ -71,7 +73,7 @@ export default function SpendingByWallet({timeFrame}){
                     key={item.walletId}
                     style={styles.container}>
                         <Text style={styles.walletName}>{item.wName}:</Text>
-                        <View style={[{width:getWidth(item.totalExpenses),backgroundColor:"green"},styles.bar]}>
+                        <View style={[{width:getWidth(item.totalExpenses),backgroundColor:item.color},styles.bar]}>
                             <Text style={styles.barAmount}>MWK {item.totalExpenses}</Text>
                         </View>
                     </View>

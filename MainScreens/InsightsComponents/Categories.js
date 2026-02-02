@@ -3,8 +3,9 @@ import { PieChart } from 'react-native-gifted-charts'
 import Legend from './Legend'
 import StylesInsights from './StylesInsights'
 import openMyDatabase from '../../CustomModules/DbModule'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { getRandColor } from '../../CustomModules/generalModules'
+import { RefreshFunctionContext } from '../../CustomModules/Contexts'
 
 export default function Categories({timeFrame}){
     // const data = [
@@ -14,6 +15,7 @@ export default function Categories({timeFrame}){
     //     {text:"fries",value:18,walletId:7,color:"orange"},
     //     {text:"fries",value:3,walletId:8,color:"brown"},
     // ]
+    const {refreshKey} = useContext(RefreshFunctionContext)
     const [data,setData] = useState([])
     const loadChartData=async()=>{
         try{
@@ -40,7 +42,7 @@ export default function Categories({timeFrame}){
     }
     useEffect(()=>{
         loadChartData();
-    },[timeFrame.value])
+    },[timeFrame.value,refreshKey])
     return(
         <View style={styles.mainContent}>
             <Text style={StylesInsights.titleBox}>Spending by Category</Text>

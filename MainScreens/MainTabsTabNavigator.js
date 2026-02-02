@@ -3,8 +3,7 @@ import HomeStackNavigator from "./HomeStackNavigator";
 import WalletScreen from "./WalletsComponents/WalletsScreen";
 import WalletStack from "./WalletsComponents/WalletStack";
 import Insights from './InsightsComponents/Insights'
-import Settings from './SettingsComponents/Settings'
-import { StyleSheet} from "react-native";
+import SettingsStack from "./SettingsComponents/SettingsStack";
 import externalStyles from '../CustomModules/generalStyles'
 import { RefreshFunctionContext } from "../CustomModules/Contexts";
 import { useState } from "react";
@@ -13,10 +12,17 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default function MainTabs(){
     const [refreshKey,setRefreshKey] = useState(0);
+    const [settingsHeaderShown,setSettingsHeaderShown] = useState(true)
+
     //this is where all the main tabs will be
     const Tab = createBottomTabNavigator();
     return(
-        <RefreshFunctionContext.Provider value={{refreshKey,setRefreshKey}}>
+        /*
+        RefreshFunctionContext was only supposed to have two props refreshkey and setrefreshkey
+        but Ihad to drill one more function and i couldnt create another context and
+        adding this function seemed like the best option for me so please allow its
+        */
+        <RefreshFunctionContext.Provider value={{refreshKey,setRefreshKey,setSettingsHeaderShown}}>
                 <Tab.Navigator
                 screenOptions={({route})=>({
                     tabBarIcon:({focused,color,size})=>{
@@ -47,15 +53,16 @@ export default function MainTabs(){
                     <Tab.Screen name="Balances" component={WalletStack} options={{
                         headerShown:false,
                         headerStyle:externalStyles.screenHeader,
-                        tabBarLabel:"Balances",
+                        tabBarLabel:"Wallets",
                     }}/>
                     <Tab.Screen name="Insights" component={Insights} options={{
                         headerStyle:externalStyles.screenHeader,
                         tabBarLabel:"Insights",
                     }}/>
-                    <Tab.Screen name="Settings" component={Settings} options={{
+                    <Tab.Screen name="Settings" component={SettingsStack} options={{
                         headerStyle:externalStyles.screenHeader,
                         tabBarLabel:"Settings",
+                        headerShown:setSettingsHeaderShown,
                     }}/>
                 </Tab.Navigator>
         </RefreshFunctionContext.Provider>

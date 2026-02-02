@@ -1,6 +1,7 @@
 import {View,Text,StyleSheet, TextInput, Pressable} from "react-native"
 import { useForm,Controller } from "react-hook-form"
 import externalStyles from '../../CustomModules/generalStyles'
+import { AddComas } from "../../CustomModules/generalModules";
 
 export default function TextField({fieldName,placeholder,ctrl,numberOfLines,number,isRequired,maxLength,label,errors}){
     const numberRegex = ``;
@@ -29,7 +30,7 @@ export default function TextField({fieldName,placeholder,ctrl,numberOfLines,numb
                 render={({field})=>{
                     return(
                         <TextInput 
-                        value={field.value??""}
+                        value={AddComas(field.value)??""}
                         keyboardType={number?"number-pad":"default"}
                         onChangeText={field.onChange}               
                         placeholder={placeholder}

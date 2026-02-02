@@ -6,6 +6,7 @@ import DropdownField from './DropdownField';
 import { fromWalletTransaction } from "./DBtransaction";
 import { RefreshFunctionContext } from "../../CustomModules/Contexts";
 import { useContext } from "react";
+import { removeCommas } from "../../CustomModules/generalModules";
 
 export default function Fw({ data, show, hide, setMessage, goBack }) {
   const { setRefreshKey } = useContext(RefreshFunctionContext);
@@ -22,19 +23,20 @@ export default function Fw({ data, show, hide, setMessage, goBack }) {
   const categories = [
     { id: 1, transType: "Food", emoji: "🍔" },
     { id: 2, transType: "Groceries", emoji: "🛒" },
-    { id: 3, transType: "Bills & Membership", emoji: "💸" },
-    { id: 4, transType: "Zinjoyi", emoji: "💃🏾" },
-    { id: 5, transType: "Education", emoji: "📚" },
-    { id: 6, transType: "Loans repayment", emoji: "💰" },
-    { id: 7, transType: "Religious fees", emoji: "🛐" },
-    { id: 8, transType: "others....", emoji: "🕳️" }
+    {id:3,transType:"Data/voice bundles",emoji:"📶"},
+    { id: 4, transType: "Bills & Membership", emoji: "💸" },
+    { id: 5, transType: "Zinjoyi", emoji: "💃🏾" },
+    { id: 6, transType: "Education", emoji: "📚" },
+    { id: 7, transType: "Transport", emoji: "🛻" },
+    { id: 8, transType: "Religious fees", emoji: "🛐" },
+    { id: 9, transType: "others...", emoji: "🕳️" }
   ];
 
   const onError = errors => console.log("errors: ", errors);
 
   async function onSubmit(data) {
     const { amount, extraFees, from } = data;
-    const totaltoDeduct = Number(amount) + Number(extraFees);
+    const totaltoDeduct = Number(removeCommas(amount)) + Number(removeCommas(extraFees));
     if (totaltoDeduct < Number(from.balance)) {
       await fromWalletTransaction(data);
       setRefreshKey(r => r + 1);

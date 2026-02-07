@@ -4,7 +4,7 @@ import { useContext, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {RefreshFunctionContext} from '../../CustomModules/Contexts'
 
-export default function NewUsernameModal({visible,hide}){
+export default function NewUsernameModal({visible,hide,showToast}){
     const [newUsername,setNewUsername] = useState(null)
     const [error,setError] = useState(false)
     const {setRefreshKey} = useContext(RefreshFunctionContext)
@@ -15,6 +15,7 @@ export default function NewUsernameModal({visible,hide}){
             await AsyncStorage.setItem("userName",newUsername);
             setRefreshKey(r=>r+1);
             hide()
+            showToast()
         }
         else{
             setError(true)

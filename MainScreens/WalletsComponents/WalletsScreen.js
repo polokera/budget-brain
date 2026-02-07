@@ -7,11 +7,13 @@ import openMyDatabase from "../../CustomModules/DbModule";
 import { RefreshFunctionContext } from "../../CustomModules/Contexts";
 import generalStyles from "../../CustomModules/generalStyles";
 import NewTargetPopUp from "./NewTargetPopUp";
+import ShortPopUp from '../../CustomModules/ShortPopUp'
 
 export default function WalletScreen({navigation}){
     const {refreshKey} = useContext(RefreshFunctionContext);
     const [wallets,setWallets]=useState([])
     const [popUpVisible,setPopUpVisible] = useState(false)
+    const [toastVisible,setToastVisible] = useState(false)
     const goToAddMoneyPage=(item)=>{
         console.log(item," is your wallet")
         navigation.navigate("AddMoney",{
@@ -47,6 +49,13 @@ export default function WalletScreen({navigation}){
             <NewTargetPopUp
             visible={popUpVisible}
             hide={()=>setPopUpVisible(false)}
+            showToast={()=>setToastVisible(true)}
+            />
+            <ShortPopUp
+            visible={toastVisible}
+            hide={()=>setToastVisible(false)}
+            message="New target has been set starting from next week"
+
             />
             <View style={styles.container}>
               <FlatList

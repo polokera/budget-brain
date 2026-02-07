@@ -5,7 +5,7 @@ import { RefreshFunctionContext } from "../../CustomModules/Contexts"
 import { AddComas, removeCommas } from "../../CustomModules/generalModules"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
-export default function NewTargetPopUp({visible,hide}){
+export default function NewTargetPopUp({visible,hide,showToast}){
     const [newTarget,setNewTarget] = useState(null)
     const [error,setError] = useState(false)
     const {setRefreshKey} = useContext(RefreshFunctionContext)
@@ -18,6 +18,7 @@ export default function NewTargetPopUp({visible,hide}){
                 setRefreshKey(r=>r+1);
                 setNewTarget(null)
                 hide()
+                showToast()
                 console.log("done")
             }
             else{

@@ -11,9 +11,12 @@ import MainTabs from './MainScreens/MainTabsTabNavigator';
 import {View,Text} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { MaterialIcons,Ionicons, FontAwesome, Entypo, MaterialCommunityIcons, FontAwesome6 } from '@expo/vector-icons';
 import { DeviceEventEmitter } from 'react-native';
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -24,7 +27,7 @@ export default function App() {
     ...MaterialCommunityIcons.font,
     ...FontAwesome6.font,
   })
-  const [isUserSignedUp,setIsUserSignedUp] = useState(true)
+  const [isUserSignedUp,setIsUserSignedUp] = useState(null)
   const Stack = createStackNavigator()
   const isSignedUp = async ()=>{
     try{
@@ -49,22 +52,31 @@ export default function App() {
     }
   }
   useEffect(()=>{
-    isSignedUp()
+    const loadApp = async () => {
+      try {
+        await isSignedUp()
+      } catch(e) {
+        console.log(e)
+      } finally {
+        if(fontsLoaded) {
+          await SplashScreen.hideAsync()
+        }
+      }
+    }
+    
+    if(fontsLoaded) {
+      loadApp()
+    }
+  },[fontsLoaded])
+
+  useEffect(()=>{
     const subscription = DeviceEventEmitter.addListener('userLoggedOut',()=>{
       setIsUserSignedUp(false);
     })
 
     return ()=> subscription.remove()
-  },[isUserSignedUp])
-  if(isUserSignedUp===null){
-    return(
-      //replace this with a proper loading screen
-      <View>
-        <Text>Loading by central cee!</Text>
-      </View>
-    )
-  }
-  if(!fontsLoaded){
+  },[])
+  if(!fontsLoaded || isUserSignedUp === null){
     return null;
   }
   // if()

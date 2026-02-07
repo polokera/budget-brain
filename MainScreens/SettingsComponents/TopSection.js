@@ -2,13 +2,14 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import NewUsernameModal from "./NewUsername";
 import { useState } from "react";
 
-export default function TopSection({goToNextPage,showDeletePopUp}) {
+export default function TopSection({goToNextPage,showDeletePopUp,showToast}) {
   const [mdlUsernameVisible, setMdlUsernameVisible] = useState(false);
   return (
     <View style={styles.container}>
       <View style={styles.box}>
         <NewUsernameModal
           visible={mdlUsernameVisible}
+          showToast={showToast}
           hide={() => setMdlUsernameVisible(false)}
         />
         <Pressable //username 

@@ -35,6 +35,7 @@ export default function Fw({ data, show, hide, setMessage, goBack }) {
   const onError = errors => console.log("errors: ", errors);
 
   async function onSubmit(data) {
+    console.log(data, " is the data from the form")
     const { amount, extraFees, from } = data;
     const totaltoDeduct = Number(removeCommas(amount)) + Number(removeCommas(extraFees));
     if (totaltoDeduct < Number(from.balance)) {

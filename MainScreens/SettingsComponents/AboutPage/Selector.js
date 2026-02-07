@@ -12,7 +12,7 @@ export default function Selector({selected,setSelected}){
                 styles.boxItem,
                 {borderWidth:selected=="About the developer"?1.7:0,
                 borderColor:"orange",
-                elevation:selected=="About the developer"?4:0}
+                elevation:selected=="About the developer"?10:1}
                 ]}
             >
                 <FontAwesome name="code" size={24} color="orange" style={styles.icon}/>                
@@ -23,9 +23,11 @@ export default function Selector({selected,setSelected}){
             style={
                 [
                 styles.boxItem,
-                {borderWidth:selected=="About the app"?1.7:0,
-                borderColor:"lightblue",
-                elevation:selected=="About the app"?4:0}
+                {
+                    borderWidth:selected=="About the app"?1.7:0,
+                    borderColor:"lightblue",
+                    elevation:selected=="About the app"?10:1
+                }
                 ]}
             >
                 <MaterialIcons name='smartphone' size={24} color='lightblue' style={styles.icon}/>
@@ -38,7 +40,7 @@ export default function Selector({selected,setSelected}){
                 styles.boxItem,
                 {borderWidth:selected=="Special thanks"?1.7:0,
                 borderColor:"lightgreen",
-                elevation:selected=="Special thanks"?4:0}
+                elevation:selected=="Special thanks"?10:1}
                 ]}
             >
                 <FontAwesome6 name='people-group' size={24} color='lightgreen' style={styles.icon}/>
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
         marginHorizontal:12,
         padding:10,
         backgroundColor:"#fff",
-        elevation:0.5,
+        // elevation:4,
         borderRadius:7,
     },
     itemText:{

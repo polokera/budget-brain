@@ -7,6 +7,7 @@ import * as DateFns from "date-fns";
 import { useState, useEffect, useContext } from "react";
 import { WalletToWalletTrans } from "./DBtransaction";
 import { RefreshFunctionContext } from "../../CustomModules/Contexts";
+import { removeCommas } from "../../CustomModules/generalModules";
 
 export default function Fw({ data, show, hide, setMessage }) {
   const { setRefreshKey } = useContext(RefreshFunctionContext);
@@ -35,7 +36,8 @@ export default function Fw({ data, show, hide, setMessage }) {
   const onError = (errors) => console.log("errors: ", errors);
   async function onSubmit(data) {
     const { amount, extraFees, from } = data;
-    const totaltoDeduct = Number(amount) + Number(extraFees);
+    const totaltoDeduct = Number(removeCommas(amount)) + Number(removeCommas(extraFees));
+    console.log(totaltoDeduct," is the total we want to deduct")
     if (totaltoDeduct < Number(from.balance)) {
       await WalletToWalletTrans(data);
       console.log(setRefreshKey);

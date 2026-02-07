@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "b-brain",
-    "slug": "b-brain",
+    "name": "Budget brain",
+    "slug": "Budget-brain",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/newicon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -17,15 +17,23 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/newicon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.polokera.Budgetbrain"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-asset"
-    ]
+      "expo-asset",
+      "@react-native-community/datetimepicker",
+      "expo-font"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "9990f426-2ff9-4c48-ac34-ba5f78662d53"
+      }
+    }
   }
 }

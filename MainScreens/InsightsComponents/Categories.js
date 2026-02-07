@@ -46,8 +46,13 @@ export default function Categories({timeFrame}){
     return(
         <View style={styles.mainContent}>
             <Text style={StylesInsights.titleBox}>Spending by Category</Text>
-            <PieChart data={data} textSize={10}/>
-            <Legend categories={data}/>
+            {
+            data.length>0?<>
+                <PieChart data={data} textSize={10}/>
+                <Legend categories={data}/>
+                </>:
+                <Text style={styles.emptyMessage}>Nothing to see yet🥜</Text>
+            }
         </View>
     )
 }
@@ -57,12 +62,17 @@ const styles = StyleSheet.create({
     mainContent:{
         backgroundColor:"#e0fbfb",
         padding:6,
-        // height:230,
+        minHeight:230,
         paddingBottom:10,
         borderRadius:10,
         elevation:3,
         borderWidth:0.65,
         marginVertical:25,
         alignItems:"center"
+    },
+    emptyMessage:{
+        color:"gray",
+        fontSize:20,
+        fontStyle:"italic",
     }
 })

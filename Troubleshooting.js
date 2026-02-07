@@ -17,7 +17,7 @@ export default function Troubleshooting(){
     const Anything =async()=>{
         try{
         const dbx = await openMyDatabase()
-        const result = await dbx.getAllAsync(`SELECT * `)
+        const result = await dbx.getAllAsync(`SELECT * from weeks`)
         // const result2 = await dbx.getAllAsync(`SELECT * FROM transaction where `)
         // const result = await dbx.runAsync(`delete from weeks where weekid = 55`)
         console.log(result)

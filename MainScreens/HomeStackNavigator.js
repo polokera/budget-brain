@@ -15,9 +15,6 @@ export default function HomeStackNavigator(){
         <Stack.Navigator>
             <Stack.Screen name='Home' component={HomeScreen} options={{
                 headerStyle:externalStyles.screenHeader,
-                headerRight:()=>{
-                    return <Avatar.Text size={24} label="XD" style={styles.avatar}/>
-                }
             }}/>
 
             <Stack.Screen name="Transaction" component={Transactions} options={{

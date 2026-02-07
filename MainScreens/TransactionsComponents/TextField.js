@@ -1,7 +1,7 @@
 import {View,Text,StyleSheet, TextInput, Pressable} from "react-native"
 import { useForm,Controller } from "react-hook-form"
 import externalStyles from '../../CustomModules/generalStyles'
-import { AddComas } from "../../CustomModules/generalModules";
+import { AddComas, removeCommas } from "../../CustomModules/generalModules";
 
 export default function TextField({fieldName,placeholder,ctrl,numberOfLines,number,isRequired,maxLength,label,errors}){
     const numberRegex = ``;
@@ -14,7 +14,18 @@ export default function TextField({fieldName,placeholder,ctrl,numberOfLines,numb
             rules={...rules,maxLength:{value:maxLength,message:`${fieldName} should be less than ${maxLength+1} characters`}}
         }
         if(number){
-            rules={...rules,pattern:{value:/^\d+(\.\d+)?$/,message:`${label} must be a number`}}
+            rules={...rules,
+                validate:(value)=>{
+                    if(!value) return true;
+
+                    const cleanValue = removeCommas(value)
+
+                    const isValid = /^\d+(\.\d+)?$/.test(cleanValue)
+                    return isValid || `${label} must be a valid number`
+                }
+            }
+            
+                // pattern:{value:/^\d+(\.\d+)?$/,message:`${label} must be a number`}}
         }
         
         return rules;
@@ -30,7 +41,7 @@ export default function TextField({fieldName,placeholder,ctrl,numberOfLines,numb
                 render={({field})=>{
                     return(
                         <TextInput 
-                        value={AddComas(field.value)??""}
+                        value={number?AddComas(field.value)??"":field.value}
                         keyboardType={number?"number-pad":"default"}
                         onChangeText={field.onChange}               
                         placeholder={placeholder}

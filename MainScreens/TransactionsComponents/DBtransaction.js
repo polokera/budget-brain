@@ -1,9 +1,10 @@
 import openMyDatabase from '../../CustomModules/DbModule'
 import * as DateFns from 'date-fns'
+import { removeCommas } from '../../CustomModules/generalModules';
 
 export async function WalletToWalletTrans(data){
     const {amount,from,to,extraFees} = data;
-    const cashTotal = Number(amount)+Number(extraFees)
+    const cashTotal = Number(removeCommas(amount))+Number(removeCommas(extraFees))
     const dbx = await openMyDatabase()
     const date = DateFns.format(new Date(),"yyyy-MM-dd")
     const time = DateFns.format(new Date(),"HHmm")
@@ -27,7 +28,7 @@ export async function WalletToWalletTrans(data){
 export async function fromWalletTransaction(data){
    
     const {transType,description,amount,from,extraFees} = data;
-    const cashTotal = Number(amount)+Number(extraFees)
+    const cashTotal = Number(removeCommas(amount))+Number(removeCommas(extraFees))
     const dbx = await openMyDatabase()
     const date = DateFns.format(new Date(),"yyyy-MM-dd")
     const time = DateFns.format(new Date(),"HHmm")

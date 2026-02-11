@@ -16,9 +16,12 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import { MaterialIcons,Ionicons, FontAwesome, Entypo, MaterialCommunityIcons, FontAwesome6 } from '@expo/vector-icons';
 import { DeviceEventEmitter } from 'react-native';
 
+
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+  // Keep the splash visible until we explicitly hide it when app is ready
+  // (call preventAutoHideAsync on mount and hide when fonts + boot state loaded)
   const [fontsLoaded] = useFonts({
     ...Ionicons.font,
     ...MaterialIcons.font,
@@ -35,16 +38,13 @@ export default function App() {
       console.log(SignedUp)
       if(SignedUp === null){
         await AsyncStorage.setItem('isSignedUp', "false")
-        console.log("user is not signed up")
         setIsUserSignedUp(false)
       }
       else if(SignedUp === "true"){
         setIsUserSignedUp(true)
-        console.log("user is signed up")
       }
       else{
         setIsUserSignedUp(false)
-        console.log("user is  not  signed up I think")
       }
     }
     catch(e){
@@ -52,22 +52,27 @@ export default function App() {
     }
   }
   useEffect(()=>{
-    const loadApp = async () => {
-      try {
-        await isSignedUp()
-      } catch(e) {
-        console.log(e)
-      } finally {
-        if(fontsLoaded) {
-          await SplashScreen.hideAsync()
-        }
-      }
-    }
     
-    if(fontsLoaded) {
-      loadApp()
+      // start loading user state regardless of fontsLoaded
+       isSignedUp();
+      
+    
+  },[])
+
+  // When fonts and user-signup state are both ready, hide the splash
+  useEffect(()=>{
+    (async()=>{
+      if(fontsLoaded && isUserSignedUp !== null){
+        try{
+          await SplashScreen.hideAsync();
+        }
+        catch(e){
+          console.log('hideAsync error', e);
+        }
+        
     }
-  },[fontsLoaded])
+    })();
+  },[fontsLoaded, isUserSignedUp])
 
   useEffect(()=>{
     const subscription = DeviceEventEmitter.addListener('userLoggedOut',()=>{

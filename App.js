@@ -22,7 +22,7 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   // Keep the splash visible until we explicitly hide it when app is ready
   // (call preventAutoHideAsync on mount and hide when fonts + boot state loaded)
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded,fontError] = useFonts({
     ...Ionicons.font,
     ...MaterialIcons.font,
     ...FontAwesome.font,
@@ -61,16 +61,23 @@ export default function App() {
 
   // When fonts and user-signup state are both ready, hide the splash
   useEffect(()=>{
+
     (async()=>{
+      // console.log(fontsLoaded)
       if(fontsLoaded && isUserSignedUp !== null){
+
         try{
           await SplashScreen.hideAsync();
         }
         catch(e){
           console.log('hideAsync error', e);
         }
-        
-    }
+      }
+      else{
+        console.log("maufa pro max")
+      }
+      console.log(fontsLoaded," is fontsloaded")
+      console.log(fontError," is fontsError")
     })();
   },[fontsLoaded, isUserSignedUp])
 

@@ -8,13 +8,10 @@ export default function ToggleBar({selected,toggleFn}){
             value={selected}
             onValueChange={toggleFn}
             buttons={[ 
-                {value:"fWallet",label:"From Wallet"},
-                {value:'wtw',label:"Wallet to wallet"},
+                {value:"fWallet",label:"From Wallet",checkedColor:"white",uncheckedColor:"black"},
+                {value:'wtw',label:"Wallet to wallet",checkedColor:"white",uncheckedColor:"black"},
                
             ]}
-            theme={{
-                colors:{primary:"#fdf5f4"}
-            }}
             />
         </View>
     )

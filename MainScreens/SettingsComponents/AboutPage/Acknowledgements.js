@@ -8,9 +8,8 @@ export default function Acknowledgements() {
         Trinity for encouraging me and letting me use her laptop for a good part
         of the development and for her presence in general. I'd like to thank
         all those who let me test this on their phones and stuff Chikopa, Wilma,
-        ana anga Gabi ndi Dingi. I'd like to thank Tamanda also, who helped me
-        to get started in this journey one of the hard
-        parts of this process. I'd also like to thank all the people who allowed
+        ana anga Gabi ndi Dingi. I'd like to thank Tamanda who helped me
+        to get started in this journey. I'd also like to thank all the people who allowed
         me to talk about this idea to them. The fact that you didn't tell me
         that my idea was bad helped keep going. Special shoutout to my older
         sister and Parents kwathu amandikonda, Sindingatchule nonse I love you

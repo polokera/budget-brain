@@ -24,11 +24,16 @@ export async function getWallets(){
 
 }
 export async function getCashTotal(){
-    let wallets = await getWallets()
-    let cashTotal = wallets.map((wlt)=>String(wlt.balance).replace(/,/g,""))
-    console.log(cashTotal)
-    cashTotal = cashTotal.reduce((sum,balance)=>sum+Number(balance),0)
-    return cashTotal;
+    try{
+        let wallets = await getWallets()
+        let cashTotal = wallets.map((wlt)=>String(wlt.balance).replace(/,/g,""))
+        cashTotal = cashTotal.reduce((sum,balance)=>sum+Number(balance),0)
+        return cashTotal;
+    }
+    catch(e){
+        console.log(e)
+    }
+    
 }
 export async function getHomeScreenDetails(){
     try{
@@ -55,7 +60,6 @@ export async function getWeeklyTarget(){
         // let weeklyTargetObj = await dbx.getFirstAsync(`SELECT target from target`)
         // return weeklyTargetObj.target;
         const targetFromAsyncStorage = await AsyncStorage.getItem("weeklyTarget");
-        console.log(targetFromAsyncStorage," is the target that was stored in async storage")
         const dateToday = new Date();
         if(isSunday(dateToday)){
             //check whether todays date is in database
@@ -63,10 +67,10 @@ export async function getWeeklyTarget(){
             const result = await dbx.getAllAsync(`SELECT COUNT(*) as count FROM weeks where weekStart = "${formattedDate}"`)
            if(result[0].count==0 || result[0].count == undefined){
             //if the date doesnt exist in the weeks table add it
-            const result2 = await dbx.runAsync(`INSERT INTO weeks(weekStart,weekTarget,weekSPent)values(?,?)`,[formattedDate,Number(targetFromAsyncStorage),0])
-            result2>0&&console.log("its sunday and a new week has been created")
-        }
-            console.log(parsedDate)
+                const result2 = await dbx.runAsync(`INSERT INTO weeks(weekStart,weekTarget,weekSpent)values(?,?,?)`,[formattedDate,Number(targetFromAsyncStorage),0])
+                result2.changes>0&&console.log("its sunday and a new week has been created")
+            }
+            console.log(formattedDate)
            //test this on a sunday please
             referenceDate = formattedDate;
         }

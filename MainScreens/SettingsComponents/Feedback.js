@@ -1,4 +1,4 @@
-import {View,Text,StyleSheet, TextInput, Pressable, Linking} from 'react-native'
+import {View,Text,StyleSheet, TextInput, Pressable, Linking,Alert} from 'react-native'
 import { useState } from 'react'
 import generalStyles from '../../CustomModules/generalStyles'
 

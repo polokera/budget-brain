@@ -74,10 +74,10 @@ export default function App() {
         }
       }
       else{
-        console.log("maufa pro max")
+        // console.log("maufa pro max")
       }
-      console.log(fontsLoaded," is fontsloaded")
-      console.log(fontError," is fontsError")
+      // console.log(fontsLoaded," is fontsloaded")
+      // console.log(fontError," is fontsError")
     })();
   },[fontsLoaded, isUserSignedUp])
 

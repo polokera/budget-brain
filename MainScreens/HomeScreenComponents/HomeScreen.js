@@ -63,8 +63,10 @@ export default function HomeScreen({ navigation }) {
   };
   const getHomeScreenDeets = async () => {
     await getUserName();
+    
     const total = await getCashTotal();
     setCashTotal(total);
+    console.log("ah hahaha")
     let maTrans = await getHomeScreenDetails();
     setTranses(maTrans);
     const trgt = await getWeeklyTarget();
@@ -73,6 +75,8 @@ export default function HomeScreen({ navigation }) {
     setSpentThisWeek(spent);
     const wallets = await getWallets();
     setWallets(wallets);
+    
+
   };
   useEffect(() => {
     const fetchData = async () => {
